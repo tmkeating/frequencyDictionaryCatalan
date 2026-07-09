@@ -1,0 +1,930 @@
+#!/usr/bin/env python3
+"""Generate Catalan cloze CSV from a frequency-sorted TSV word list.
+
+Pipeline:
+1. Read words in sorted order from a TSV file.
+2. Query Tatoeba for a Catalan example sentence for each word.
+3. Prefer linked English translations from Tatoeba.
+4. Fallback translation providers if needed (MyMemory, then LibreTranslate).
+5. Format the Catalan sentence with cloze deletion and write output rows.
+
+Output row format (no header by default, matching template style):
+- sentence_with_cloze
+- target_word
+- cloze_token
+- rank
+- english_translation
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+import os
+import re
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+from pathlib import Path
+from typing import Any
+
+
+TATOEBA_SEARCH_URL = "https://tatoeba.org/en/api_v0/search"
+MYMEMORY_TRANSLATE_URL = "https://api.mymemory.translated.net/get"
+LIBRETRANSLATE_URL_DEFAULT = "https://libretranslate.com/translate"
+USER_AGENT = "Mozilla/5.0 (compatible; CatalanClozeBot/1.0)"
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Create Catalan cloze CSV using Tatoeba + translation fallback."
+    )
+    parser.add_argument(
+        "--input",
+        default="data/items-words.sorted-by-relative-frequency.tsv",
+        help="Path to sorted TSV input.",
+    )
+    parser.add_argument(
+        "--output",
+        default="data/catalan_cloze_output.csv",
+        help="Path to output CSV.",
+    )
+    parser.add_argument(
+        "--cache",
+        default="data/cache_tatoeba.json",
+        help="Path to API cache JSON file.",
+    )
+    parser.add_argument(
+        "--log",
+        default="logs/enrichment_log.csv",
+        help="Path to log CSV.",
+    )
+    parser.add_argument(
+        "--word-column",
+        default="Word",
+        help="Column name for the target word in input TSV.",
+    )
+    parser.add_argument(
+        "--start-rank",
+        type=int,
+        default=1,
+        help="Start rank (1-indexed) for processing.",
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=0,
+        help="Max number of words to process (0 means no limit).",
+    )
+    parser.add_argument(
+        "--sleep-seconds",
+        type=float,
+        default=5.0,
+        help="Delay between API calls to be polite to public APIs.",
+    )
+    parser.add_argument(
+        "--retry-sleep-seconds",
+        type=float,
+        default=5.0,
+        help="Delay between retry attempts for the same word.",
+    )
+    parser.add_argument(
+        "--rate-limit-cooldown-seconds",
+        type=float,
+        default=1800.0,
+        help="Global cooldown before retrying deferred rate-limited words.",
+    )
+    parser.add_argument(
+        "--max-deferred-passes",
+        type=int,
+        default=2,
+        help="Maximum additional passes for words deferred due to rate limits.",
+    )
+    parser.add_argument(
+        "--min-words",
+        type=int,
+        default=3,
+        help="Minimum number of words required in selected Catalan sentence.",
+    )
+    parser.add_argument(
+        "--min-chars",
+        type=int,
+        default=1,
+        help="Minimum number of characters required in selected Catalan sentence.",
+    )
+    parser.add_argument(
+        "--sweep-min-words",
+        action="store_true",
+        default=True,
+        help="Use a descending sweep from high minimum words down to the low bound.",
+    )
+    parser.add_argument(
+        "--no-sweep-min-words",
+        action="store_true",
+        help="Disable descending sweep and use fixed --min-words.",
+    )
+    parser.add_argument(
+        "--sweep-min-words-low",
+        type=int,
+        default=3,
+        help="Lower bound for descending minimum-word sweep.",
+    )
+    parser.add_argument(
+        "--sweep-min-words-high",
+        type=int,
+        default=6,
+        help="Upper bound for descending minimum-word sweep.",
+    )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        default=True,
+        help="Resume by skipping already written ranks (default: enabled).",
+    )
+    parser.add_argument(
+        "--no-resume",
+        action="store_true",
+        help="Disable resume behavior.",
+    )
+    parser.add_argument(
+        "--with-header",
+        action="store_true",
+        help="Write CSV header row (default off to match example format).",
+    )
+    parser.add_argument(
+        "--fallback-translator",
+        choices=["mymemory", "libretranslate", "none"],
+        default="mymemory",
+        help="Fallback translator when Tatoeba has no linked English translation.",
+    )
+    parser.add_argument(
+        "--libretranslate-url",
+        default=LIBRETRANSLATE_URL_DEFAULT,
+        help="LibreTranslate endpoint URL.",
+    )
+    parser.add_argument(
+        "--manual-review-mode",
+        action="store_true",
+        help="Write potentially low-quality rows to a separate review CSV.",
+    )
+    parser.add_argument(
+        "--review-output",
+        default="logs/manual_review_candidates.csv",
+        help="Path to manual review CSV output (used when --manual-review-mode is set).",
+    )
+    parser.add_argument(
+        "--status-summary-only",
+        action="store_true",
+        help="Only print status summary from the log file and exit.",
+    )
+    return parser.parse_args()
+
+
+def http_get_json(url: str, params: dict[str, Any], timeout: int = 20) -> dict[str, Any]:
+    query = urllib.parse.urlencode(params)
+    request = urllib.request.Request(
+        f"{url}?{query}",
+        headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
+    )
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+def http_post_json(url: str, payload: dict[str, Any], timeout: int = 20) -> dict[str, Any]:
+    data = json.dumps(payload).encode("utf-8")
+    request = urllib.request.Request(
+        url,
+        data=data,
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+def read_sorted_input(path: Path, word_column: str) -> list[tuple[int, str]]:
+    with path.open("r", encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f, delimiter="\t")
+        if not reader.fieldnames or word_column not in reader.fieldnames:
+            raise ValueError(f"Input missing required word column: {word_column}")
+
+        rows: list[tuple[int, str]] = []
+        for i, row in enumerate(reader, start=1):
+            word = (row.get(word_column) or "").strip()
+            if not word:
+                continue
+            rows.append((i, word))
+    return rows
+
+
+def load_cache(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    with path.open("r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def save_cache(path: Path, cache: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = path.with_suffix(path.suffix + ".tmp")
+    with tmp_path.open("w", encoding="utf-8") as f:
+        json.dump(cache, f, ensure_ascii=False, indent=2)
+    tmp_path.replace(path)
+
+
+def read_completed_ranks(output_path: Path) -> set[int]:
+    if not output_path.exists():
+        return set()
+
+    completed: set[int] = set()
+    with output_path.open("r", encoding="utf-8", newline="") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if len(row) < 5:
+                continue
+            try:
+                rank = int(row[3])
+            except ValueError:
+                # Skip header or malformed rows.
+                continue
+            # Treat only fully written rows as completed (not placeholders).
+            if not row[0].strip() or not row[4].strip():
+                continue
+            completed.add(rank)
+    return completed
+
+
+def extract_english_candidates(translations: Any) -> list[str]:
+    if not isinstance(translations, list):
+        return []
+
+    candidates: list[str] = []
+
+    for group in translations:
+        if not isinstance(group, list):
+            continue
+        for candidate in group:
+            if not isinstance(candidate, dict):
+                continue
+            if candidate.get("lang") == "eng":
+                text = (candidate.get("text") or "").strip()
+                if text:
+                    candidates.append(text)
+    return candidates
+
+
+def contains_whole_word_ascii(text: str, token: str) -> bool:
+    pattern = rf"\b{re.escape(token)}\b"
+    return re.search(pattern, text, flags=re.IGNORECASE) is not None
+
+
+def choose_best_english_translation(candidates: list[str], target_word: str) -> str | None:
+    if not candidates:
+        return None
+
+    word = target_word.strip().lower()
+    priority_map = {
+        "el": ["him", "he", "it", "you"],
+        "la": ["her", "it"],
+        "els": ["them", "the"],
+        "les": ["them", "the"],
+    }
+
+    priorities = priority_map.get(word)
+    if priorities:
+        for preferred in priorities:
+            for candidate in candidates:
+                if contains_whole_word_ascii(candidate, preferred):
+                    return candidate
+
+    return candidates[0]
+
+
+def passes_sentence_quality(sentence: str, min_words: int, min_chars: int) -> bool:
+    compact = sentence.strip()
+    if len(compact) < min_chars:
+        return False
+
+    # Count tokens containing at least one letter-like character.
+    tokens = re.findall(r"[\wÀ-ÖØ-öø-ÿ'’\-]+", compact, flags=re.UNICODE)
+    if len(tokens) < min_words:
+        return False
+
+    return True
+
+
+def sentence_contains_word(sentence: str, word: str) -> bool:
+    pattern = rf"(?<!\w){re.escape(word)}(?!\w)"
+    return re.search(pattern, sentence, flags=re.IGNORECASE) is not None
+
+
+def select_tatoeba_sentence(
+    results: list[dict[str, Any]],
+    word: str,
+    min_words: int,
+    min_chars: int,
+) -> tuple[str, str | None] | None:
+    # Prefer a sentence that contains the exact target word, passes quality, and has linked English.
+    for item in results:
+        if not isinstance(item, dict):
+            continue
+        sentence = (item.get("text") or "").strip()
+        if not sentence or not sentence_contains_word(sentence, word):
+            continue
+        if not passes_sentence_quality(sentence, min_words=min_words, min_chars=min_chars):
+            continue
+        english = choose_best_english_translation(
+            extract_english_candidates(item.get("translations")),
+            word,
+        )
+        if english:
+            return sentence, english
+
+    # Next, sentence containing word and passing quality even without linked English.
+    for item in results:
+        if not isinstance(item, dict):
+            continue
+        sentence = (item.get("text") or "").strip()
+        if sentence and sentence_contains_word(sentence, word):
+            if not passes_sentence_quality(sentence, min_words=min_words, min_chars=min_chars):
+                continue
+            english = choose_best_english_translation(
+                extract_english_candidates(item.get("translations")),
+                word,
+            )
+            return sentence, english
+
+    # Final fallback: first Catalan sentence passing quality in results.
+    for item in results:
+        if not isinstance(item, dict):
+            continue
+        sentence = (item.get("text") or "").strip()
+        if sentence and passes_sentence_quality(sentence, min_words=min_words, min_chars=min_chars):
+            english = choose_best_english_translation(
+                extract_english_candidates(item.get("translations")),
+                word,
+            )
+            return sentence, english
+
+    return None
+
+
+def lookup_tatoeba(
+    word: str,
+    min_words: int,
+    min_chars: int,
+    retry_sleep_seconds: float,
+) -> dict[str, Any]:
+    attempts = 5
+    payload: dict[str, Any] | None = None
+
+    for attempt in range(attempts):
+        try:
+            payload = http_get_json(
+                TATOEBA_SEARCH_URL,
+                params={"from": "cat", "query": word},
+                timeout=25,
+            )
+            break
+        except urllib.error.HTTPError as exc:
+            if exc.code == 429:
+                if attempt >= 1:
+                    return {"status": "rate_limited"}
+                # One short backoff retry, then skip quickly to keep pipeline moving.
+                retry_after = exc.headers.get("Retry-After") if exc.headers else None
+                wait_seconds = 2.0
+                if retry_after:
+                    try:
+                        wait_seconds = min(float(retry_after), 5.0)
+                    except ValueError:
+                        wait_seconds = max(retry_sleep_seconds, 0.0)
+                else:
+                    wait_seconds = max(retry_sleep_seconds, 0.0)
+                time.sleep(wait_seconds)
+                continue
+            return {"status": "request_error", "detail": f"http_{exc.code}"}
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+            if attempt == attempts - 1:
+                return {"status": "request_error", "detail": "network_or_json_error"}
+            time.sleep(max(retry_sleep_seconds, 0.0))
+
+    if payload is None:
+        return {"status": "request_error", "detail": "empty_payload"}
+
+    results = payload.get("results")
+    if not isinstance(results, list) or not results:
+        return {"status": "no_result"}
+
+    selected = select_tatoeba_sentence(
+        results,
+        word,
+        min_words=min_words,
+        min_chars=min_chars,
+    )
+    if not selected:
+        return {"status": "no_quality_result"}
+
+    sentence, english = selected
+    return {
+        "status": "ok",
+        "sentence": sentence,
+        "english": english,
+    }
+
+
+def translate_with_mymemory(text: str) -> str | None:
+    try:
+        payload = http_get_json(
+            MYMEMORY_TRANSLATE_URL,
+            params={"q": text, "langpair": "ca|en"},
+            timeout=25,
+        )
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+        return None
+
+    response_data = payload.get("responseData")
+    if not isinstance(response_data, dict):
+        return None
+
+    translated = (response_data.get("translatedText") or "").strip()
+    return translated or None
+
+
+def translate_with_libretranslate(text: str, endpoint: str) -> str | None:
+    payload: dict[str, Any] = {
+        "q": text,
+        "source": "ca",
+        "target": "en",
+        "format": "text",
+    }
+    api_key = os.getenv("LIBRETRANSLATE_API_KEY", "").strip()
+    if api_key:
+        payload["api_key"] = api_key
+
+    try:
+        data = http_post_json(endpoint, payload=payload, timeout=25)
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+        return None
+
+    translated = (data.get("translatedText") or "").strip()
+    return translated or None
+
+
+def make_cloze(sentence: str, word: str) -> tuple[str, str] | None:
+    pattern = rf"(?<!\w)({re.escape(word)})(?!\w)"
+    match = re.search(pattern, sentence, flags=re.IGNORECASE)
+    if not match:
+        return None
+
+    surface = match.group(1)
+    cloze_token = "{{c1::" + surface + "}}"
+    start, end = match.span(1)
+    sentence_with_cloze = sentence[:start] + cloze_token + sentence[end:]
+    return sentence_with_cloze, cloze_token
+
+
+def upsert_output_row_by_rank(path: Path, row: list[str], with_header: bool) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    try:
+        rank = int(row[3])
+    except (ValueError, IndexError) as exc:
+        raise ValueError("Output row must contain numeric rank at index 3") from exc
+
+    header = [
+        "sentence_with_cloze",
+        "target_word",
+        "cloze_token",
+        "rank",
+        "english_translation",
+    ]
+
+    existing_rows: list[list[str]] = []
+    if path.exists() and path.stat().st_size > 0:
+        with path.open("r", encoding="utf-8", newline="") as f:
+            reader = csv.reader(f)
+            existing_rows = [r for r in reader]
+
+    has_header = False
+    data_rows = existing_rows
+    if with_header and existing_rows:
+        if existing_rows[0] == header:
+            has_header = True
+            data_rows = existing_rows[1:]
+
+    # Ensure there are enough lines so row index maps to rank line (rank 1 -> first data line).
+    while len(data_rows) < rank:
+        placeholder_rank = len(data_rows) + 1
+        data_rows.append(["", "", "", str(placeholder_rank), ""])
+
+    data_rows[rank - 1] = row
+
+    with path.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f)
+        if with_header:
+            writer.writerow(header)
+        writer.writerows(data_rows)
+
+
+def append_log_row(path: Path, row: list[str]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    needs_header = not path.exists() or path.stat().st_size == 0
+    with path.open("a", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f)
+        if needs_header:
+            writer.writerow(["rank", "word", "status", "detail"])
+        writer.writerow(row)
+
+
+def append_review_row(path: Path, row: list[str]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    needs_header = not path.exists() or path.stat().st_size == 0
+    with path.open("a", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f)
+        if needs_header:
+            writer.writerow(
+                [
+                    "rank",
+                    "word",
+                    "catalan_sentence",
+                    "english_translation",
+                    "source",
+                    "flags",
+                ]
+            )
+        writer.writerow(row)
+
+
+def translate_sentence(
+    sentence: str,
+    fallback_translator: str,
+    libretranslate_url: str,
+) -> tuple[str | None, str]:
+    if fallback_translator == "none":
+        return None, "none"
+    if fallback_translator == "mymemory":
+        translated = translate_with_mymemory(sentence)
+        return translated, "mymemory"
+    if fallback_translator == "libretranslate":
+        translated = translate_with_libretranslate(sentence, libretranslate_url)
+        return translated, "libretranslate"
+    return None, "none"
+
+
+def collect_review_flags(word: str, sentence: str, english: str, source: str) -> list[str]:
+    flags: list[str] = []
+
+    cat_tokens = re.findall(r"[\wÀ-ÖØ-öø-ÿ'’\-]+", sentence, flags=re.UNICODE)
+    eng_tokens = re.findall(r"[A-Za-z']+", english)
+
+    if source != "tatoeba_linked_translation":
+        flags.append("non_tatoeba_linked_translation")
+
+    if len(eng_tokens) <= 2:
+        flags.append("short_english_translation")
+
+    if len(cat_tokens) <= 2:
+        flags.append("very_short_catalan_sentence")
+
+    if sentence_contains_word(sentence, "no"):
+        if not re.search(r"(\bnot\b|\bno\b|\bnever\b|n['’]t\b)", english, flags=re.IGNORECASE):
+            flags.append("possible_negation_mismatch")
+
+    if word.lower() in {"el", "la", "els", "les"}:
+        if re.search(r"\b(you|it)\b", english, flags=re.IGNORECASE):
+            flags.append("possible_pronoun_ambiguity")
+
+    return flags
+
+
+def recommend_cooldown_seconds(rate_limited_pct: float) -> int:
+    if rate_limited_pct >= 70.0:
+        return 300
+    if rate_limited_pct >= 50.0:
+        return 240
+    if rate_limited_pct >= 30.0:
+        return 180
+    if rate_limited_pct >= 15.0:
+        return 120
+    return 60
+
+
+def compute_status_summary(log_path: Path) -> dict[str, Any]:
+    if not log_path.exists() or log_path.stat().st_size == 0:
+        return {
+            "events": 0,
+            "tracked_ranks": 0,
+            "completed": 0,
+            "deferred": 0,
+            "failed": 0,
+            "rate_limited_current": 0,
+            "rate_limited_pct": 0.0,
+            "recommended_cooldown": 60,
+        }
+
+    latest_by_rank: dict[int, tuple[str, str]] = {}
+    event_count = 0
+
+    with log_path.open("r", encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            try:
+                rank = int((row.get("rank") or "").strip())
+            except ValueError:
+                continue
+
+            status = (row.get("status") or "").strip()
+            detail = (row.get("detail") or "").strip()
+            if not status:
+                continue
+            event_count += 1
+            latest_by_rank[rank] = (status, detail)
+
+    tracked = len(latest_by_rank)
+    completed = sum(1 for status, _ in latest_by_rank.values() if status == "ok")
+    deferred = sum(1 for status, _ in latest_by_rank.values() if status == "deferred")
+    failed = sum(1 for status, _ in latest_by_rank.values() if status in {"error", "deferred_failed"})
+    rate_limited_current = sum(
+        1
+        for status, detail in latest_by_rank.values()
+        if "rate_limited" in detail or status in {"deferred", "deferred_failed"}
+    )
+
+    rate_limited_pct = (rate_limited_current / tracked * 100.0) if tracked else 0.0
+    recommended = recommend_cooldown_seconds(rate_limited_pct)
+
+    return {
+        "events": event_count,
+        "tracked_ranks": tracked,
+        "completed": completed,
+        "deferred": deferred,
+        "failed": failed,
+        "rate_limited_current": rate_limited_current,
+        "rate_limited_pct": rate_limited_pct,
+        "recommended_cooldown": recommended,
+    }
+
+
+def print_status_summary(log_path: Path) -> None:
+    summary = compute_status_summary(log_path)
+    tracked = summary["tracked_ranks"]
+    completed = summary["completed"]
+    completion_pct = (completed / tracked * 100.0) if tracked else 0.0
+
+    print("Status summary")
+    print(f"Log file: {log_path}")
+    print(f"Events: {summary['events']}")
+    print(f"Tracked ranks: {tracked}")
+    print(f"Completed: {completed} ({completion_pct:.1f}%)")
+    print(f"Deferred: {summary['deferred']}")
+    print(f"Failed: {summary['failed']}")
+    print(
+        "Rate-limited current: "
+        f"{summary['rate_limited_current']} ({summary['rate_limited_pct']:.1f}%)"
+    )
+    print(f"Recommended cooldown seconds: {summary['recommended_cooldown']}")
+
+
+def main() -> None:
+    args = parse_args()
+
+    input_path = Path(args.input)
+    output_path = Path(args.output)
+    cache_path = Path(args.cache)
+    log_path = Path(args.log)
+    review_output_path = Path(args.review_output)
+
+    if args.no_sweep_min_words:
+        args.sweep_min_words = False
+
+    if args.sweep_min_words_low <= 0 or args.sweep_min_words_high <= 0:
+        raise ValueError("Sweep min-words bounds must be positive integers")
+    if args.sweep_min_words_low > args.sweep_min_words_high:
+        raise ValueError("--sweep-min-words-low cannot exceed --sweep-min-words-high")
+    if args.min_chars < 1:
+        raise ValueError("--min-chars must be at least 1")
+    if args.retry_sleep_seconds < 0:
+        raise ValueError("--retry-sleep-seconds cannot be negative")
+    if args.rate_limit_cooldown_seconds < 0:
+        raise ValueError("--rate-limit-cooldown-seconds cannot be negative")
+    if args.max_deferred_passes < 0:
+        raise ValueError("--max-deferred-passes cannot be negative")
+
+    if args.no_resume:
+        args.resume = False
+
+    if args.status_summary_only:
+        print_status_summary(log_path)
+        return
+
+    if not input_path.exists():
+        raise FileNotFoundError(f"Input file not found: {input_path}")
+
+    words_with_rank = read_sorted_input(input_path, args.word_column)
+    cache = load_cache(cache_path)
+
+    completed_ranks = read_completed_ranks(output_path) if args.resume else set()
+
+    processed = 0
+    written = 0
+    skipped = 0
+    errors = 0
+    review_count = 0
+    deferred_rate_limited: list[tuple[int, str]] = []
+
+    def process_word(rank: int, word: str) -> str:
+        nonlocal written, errors, review_count
+
+        cached = cache.get(word)
+        sentence: str | None = None
+        english: str | None = None
+        source = ""
+
+        if isinstance(cached, dict) and cached.get("status") == "ok":
+            sentence = cached.get("sentence")
+            english = cached.get("english")
+            source = cached.get("source", "cache")
+        else:
+            min_word_attempts: list[int]
+            if args.sweep_min_words:
+                # Deterministic sweep from higher-quality target sentences to lower ones.
+                high = args.sweep_min_words_high
+                low = args.sweep_min_words_low
+                min_word_attempts = list(
+                    range(high, low - 1, -1)
+                )
+            else:
+                min_word_attempts = [args.min_words]
+
+            looked_up: dict[str, Any] = {"status": "no_quality_result"}
+            for min_words_candidate in min_word_attempts:
+                looked_up = lookup_tatoeba(
+                    word,
+                    min_words=min_words_candidate,
+                    min_chars=args.min_chars,
+                    retry_sleep_seconds=args.retry_sleep_seconds,
+                )
+                if looked_up.get("status") == "ok":
+                    break
+                # For request/rate-limit failures, do not burn extra attempts immediately.
+                if looked_up.get("status") in {"rate_limited", "request_error"}:
+                    break
+                if args.retry_sleep_seconds > 0:
+                    time.sleep(args.retry_sleep_seconds)
+
+            lookup_status = looked_up.get("status")
+            if lookup_status != "ok":
+                if lookup_status == "rate_limited":
+                    return "rate_limited"
+
+                detail = f"tatoeba_{lookup_status}"
+                if looked_up.get("detail"):
+                    detail = detail + ":" + str(looked_up["detail"])
+
+                # Cache only stable misses, not transient request/rate-limit failures.
+                if lookup_status == "no_result":
+                    cache[word] = {
+                        "status": "error",
+                        "error": detail,
+                        "updated_at": int(time.time()),
+                    }
+                    save_cache(cache_path, cache)
+
+                append_log_row(log_path, [str(rank), word, "error", detail])
+                errors += 1
+                return "error"
+
+            sentence = looked_up.get("sentence")
+            english = looked_up.get("english")
+            source = "tatoeba_linked_translation" if english else "tatoeba_sentence_only"
+
+            if not english:
+                english, fallback_source = translate_sentence(
+                    sentence,
+                    fallback_translator=args.fallback_translator,
+                    libretranslate_url=args.libretranslate_url,
+                )
+                if english:
+                    source = fallback_source
+
+            if not english:
+                cache[word] = {
+                    "status": "error",
+                    "error": "no_translation",
+                    "sentence": sentence,
+                    "updated_at": int(time.time()),
+                }
+                append_log_row(log_path, [str(rank), word, "error", "no_translation"])
+                errors += 1
+                save_cache(cache_path, cache)
+                time.sleep(args.sleep_seconds)
+                return "error"
+
+            cache[word] = {
+                "status": "ok",
+                "sentence": sentence,
+                "english": english,
+                "source": source,
+                "updated_at": int(time.time()),
+            }
+            save_cache(cache_path, cache)
+
+        if not sentence or not english:
+            append_log_row(log_path, [str(rank), word, "error", "cache_missing_fields"])
+            errors += 1
+            return "error"
+
+        cloze = make_cloze(sentence, word)
+        if not cloze:
+            append_log_row(log_path, [str(rank), word, "error", "word_not_found_in_sentence"])
+            errors += 1
+            return "error"
+
+        sentence_with_cloze, cloze_token = cloze
+
+        upsert_output_row_by_rank(
+            output_path,
+            [sentence_with_cloze, word, cloze_token, str(rank), english],
+            with_header=args.with_header,
+        )
+        append_log_row(log_path, [str(rank), word, "ok", source])
+
+        if args.manual_review_mode:
+            flags = collect_review_flags(word, sentence, english, source)
+            if flags:
+                append_review_row(
+                    review_output_path,
+                    [str(rank), word, sentence, english, source, ";".join(flags)],
+                )
+                review_count += 1
+
+        written += 1
+        if args.sleep_seconds > 0:
+            time.sleep(args.sleep_seconds)
+
+        return "ok"
+
+    for rank, word in words_with_rank:
+        if rank < args.start_rank:
+            continue
+        if args.limit and processed >= args.limit:
+            break
+
+        processed += 1
+
+        if args.resume and rank in completed_ranks:
+            skipped += 1
+            continue
+        status = process_word(rank, word)
+        if status == "rate_limited":
+            deferred_rate_limited.append((rank, word))
+            append_log_row(log_path, [str(rank), word, "deferred", "tatoeba_rate_limited"])
+
+    for pass_idx in range(1, args.max_deferred_passes + 1):
+        if not deferred_rate_limited:
+            break
+
+        if args.rate_limit_cooldown_seconds > 0:
+            time.sleep(args.rate_limit_cooldown_seconds)
+
+        current_batch = deferred_rate_limited
+        deferred_rate_limited = []
+
+        for rank, word in current_batch:
+            if args.resume and rank in read_completed_ranks(output_path):
+                continue
+            status = process_word(rank, word)
+            if status == "rate_limited":
+                deferred_rate_limited.append((rank, word))
+                append_log_row(
+                    log_path,
+                    [str(rank), word, "deferred", f"tatoeba_rate_limited_pass_{pass_idx}"],
+                )
+
+    for rank, word in deferred_rate_limited:
+        append_log_row(log_path, [str(rank), word, "deferred_failed", "tatoeba_rate_limited_exhausted"])
+        errors += 1
+
+    print(f"Input rows considered: {processed}")
+    print(f"Rows written: {written}")
+    print(f"Rows skipped (resume): {skipped}")
+    print(f"Errors: {errors}")
+    print(f"Output file: {output_path}")
+    print(f"Log file: {log_path}")
+    print(f"Cache file: {cache_path}")
+    print(f"Deferred rate-limited remaining: {len(deferred_rate_limited)}")
+    if args.manual_review_mode:
+        print(f"Review rows flagged: {review_count}")
+        print(f"Review file: {review_output_path}")
+
+    print_status_summary(log_path)
+
+
+if __name__ == "__main__":
+    main()
