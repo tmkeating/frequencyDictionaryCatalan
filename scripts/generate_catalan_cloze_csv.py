@@ -128,7 +128,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--sweep-min-words-low",
         type=int,
-        default=3,
+        default=2,
         help="Lower bound for descending minimum-word sweep.",
     )
     parser.add_argument(
