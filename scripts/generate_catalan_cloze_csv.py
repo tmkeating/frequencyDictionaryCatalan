@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# Default run (from repo root):
+# /home/twyla/Documents/vsCodeSystem/frequencyDictionaryCatalan/.venv/bin/python scripts/generate_catalan_cloze_csv.py
+# Slower run (fewer 429s):
+# /home/twyla/Documents/vsCodeSystem/frequencyDictionaryCatalan/.venv/bin/python scripts/generate_catalan_cloze_csv.py --input data/items-words.sorted-by-relative-frequency.tsv --output test/catalan_cloze_output.csv --cache test/cache_tatoeba.json --log test/enrichment_log.csv --limit 100 --sleep-seconds 8 --retry-sleep-seconds 12 --rate-limit-cooldown-seconds 600 --max-deferred-passes 3
 """Generate Catalan cloze CSV from a frequency-sorted TSV word list.
 
 Pipeline:
@@ -34,6 +38,7 @@ from typing import Any
 TATOEBA_SEARCH_URL = "https://tatoeba.org/en/api_v0/search"
 MYMEMORY_TRANSLATE_URL = "https://api.mymemory.translated.net/get"
 LIBRETRANSLATE_URL_DEFAULT = "https://libretranslate.com/translate"
+WIKIPEDIA_SUMMARY_URL = "https://ca.wikipedia.org/api/rest_v1/page/summary"
 USER_AGENT = "Mozilla/5.0 (compatible; CatalanClozeBot/1.0)"
 
 
@@ -81,13 +86,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--sleep-seconds",
         type=float,
-        default=10.0,
+        default=1,
         help="Delay between API calls to be polite to public APIs.",
     )
     parser.add_argument(
         "--retry-sleep-seconds",
         type=float,
-        default=12.0,
+        default=10,
         help="Delay between retry attempts for the same word.",
     )
     parser.add_argument(
@@ -109,10 +114,34 @@ def parse_args() -> argparse.Namespace:
         help="Minimum number of words required in selected Catalan sentence.",
     )
     parser.add_argument(
+        "--max-words",
+        type=int,
+        default=22,
+        help="Preferred maximum number of words for selected Catalan sentence.",
+    )
+    parser.add_argument(
+        "--absolute-max-words",
+        type=int,
+        default=50,
+        help="Hard maximum number of words accepted when preferred bounds have no match.",
+    )
+    parser.add_argument(
         "--min-chars",
         type=int,
         default=1,
         help="Minimum number of characters required in selected Catalan sentence.",
+    )
+    parser.add_argument(
+        "--tatoeba-max-pages",
+        type=int,
+        default=8,
+        help="Maximum number of Tatoeba result pages to scan for a quality match.",
+    )
+    parser.add_argument(
+        "--backup-sentence-api",
+        choices=["none", "wikipedia"],
+        default="wikipedia",
+        help="Backup sentence source when Tatoeba returns no results.",
     )
     parser.add_argument(
         "--resume",
@@ -292,14 +321,26 @@ def choose_best_english_translation(candidates: list[str], target_word: str) -> 
     return candidates[0]
 
 
-def passes_sentence_quality(sentence: str, min_words: int, min_chars: int) -> bool:
+def count_sentence_words(sentence: str) -> int:
+    # Count tokens containing at least one letter-like character.
+    tokens = re.findall(r"[\wÀ-ÖØ-öø-ÿ'’\-]+", sentence.strip(), flags=re.UNICODE)
+    return len(tokens)
+
+
+def passes_sentence_quality(
+    sentence: str,
+    min_words: int,
+    max_words: int,
+    min_chars: int,
+) -> bool:
     compact = sentence.strip()
     if len(compact) < min_chars:
         return False
 
-    # Count tokens containing at least one letter-like character.
-    tokens = re.findall(r"[\wÀ-ÖØ-öø-ÿ'’\-]+", compact, flags=re.UNICODE)
-    if len(tokens) < min_words:
+    word_count = count_sentence_words(compact)
+    if word_count < min_words:
+        return False
+    if word_count > max_words:
         return False
 
     return True
@@ -314,65 +355,87 @@ def select_tatoeba_sentence(
     results: list[dict[str, Any]],
     word: str,
     min_words: int,
+    max_words: int,
+    absolute_max_words: int,
     min_chars: int,
 ) -> tuple[str, str | None] | None:
-    best_sentence: str | None = None
-    best_english: str | None = None
+    preferred_sentence: str | None = None
+    preferred_english: str | None = None
+    fallback_sentence: str | None = None
+    fallback_english: str | None = None
 
-    # Choose the longest sentence that contains the target word and passes quality.
+    # Prefer the longest sentence within preferred bounds.
     for item in results:
         if not isinstance(item, dict):
             continue
         sentence = (item.get("text") or "").strip()
         if not sentence or not sentence_contains_word(sentence, word):
             continue
-        if not passes_sentence_quality(sentence, min_words=min_words, min_chars=min_chars):
-            continue
         english = choose_best_english_translation(
             extract_english_candidates(item.get("translations")),
             word,
         )
-        if best_sentence is None or len(sentence) > len(best_sentence):
-            best_sentence = sentence
-            best_english = english
 
-    if best_sentence is None:
-        return None
-    return best_sentence, best_english
+        if not passes_sentence_quality(
+            sentence,
+            min_words=min_words,
+            max_words=max_words,
+            min_chars=min_chars,
+        ):
+            # If no preferred candidate exists, allow any sentence up to absolute max.
+            if len(sentence.strip()) < min_chars:
+                continue
+            if count_sentence_words(sentence) > absolute_max_words:
+                continue
+            if fallback_sentence is None or len(sentence) > len(fallback_sentence):
+                fallback_sentence = sentence
+                fallback_english = english
+            continue
+
+        if preferred_sentence is None or len(sentence) > len(preferred_sentence):
+            preferred_sentence = sentence
+            preferred_english = english
+
+    if preferred_sentence is not None:
+        return preferred_sentence, preferred_english
+    if fallback_sentence is not None:
+        return fallback_sentence, fallback_english
+    return None
 
 
-def lookup_tatoeba(
+def split_into_sentences(text: str) -> list[str]:
+    parts = re.split(r"(?<=[.!?])\s+", text.strip())
+    return [part.strip() for part in parts if part.strip()]
+
+
+def lookup_wikipedia_sentence(
     word: str,
     min_words: int,
+    max_words: int,
+    absolute_max_words: int,
     min_chars: int,
     retry_sleep_seconds: float,
 ) -> dict[str, Any]:
-    attempts = 5
+    attempts = 3
     payload: dict[str, Any] | None = None
+    encoded_word = urllib.parse.quote(word, safe="")
 
     for attempt in range(attempts):
+        request = urllib.request.Request(
+            f"{WIKIPEDIA_SUMMARY_URL}/{encoded_word}",
+            headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
+        )
         try:
-            payload = http_get_json(
-                TATOEBA_SEARCH_URL,
-                params={"from": "cat", "query": word},
-                timeout=25,
-            )
+            with urllib.request.urlopen(request, timeout=25) as response:
+                payload = json.loads(response.read().decode("utf-8"))
             break
         except urllib.error.HTTPError as exc:
+            if exc.code == 404:
+                return {"status": "no_result"}
             if exc.code == 429:
                 if attempt >= 1:
                     return {"status": "rate_limited"}
-                # One short backoff retry, then skip quickly to keep pipeline moving.
-                retry_after = exc.headers.get("Retry-After") if exc.headers else None
-                wait_seconds = 2.0
-                if retry_after:
-                    try:
-                        wait_seconds = min(float(retry_after), 5.0)
-                    except ValueError:
-                        wait_seconds = max(retry_sleep_seconds, 0.0)
-                else:
-                    wait_seconds = max(retry_sleep_seconds, 0.0)
-                time.sleep(wait_seconds)
+                time.sleep(max(retry_sleep_seconds, 0.0))
                 continue
             return {"status": "request_error", "detail": f"http_{exc.code}"}
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
@@ -380,28 +443,118 @@ def lookup_tatoeba(
                 return {"status": "request_error", "detail": "network_or_json_error"}
             time.sleep(max(retry_sleep_seconds, 0.0))
 
-    if payload is None:
-        return {"status": "request_error", "detail": "empty_payload"}
+    if not isinstance(payload, dict):
+        return {"status": "request_error", "detail": "invalid_payload"}
 
-    results = payload.get("results")
-    if not isinstance(results, list) or not results:
+    extract = (payload.get("extract") or "").strip()
+    if not extract:
         return {"status": "no_result"}
 
-    selected = select_tatoeba_sentence(
-        results,
-        word,
-        min_words=min_words,
-        min_chars=min_chars,
-    )
-    if not selected:
-        return {"status": "no_quality_result"}
+    for sentence in split_into_sentences(extract):
+        if not sentence_contains_word(sentence, word):
+            continue
+        if not passes_sentence_quality(
+            sentence,
+            min_words=min_words,
+            max_words=max_words,
+            min_chars=min_chars,
+        ):
+            if len(sentence.strip()) < min_chars:
+                continue
+            if count_sentence_words(sentence) > absolute_max_words:
+                continue
+            return {
+                "status": "ok",
+                "sentence": sentence,
+                "english": None,
+                "source": "wikipedia_summary",
+            }
+            continue
+        return {
+            "status": "ok",
+            "sentence": sentence,
+            "english": None,
+            "source": "wikipedia_summary",
+        }
 
-    sentence, english = selected
-    return {
-        "status": "ok",
-        "sentence": sentence,
-        "english": english,
-    }
+    return {"status": "no_quality_result"}
+
+
+def lookup_tatoeba(
+    word: str,
+    min_words: int,
+    max_words: int,
+    absolute_max_words: int,
+    min_chars: int,
+    retry_sleep_seconds: float,
+    max_pages: int,
+) -> dict[str, Any]:
+    saw_results = False
+
+    for page in range(1, max_pages + 1):
+        attempts = 5
+        payload: dict[str, Any] | None = None
+
+        for attempt in range(attempts):
+            try:
+                payload = http_get_json(
+                    TATOEBA_SEARCH_URL,
+                    params={"from": "cat", "query": word, "page": page},
+                    timeout=25,
+                )
+                break
+            except urllib.error.HTTPError as exc:
+                if exc.code == 429:
+                    if attempt >= 1:
+                        return {"status": "rate_limited"}
+                    retry_after = exc.headers.get("Retry-After") if exc.headers else None
+                    wait_seconds = 2.0
+                    if retry_after:
+                        try:
+                            wait_seconds = min(float(retry_after), 5.0)
+                        except ValueError:
+                            wait_seconds = max(retry_sleep_seconds, 0.0)
+                    else:
+                        wait_seconds = max(retry_sleep_seconds, 0.0)
+                    time.sleep(wait_seconds)
+                    continue
+                return {"status": "request_error", "detail": f"http_{exc.code}"}
+            except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+                if attempt == attempts - 1:
+                    return {"status": "request_error", "detail": "network_or_json_error"}
+                time.sleep(max(retry_sleep_seconds, 0.0))
+
+        if payload is None:
+            return {"status": "request_error", "detail": "empty_payload"}
+
+        results = payload.get("results")
+        if not isinstance(results, list):
+            return {"status": "request_error", "detail": "invalid_results"}
+        if not results:
+            if not saw_results and page == 1:
+                return {"status": "no_result"}
+            break
+
+        saw_results = True
+        selected = select_tatoeba_sentence(
+            results,
+            word,
+            min_words=min_words,
+            max_words=max_words,
+            absolute_max_words=absolute_max_words,
+            min_chars=min_chars,
+        )
+        if selected:
+            sentence, english = selected
+            return {
+                "status": "ok",
+                "sentence": sentence,
+                "english": english,
+            }
+
+    if not saw_results:
+        return {"status": "no_result"}
+    return {"status": "no_quality_result"}
 
 
 def translate_with_mymemory(text: str) -> str | None:
@@ -453,6 +606,12 @@ def make_cloze(sentence: str, word: str) -> tuple[str, str] | None:
     start, end = match.span(1)
     sentence_with_cloze = sentence[:start] + cloze_token + sentence[end:]
     return sentence_with_cloze, cloze_token
+
+
+def normalize_nested_quotes(text: str) -> str:
+    # Keep CSV robust by avoiding embedded double-quote characters in content.
+    normalized = text.replace("“", '"').replace("”", '"')
+    return normalized.replace('"', "'")
 
 
 def upsert_output_row_by_rank(path: Path, row: list[str], with_header: bool) -> None:
@@ -668,6 +827,16 @@ def main() -> None:
 
     if args.min_words < 1:
         raise ValueError("--min-words must be at least 1")
+    if args.max_words < 1:
+        raise ValueError("--max-words must be at least 1")
+    if args.absolute_max_words < 1:
+        raise ValueError("--absolute-max-words must be at least 1")
+    if args.min_words > args.max_words:
+        raise ValueError("--min-words cannot exceed --max-words")
+    if args.max_words > args.absolute_max_words:
+        raise ValueError("--max-words cannot exceed --absolute-max-words")
+    if args.tatoeba_max_pages < 1:
+        raise ValueError("--tatoeba-max-pages must be at least 1")
     if args.min_chars < 1:
         raise ValueError("--min-chars must be at least 1")
     if args.retry_sleep_seconds < 0:
@@ -715,11 +884,43 @@ def main() -> None:
             looked_up = lookup_tatoeba(
                 word,
                 min_words=args.min_words,
+                max_words=args.max_words,
+                absolute_max_words=args.absolute_max_words,
                 min_chars=args.min_chars,
                 retry_sleep_seconds=args.retry_sleep_seconds,
+                max_pages=args.tatoeba_max_pages,
             )
 
             lookup_status = looked_up.get("status")
+            if lookup_status == "no_result" and args.backup_sentence_api != "none":
+                backup = lookup_wikipedia_sentence(
+                    word,
+                    min_words=args.min_words,
+                    max_words=args.max_words,
+                    absolute_max_words=args.absolute_max_words,
+                    min_chars=args.min_chars,
+                    retry_sleep_seconds=args.retry_sleep_seconds,
+                )
+                backup_status = backup.get("status")
+                if backup_status == "ok":
+                    looked_up = backup
+                    lookup_status = "ok"
+                elif backup_status == "rate_limited":
+                    return "rate_limited"
+                else:
+                    detail = f"tatoeba_no_result;backup_{args.backup_sentence_api}_{backup_status}"
+                    if backup.get("detail"):
+                        detail = detail + ":" + str(backup["detail"])
+                    cache[word] = {
+                        "status": "error",
+                        "error": detail,
+                        "updated_at": int(time.time()),
+                    }
+                    save_cache(cache_path, cache)
+                    append_log_row(log_path, [str(rank), word, "error", detail])
+                    errors += 1
+                    return "error"
+
             if lookup_status != "ok":
                 if lookup_status == "rate_limited":
                     return "rate_limited"
@@ -743,7 +944,9 @@ def main() -> None:
 
             sentence = looked_up.get("sentence")
             english = looked_up.get("english")
-            source = "tatoeba_linked_translation" if english else "tatoeba_sentence_only"
+            source = str(looked_up.get("source") or "")
+            if not source:
+                source = "tatoeba_linked_translation" if english else "tatoeba_sentence_only"
 
             if not english:
                 english, fallback_source = translate_sentence(
@@ -752,7 +955,10 @@ def main() -> None:
                     libretranslate_url=args.libretranslate_url,
                 )
                 if english:
-                    source = fallback_source
+                    if source and source != fallback_source:
+                        source = f"{source}+{fallback_source}"
+                    else:
+                        source = fallback_source
 
             if not english:
                 cache[word] = {
@@ -788,6 +994,8 @@ def main() -> None:
             return "error"
 
         sentence_with_cloze, cloze_token = cloze
+        sentence_with_cloze = normalize_nested_quotes(sentence_with_cloze)
+        english = normalize_nested_quotes(english)
 
         upsert_output_row_by_rank(
             output_path,
@@ -801,7 +1009,14 @@ def main() -> None:
             if flags:
                 append_review_row(
                     review_output_path,
-                    [str(rank), word, sentence, english, source, ";".join(flags)],
+                    [
+                        str(rank),
+                        word,
+                        normalize_nested_quotes(sentence),
+                        english,
+                        source,
+                        ";".join(flags),
+                    ],
                 )
                 review_count += 1
 
