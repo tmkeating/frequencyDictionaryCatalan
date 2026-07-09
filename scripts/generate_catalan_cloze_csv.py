@@ -81,19 +81,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--sleep-seconds",
         type=float,
-        default=5.0,
+        default=10.0,
         help="Delay between API calls to be polite to public APIs.",
     )
     parser.add_argument(
         "--retry-sleep-seconds",
         type=float,
-        default=5.0,
+        default=12.0,
         help="Delay between retry attempts for the same word.",
     )
     parser.add_argument(
         "--rate-limit-cooldown-seconds",
         type=float,
-        default=1800.0,
+        default=900.0,
         help="Global cooldown before retrying deferred rate-limited words.",
     )
     parser.add_argument(
@@ -105,7 +105,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--min-words",
         type=int,
-        default=3,
+        default=2,
         help="Minimum number of words required in selected Catalan sentence.",
     )
     parser.add_argument(
@@ -113,29 +113,6 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=1,
         help="Minimum number of characters required in selected Catalan sentence.",
-    )
-    parser.add_argument(
-        "--sweep-min-words",
-        action="store_true",
-        default=True,
-        help="Use a descending sweep from high minimum words down to the low bound.",
-    )
-    parser.add_argument(
-        "--no-sweep-min-words",
-        action="store_true",
-        help="Disable descending sweep and use fixed --min-words.",
-    )
-    parser.add_argument(
-        "--sweep-min-words-low",
-        type=int,
-        default=2,
-        help="Lower bound for descending minimum-word sweep.",
-    )
-    parser.add_argument(
-        "--sweep-min-words-high",
-        type=int,
-        default=6,
-        help="Upper bound for descending minimum-word sweep.",
     )
     parser.add_argument(
         "--resume",
@@ -227,7 +204,16 @@ def load_cache(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
     with path.open("r", encoding="utf-8") as f:
-        return json.load(f)
+        raw = f.read().strip()
+    if not raw:
+        return {}
+    try:
+        loaded = json.loads(raw)
+    except json.JSONDecodeError:
+        return {}
+    if not isinstance(loaded, dict):
+        return {}
+    return loaded
 
 
 def save_cache(path: Path, cache: dict[str, Any]) -> None:
@@ -330,7 +316,10 @@ def select_tatoeba_sentence(
     min_words: int,
     min_chars: int,
 ) -> tuple[str, str | None] | None:
-    # Prefer a sentence that contains the exact target word, passes quality, and has linked English.
+    best_sentence: str | None = None
+    best_english: str | None = None
+
+    # Choose the longest sentence that contains the target word and passes quality.
     for item in results:
         if not isinstance(item, dict):
             continue
@@ -343,36 +332,13 @@ def select_tatoeba_sentence(
             extract_english_candidates(item.get("translations")),
             word,
         )
-        if english:
-            return sentence, english
+        if best_sentence is None or len(sentence) > len(best_sentence):
+            best_sentence = sentence
+            best_english = english
 
-    # Next, sentence containing word and passing quality even without linked English.
-    for item in results:
-        if not isinstance(item, dict):
-            continue
-        sentence = (item.get("text") or "").strip()
-        if sentence and sentence_contains_word(sentence, word):
-            if not passes_sentence_quality(sentence, min_words=min_words, min_chars=min_chars):
-                continue
-            english = choose_best_english_translation(
-                extract_english_candidates(item.get("translations")),
-                word,
-            )
-            return sentence, english
-
-    # Final fallback: first Catalan sentence passing quality in results.
-    for item in results:
-        if not isinstance(item, dict):
-            continue
-        sentence = (item.get("text") or "").strip()
-        if sentence and passes_sentence_quality(sentence, min_words=min_words, min_chars=min_chars):
-            english = choose_best_english_translation(
-                extract_english_candidates(item.get("translations")),
-                word,
-            )
-            return sentence, english
-
-    return None
+    if best_sentence is None:
+        return None
+    return best_sentence, best_english
 
 
 def lookup_tatoeba(
@@ -700,13 +666,8 @@ def main() -> None:
     log_path = Path(args.log)
     review_output_path = Path(args.review_output)
 
-    if args.no_sweep_min_words:
-        args.sweep_min_words = False
-
-    if args.sweep_min_words_low <= 0 or args.sweep_min_words_high <= 0:
-        raise ValueError("Sweep min-words bounds must be positive integers")
-    if args.sweep_min_words_low > args.sweep_min_words_high:
-        raise ValueError("--sweep-min-words-low cannot exceed --sweep-min-words-high")
+    if args.min_words < 1:
+        raise ValueError("--min-words must be at least 1")
     if args.min_chars < 1:
         raise ValueError("--min-chars must be at least 1")
     if args.retry_sleep_seconds < 0:
@@ -751,32 +712,12 @@ def main() -> None:
             english = cached.get("english")
             source = cached.get("source", "cache")
         else:
-            min_word_attempts: list[int]
-            if args.sweep_min_words:
-                # Deterministic sweep from higher-quality target sentences to lower ones.
-                high = args.sweep_min_words_high
-                low = args.sweep_min_words_low
-                min_word_attempts = list(
-                    range(high, low - 1, -1)
-                )
-            else:
-                min_word_attempts = [args.min_words]
-
-            looked_up: dict[str, Any] = {"status": "no_quality_result"}
-            for min_words_candidate in min_word_attempts:
-                looked_up = lookup_tatoeba(
-                    word,
-                    min_words=min_words_candidate,
-                    min_chars=args.min_chars,
-                    retry_sleep_seconds=args.retry_sleep_seconds,
-                )
-                if looked_up.get("status") == "ok":
-                    break
-                # For request/rate-limit failures, do not burn extra attempts immediately.
-                if looked_up.get("status") in {"rate_limited", "request_error"}:
-                    break
-                if args.retry_sleep_seconds > 0:
-                    time.sleep(args.retry_sleep_seconds)
+            looked_up = lookup_tatoeba(
+                word,
+                min_words=args.min_words,
+                min_chars=args.min_chars,
+                retry_sleep_seconds=args.retry_sleep_seconds,
+            )
 
             lookup_status = looked_up.get("status")
             if lookup_status != "ok":
