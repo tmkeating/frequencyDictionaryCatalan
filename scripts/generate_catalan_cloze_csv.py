@@ -1187,7 +1187,7 @@ def lookup_tatoeba(
     return {"status": "no_quality_result"}
 
 
-def translate_with_mymemory(text: str) -> str | None:
+def translate_with_mymemory(text: str) -> tuple[str | None, str]:
     try:
         payload = http_get_json(
             MYMEMORY_TRANSLATE_URL,
@@ -1195,17 +1195,19 @@ def translate_with_mymemory(text: str) -> str | None:
             timeout=25,
         )
     except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
-        return None
+        return None, "request_error"
 
     response_data = payload.get("responseData")
     if not isinstance(response_data, dict):
-        return None
+        return None, "invalid_payload"
 
     translated = (response_data.get("translatedText") or "").strip()
-    return translated or None
+    if not translated:
+        return None, "empty_translation"
+    return translated, "ok"
 
 
-def translate_with_libretranslate(text: str, endpoint: str) -> str | None:
+def translate_with_libretranslate(text: str, endpoint: str) -> tuple[str | None, str]:
     payload: dict[str, Any] = {
         "q": text,
         "source": "ca",
@@ -1219,10 +1221,12 @@ def translate_with_libretranslate(text: str, endpoint: str) -> str | None:
     try:
         data = http_post_json(endpoint, payload=payload, timeout=25)
     except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
-        return None
+        return None, "request_error"
 
     translated = (data.get("translatedText") or "").strip()
-    return translated or None
+    if not translated:
+        return None, "empty_translation"
+    return translated, "ok"
 
 
 def make_cloze(sentence: str, word: str) -> tuple[str, str] | None:
@@ -1264,6 +1268,8 @@ def strip_outer_quotes_for_non_dialogue(text: str) -> str:
 
     # Keep quotes when the sentence likely contains dialogue turns.
     if "—" in inner:
+        return text
+    if re.search(rf"{re.escape(closing)}\s+{re.escape(opening)}", inner):
         return text
     if re.search(r"['\"«“].+?[?!.]['\"»”]\s+['\"«“]", inner):
         return text
@@ -1353,16 +1359,29 @@ def translate_sentence(
     sentence: str,
     fallback_translator: str,
     libretranslate_url: str,
-) -> tuple[str | None, str]:
+) -> tuple[str | None, str, str]:
     if fallback_translator == "none":
-        return None, "none"
+        return None, "none", "translation_disabled"
+
+    providers: list[str]
     if fallback_translator == "mymemory":
-        translated = translate_with_mymemory(sentence)
-        return translated, "mymemory"
-    if fallback_translator == "libretranslate":
-        translated = translate_with_libretranslate(sentence, libretranslate_url)
-        return translated, "libretranslate"
-    return None, "none"
+        providers = ["mymemory", "libretranslate"]
+    elif fallback_translator == "libretranslate":
+        providers = ["libretranslate", "mymemory"]
+    else:
+        providers = []
+
+    attempt_details: list[str] = []
+    for provider in providers:
+        if provider == "mymemory":
+            translated, detail = translate_with_mymemory(sentence)
+        else:
+            translated, detail = translate_with_libretranslate(sentence, libretranslate_url)
+        if translated:
+            return translated, provider, f"{provider}:ok"
+        attempt_details.append(f"{provider}:{detail}")
+
+    return None, "none", ";".join(attempt_details) or "no_translation_provider_attempted"
 
 
 def collect_review_flags(word: str, sentence: str, english: str, source: str) -> list[str]:
@@ -1695,8 +1714,9 @@ def main() -> None:
             if not source:
                 source = "tatoeba_linked_translation" if english else "tatoeba_sentence_only"
 
+            translation_detail = ""
             if not english:
-                english, fallback_source = translate_sentence(
+                english, fallback_source, translation_detail = translate_sentence(
                     sentence,
                     fallback_translator=args.fallback_translator,
                     libretranslate_url=args.libretranslate_url,
@@ -1708,13 +1728,14 @@ def main() -> None:
                         source = fallback_source
 
             if not english:
+                detail = f"no_translation:{translation_detail}" if translation_detail else "no_translation"
                 cache[word] = {
                     "status": "error",
-                    "error": "no_translation",
+                    "error": detail,
                     "sentence": sentence,
                     "updated_at": int(time.time()),
                 }
-                append_log_row(log_path, [str(rank), word, "error", "no_translation"])
+                append_log_row(log_path, [str(rank), word, "error", detail])
                 errors += 1
                 save_cache(cache_path, cache)
                 time.sleep(args.sleep_seconds)
