@@ -302,11 +302,158 @@ def configure_content_filters(args: argparse.Namespace) -> None:
     ]
 
 
+_PHONETIC_BRACKET_RE = re.compile(r"\[.+?\]")
+
+# Catalan enclitic pronouns that can follow a verb with a hyphen, e.g. "intentar-ho",
+# "casar-me", "convertir-se". A hyphen after a word is only valid if one of these follows.
+# The trailing (?![\w-]) ensures "-le-Noble" does NOT match "-le" as a clitic.
+_CATALAN_ENCLITIC_RE = re.compile(
+    r"-(?:ho|hi|li|me|te|se|los?|les|nos|vos|ne|en|m|t|s|l|n)(?:'|(?![\w-]))",
+    re.IGNORECASE,
+)
+
+# Characters outside the Catalan/Spanish alphabet.
+# Allowed:
+#   U+0000-U+00FF  Basic Latin + Latin-1 Supplement (covers all Catalan/Spanish letters,
+#                  accented vowels à á â è é ê ë í ï ò ó ô ö ú ü ç ñ ·, guillemets « »)
+#   U+2000-U+206F  General Punctuation (em/en dash, curly quotes, ellipsis …)
+#   U+20AC         Euro sign €
+# Everything else — Hebrew, Arabic, Greek, Cyrillic, Turkish-specific (ş ğ ı), combining
+# diacritics (r̄), etc. — triggers the filter.
+_NON_LATIN_CHAR_RE = re.compile(r"[^\x00-\xFF\u2000-\u206F\u20AC]")
+
+# Sentences where the target word is the sole predicate after a copula with just an
+# article: "Sóc una puta.", "Ell és un professor.", "Som uns idiotes."
+# These provide no context beyond the identity label itself.
+# The check strips trailing punctuation, confirms the sentence ends with the target word,
+# then verifies that what immediately precedes it is copula + article.
+_COPULA_BARE_PREDICATE_RE = re.compile(
+    r"\b(?:sóc|ets|és|som|sou|són|era|eres|érem|éreu|eren|"
+    r"seré|seràs|serà|serem|sereu|seran|ser)\s+"
+    r"(?:un|una|uns|unes|el|la|l'|els|les)\s*$",
+    re.IGNORECASE,
+)
+
+# Sentences that describe a geographic/administrative entity, e.g.
+# "Ena fou un districte de la Prefectura de Gifu"
+_GEO_ADMIN_RE = re.compile(
+    r"\b(?:és|fou|era|va\s+ser)\s+(?:un|una)\s+"
+    r"(?:municipi|districte|vila|poble|localitat|departament|prefectura|comarca|"
+    r"província|cantó|comtat|parròquia|arrondissement|ciutat|commune)",
+    re.IGNORECASE,
+)
+
+# Sentences that open with "X o Y és/fou/era/va ser" — encyclopedic disambiguation,
+# e.g. "Essa (occità) o Esse (francès) és un municipi" or "Un pam o palm és una unitat"
+_DEFINITION_ALT_FORM_RE = re.compile(
+    r"^(?:(?:un|una|el|la|l'|els|les)\s+)?"
+    r"\w[\w\-]*(?:\s*\([^)]+\))?\s+o\s+\w[\w\-]*(?:\s*\([^)]+\))?\s+"
+    r"(?:és|fou|era|va\s+ser)\b",
+    re.IGNORECASE,
+)
+
+
+def _skip_parenthetical_and_alt(rest: str) -> str:
+    """Skip an optional parenthetical and/or 'o AlternateForm' in a lowercased string."""
+    rest = rest.lstrip()
+    if rest.startswith("("):
+        close = rest.find(")")
+        if close != -1:
+            rest = rest[close + 1:].lstrip()
+    if rest.startswith("o "):
+        parts = rest[2:].lstrip().split()
+        if parts:
+            rest = rest[2:].lstrip()[len(parts[0]):].lstrip()
+            if rest.startswith("("):
+                close = rest.find(")")
+                if close != -1:
+                    rest = rest[close + 1:].lstrip()
+    return rest
+
+
+def _is_definition_lead(sentence: str, target_word: str) -> bool:
+    """Return True when the sentence opens with the target word as grammatical subject
+    followed by a copular verb introducing a noun-phrase predicate — i.e. the sentence
+    defines the word rather than using it.
+
+    Two sub-cases are handled:
+    1. No article before the word (typical for proper nouns acting as encyclopedia
+       subjects): any copula matches, e.g. "Ena fou un districte…"
+    2. Preceded by an article: only matches when the copula is itself followed by an
+       article (definitional noun phrase), e.g. "Una vall és una depressió…".
+       This avoids filtering predicative adjective sentences like "La justícia és cega."
+    """
+    lower = sentence.lower().lstrip()
+    tw = target_word.lower()
+
+    # ── Case 1: no leading article, word starts the sentence ──────────────────
+    if lower.startswith(tw):
+        rest = lower[len(tw):]
+        if rest and rest[0] == "-":  # hyphenated suffix, e.g. "sin-le-noble"
+            end = 0
+            while end < len(rest) and (rest[end].isalnum() or rest[end] == "-"):
+                end += 1
+            rest = rest[end:]
+        rest = _skip_parenthetical_and_alt(rest)
+        if re.match(r"(?:és|fou|era|va\s+ser)\b", rest):
+            return True
+
+    # ── Case 2: word preceded by article ──────────────────────────────────────
+    for art in ("un ", "una ", "el ", "la ", "l'", "els ", "les "):
+        if lower.startswith(art):
+            after_art = lower[len(art):]
+            if after_art.startswith(tw):
+                rest = after_art[len(tw):]
+                rest = _skip_parenthetical_and_alt(rest)
+                # Require copula + article → definitional noun phrase ("X és un/una Y")
+                # This excludes predicative adjectives ("La justícia és cega").
+                if re.match(
+                    r"(?:és|fou|era|va\s+ser)\s+(?:un|una|el|la|l'|els|les)\b",
+                    rest,
+                ):
+                    return True
+            break
+
+    return False
+
+
 def blocked_content_reason(
     sentence: str,
     english: str | None = None,
     target_word: str | None = None,
 ) -> str | None:
+    # Sentences with square-bracket phonetic/IPA notation, e.g. [r̄] or [r]
+    if _PHONETIC_BRACKET_RE.search(sentence):
+        return "phonetic_notation"
+
+    # Sentences containing characters outside the Catalan/Spanish alphabet
+    # (Hebrew, Arabic, Greek, Cyrillic, Turkish-specific letters, combining diacritics…)
+    if _NON_LATIN_CHAR_RE.search(sentence):
+        return "non_latin_characters"
+
+    # Sentences that define or describe a geographic/administrative entity
+    if _GEO_ADMIN_RE.search(sentence):
+        return "definition_sentence"
+
+    # Sentences that open with "X o AltForm és/fou/era/va ser" (encyclopedic entries)
+    if _DEFINITION_ALT_FORM_RE.search(sentence):
+        return "definition_sentence"
+
+    # Sentence opens with the target word as grammatical subject + copula
+    if target_word and _is_definition_lead(sentence, target_word):
+        return "definition_sentence"
+
+    # Sentences where the target word is the bare predicate after a copula:
+    # "Sóc una puta.", "Ell és un professor." — no surrounding context for the word.
+    # Kept: "Llegeix el diari.", "La clau és equiparar…" (more content follows).
+    if target_word:
+        bare = sentence.lower().rstrip(" .,!?;:…")
+        tw = target_word.lower()
+        if bare.endswith(tw):
+            before = bare[: -len(tw)].rstrip()
+            if _COPULA_BARE_PREDICATE_RE.search(before):
+                return "minimal_context"
+
     if not BLOCKED_WORD_RULES:
         return None
 
@@ -549,6 +696,15 @@ def sentence_contains_word(sentence: str, word: str) -> bool:
         if prev_char in {".", "@", "/"}:
             continue
         if next_char == "." and next_next.isalpha():
+            continue
+
+        # Reject matches that are embedded inside a hyphenated compound
+        # (e.g. "sin" in "Sin-le-Noble" or "Noble" in "Sin-le-Noble").
+        # Exception: a trailing hyphen followed by a Catalan enclitic is valid
+        # (e.g. "intentar-ho", "casar-me", "convertir-se").
+        if prev_char == "-":
+            continue
+        if next_char == "-" and not _CATALAN_ENCLITIC_RE.match(sentence[end:]):
             continue
 
         return True
