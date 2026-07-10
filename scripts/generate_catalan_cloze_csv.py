@@ -44,61 +44,7 @@ WIKIPEDIA_MEDIAWIKI_API_URL = "https://ca.wikipedia.org/w/api.php"
 USER_AGENT = "Mozilla/5.0 (compatible; CatalanClozeBot/1.0)"
 
 
-TOPIC_KEYWORDS: dict[str, list[str]] = {
-    "politics": [
-        "govern",
-        "president",
-        "parlament",
-        "partit",
-        "eleccions",
-        "ministre",
-        "alcalde",
-        "política",
-    ],
-    "religion": [
-        "déu",
-        "deu",
-        "església",
-        "missa",
-        "pregària",
-        "religió",
-        "fe",
-        "bíblia",
-    ],
-    "violence": [
-        "matar",
-        "arma",
-        "guerra",
-        "sang",
-        "assassinat",
-        "atac",
-        "violència",
-        "violencia",
-        "mort",
-    ],
-    "adult": [
-        "sexe",
-        "sexual",
-        "porn",
-        "puta",
-        "hòstia",
-        "hòsties",
-        "merda",
-        "coi",
-    ],
-    "drugs": [
-        "droga",
-        "drogues",
-        "alcohol",
-        "cocaïna",
-        "heroïna",
-        "cànnabis",
-    ],
-}
-
-
 BLOCKED_WORD_RULES: list[tuple[str, re.Pattern[str]]] = []
-BLOCKED_TOPIC_PATTERNS: list[tuple[str, re.Pattern[str]]] = []
 
 
 def parse_args() -> argparse.Namespace:
@@ -145,7 +91,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--sleep-seconds",
         type=float,
-        default=1,
+        default=1.2,
         help="Delay between API calls to be polite to public APIs.",
     )
     parser.add_argument(
@@ -163,7 +109,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--rate-limit-cooldown-seconds",
         type=float,
-        default=900.0,
+        default=600.0,
         help="Global cooldown before retrying deferred rate-limited words.",
     )
     parser.add_argument(
@@ -175,7 +121,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--min-words",
         type=int,
-        default=3,
+        default=2,
         help="Minimum number of words required in selected Catalan sentence.",
     )
     parser.add_argument(
@@ -199,7 +145,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--tatoeba-max-pages",
         type=int,
-        default=8,
+        default=10,
         help="Maximum number of Tatoeba result pages to scan for a quality match.",
     )
     parser.add_argument(
@@ -259,14 +205,6 @@ def parse_args() -> argparse.Namespace:
         "--blocked-words-file",
         default="data/blocked_terms.txt",
         help="Path to text file with blocked words/phrases (one per line).",
-    )
-    parser.add_argument(
-        "--blocked-topics",
-        default="",
-        help=(
-            "Comma-separated topic filters. Built-in topics: "
-            + ", ".join(sorted(TOPIC_KEYWORDS.keys()))
-        ),
     )
     parser.add_argument(
         "--ignore-cache",
@@ -355,7 +293,7 @@ def normalize_match_key(text: str) -> str:
 
 
 def configure_content_filters(args: argparse.Namespace) -> None:
-    global BLOCKED_WORD_RULES, BLOCKED_TOPIC_PATTERNS
+    global BLOCKED_WORD_RULES
 
     blocked_words = split_csv_items(args.blocked_words)
     blocked_words.extend(load_blocked_words_file(args.blocked_words_file))
@@ -363,27 +301,13 @@ def configure_content_filters(args: argparse.Namespace) -> None:
         (normalize_match_key(item), compile_keyword_pattern(item)) for item in blocked_words
     ]
 
-    blocked_topics = split_csv_items(args.blocked_topics)
-    topic_patterns: list[tuple[str, re.Pattern[str]]] = []
-    for topic in blocked_topics:
-        key = topic.lower()
-        keywords = TOPIC_KEYWORDS.get(key)
-        if not keywords:
-            raise ValueError(
-                f"Unknown topic in --blocked-topics: {topic}. "
-                f"Allowed topics: {', '.join(sorted(TOPIC_KEYWORDS.keys()))}"
-            )
-        for keyword in keywords:
-            topic_patterns.append((key, compile_keyword_pattern(keyword)))
-    BLOCKED_TOPIC_PATTERNS = topic_patterns
-
 
 def blocked_content_reason(
     sentence: str,
     english: str | None = None,
     target_word: str | None = None,
 ) -> str | None:
-    if not BLOCKED_WORD_RULES and not BLOCKED_TOPIC_PATTERNS:
+    if not BLOCKED_WORD_RULES:
         return None
 
     haystacks = [sentence]
@@ -398,10 +322,6 @@ def blocked_content_reason(
             continue
         if any(pattern.search(text) for text in haystacks):
             return "blocked_word"
-
-    for topic, pattern in BLOCKED_TOPIC_PATTERNS:
-        if any(pattern.search(text) for text in haystacks):
-            return f"blocked_topic:{topic}"
 
     return None
 

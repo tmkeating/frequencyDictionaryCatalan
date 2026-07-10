@@ -1,1 +1,7 @@
 /.venv
+/test*
+/scripts/__pycache__*
+/archive*
+/logs*
+/data*
+*.cypthon-312.pyc
