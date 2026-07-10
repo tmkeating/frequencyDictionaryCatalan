@@ -23,6 +23,7 @@ Output row format (no header by default, matching template style):
 from __future__ import annotations
 
 import argparse
+import collections
 import csv
 import json
 import os
@@ -39,7 +40,65 @@ TATOEBA_SEARCH_URL = "https://tatoeba.org/en/api_v0/search"
 MYMEMORY_TRANSLATE_URL = "https://api.mymemory.translated.net/get"
 LIBRETRANSLATE_URL_DEFAULT = "https://libretranslate.com/translate"
 WIKIPEDIA_SUMMARY_URL = "https://ca.wikipedia.org/api/rest_v1/page/summary"
+WIKIPEDIA_MEDIAWIKI_API_URL = "https://ca.wikipedia.org/w/api.php"
 USER_AGENT = "Mozilla/5.0 (compatible; CatalanClozeBot/1.0)"
+
+
+TOPIC_KEYWORDS: dict[str, list[str]] = {
+    "politics": [
+        "govern",
+        "president",
+        "parlament",
+        "partit",
+        "eleccions",
+        "ministre",
+        "alcalde",
+        "política",
+    ],
+    "religion": [
+        "déu",
+        "deu",
+        "església",
+        "missa",
+        "pregària",
+        "religió",
+        "fe",
+        "bíblia",
+    ],
+    "violence": [
+        "matar",
+        "arma",
+        "guerra",
+        "sang",
+        "assassinat",
+        "atac",
+        "violència",
+        "violencia",
+        "mort",
+    ],
+    "adult": [
+        "sexe",
+        "sexual",
+        "porn",
+        "puta",
+        "hòstia",
+        "hòsties",
+        "merda",
+        "coi",
+    ],
+    "drugs": [
+        "droga",
+        "drogues",
+        "alcohol",
+        "cocaïna",
+        "heroïna",
+        "cànnabis",
+    ],
+}
+
+
+BLOCKED_WORD_RULES: list[tuple[str, re.Pattern[str]]] = []
+BLOCKED_TOPIC_PATTERNS: list[tuple[str, re.Pattern[str]]] = []
 
 
 def parse_args() -> argparse.Namespace:
@@ -96,6 +155,12 @@ def parse_args() -> argparse.Namespace:
         help="Delay between retry attempts for the same word.",
     )
     parser.add_argument(
+        "--wikipedia-sleep-seconds",
+        type=float,
+        default=1,
+        help="Delay between successful Wikipedia API requests.",
+    )
+    parser.add_argument(
         "--rate-limit-cooldown-seconds",
         type=float,
         default=900.0,
@@ -110,7 +175,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--min-words",
         type=int,
-        default=2,
+        default=3,
         help="Minimum number of words required in selected Catalan sentence.",
     )
     parser.add_argument(
@@ -185,7 +250,160 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Only print status summary from the log file and exit.",
     )
+    parser.add_argument(
+        "--blocked-words",
+        default="",
+        help="Comma-separated blocked words/phrases. Matching rows are discarded.",
+    )
+    parser.add_argument(
+        "--blocked-words-file",
+        default="data/blocked_terms.txt",
+        help="Path to text file with blocked words/phrases (one per line).",
+    )
+    parser.add_argument(
+        "--blocked-topics",
+        default="",
+        help=(
+            "Comma-separated topic filters. Built-in topics: "
+            + ", ".join(sorted(TOPIC_KEYWORDS.keys()))
+        ),
+    )
+    parser.add_argument(
+        "--ignore-cache",
+        action="store_true",
+        help="Ignore cache for all words and force fresh lookup.",
+    )
+    parser.add_argument(
+        "--refresh-words",
+        default="",
+        help=(
+            "Comma-separated words to force refresh (bypass cache and resume). "
+            "For these words, the script also tries to avoid reusing the existing sentence "
+            "already written for the same rank."
+        ),
+    )
+    parser.add_argument(
+        "--refresh-ranks",
+        default="",
+        help="Comma-separated ranks or ranges to force refresh (example: 62,480-482).",
+    )
+    parser.add_argument(
+        "--retry-empty-output",
+        action="store_true",
+        help="Force refresh only rows with empty/incomplete output fields.",
+    )
     return parser.parse_args()
+
+
+def split_csv_items(raw: str) -> list[str]:
+    return [item.strip() for item in raw.split(",") if item.strip()]
+
+
+def parse_rank_spec(raw: str) -> set[int]:
+    ranks: set[int] = set()
+    for item in split_csv_items(raw):
+        if "-" in item:
+            start_raw, end_raw = item.split("-", 1)
+            try:
+                start = int(start_raw.strip())
+                end = int(end_raw.strip())
+            except ValueError as exc:
+                raise ValueError(f"Invalid rank range in --refresh-ranks: {item}") from exc
+            if start < 1 or end < 1:
+                raise ValueError(f"Rank ranges must be >= 1 in --refresh-ranks: {item}")
+            if end < start:
+                raise ValueError(f"Range end must be >= start in --refresh-ranks: {item}")
+            for rank in range(start, end + 1):
+                ranks.add(rank)
+            continue
+
+        try:
+            rank_value = int(item)
+        except ValueError as exc:
+            raise ValueError(f"Invalid rank in --refresh-ranks: {item}") from exc
+        if rank_value < 1:
+            raise ValueError(f"Rank must be >= 1 in --refresh-ranks: {item}")
+        ranks.add(rank_value)
+
+    return ranks
+
+
+def load_blocked_words_file(path: str) -> list[str]:
+    if not path:
+        return []
+    file_path = Path(path)
+    if not file_path.exists() or not file_path.is_file():
+        raise FileNotFoundError(f"Blocked words file not found: {path}")
+    items: list[str] = []
+    with file_path.open("r", encoding="utf-8") as f:
+        for raw_line in f:
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+            items.append(line)
+    return items
+
+
+def compile_keyword_pattern(keyword: str) -> re.Pattern[str]:
+    escaped = re.escape(keyword.strip())
+    pattern = rf"(?<!\w){escaped}(?!\w)"
+    return re.compile(pattern, flags=re.IGNORECASE)
+
+
+def normalize_match_key(text: str) -> str:
+    return re.sub(r"\s+", " ", text.strip().lower())
+
+
+def configure_content_filters(args: argparse.Namespace) -> None:
+    global BLOCKED_WORD_RULES, BLOCKED_TOPIC_PATTERNS
+
+    blocked_words = split_csv_items(args.blocked_words)
+    blocked_words.extend(load_blocked_words_file(args.blocked_words_file))
+    BLOCKED_WORD_RULES = [
+        (normalize_match_key(item), compile_keyword_pattern(item)) for item in blocked_words
+    ]
+
+    blocked_topics = split_csv_items(args.blocked_topics)
+    topic_patterns: list[tuple[str, re.Pattern[str]]] = []
+    for topic in blocked_topics:
+        key = topic.lower()
+        keywords = TOPIC_KEYWORDS.get(key)
+        if not keywords:
+            raise ValueError(
+                f"Unknown topic in --blocked-topics: {topic}. "
+                f"Allowed topics: {', '.join(sorted(TOPIC_KEYWORDS.keys()))}"
+            )
+        for keyword in keywords:
+            topic_patterns.append((key, compile_keyword_pattern(keyword)))
+    BLOCKED_TOPIC_PATTERNS = topic_patterns
+
+
+def blocked_content_reason(
+    sentence: str,
+    english: str | None = None,
+    target_word: str | None = None,
+) -> str | None:
+    if not BLOCKED_WORD_RULES and not BLOCKED_TOPIC_PATTERNS:
+        return None
+
+    haystacks = [sentence]
+    if isinstance(english, str) and english:
+        haystacks.append(english)
+
+    target_key = normalize_match_key(target_word or "") if target_word else ""
+
+    for blocked_key, pattern in BLOCKED_WORD_RULES:
+        # Avoid self-conflict: the target term itself should not auto-block this row.
+        if target_key and blocked_key == target_key:
+            continue
+        if any(pattern.search(text) for text in haystacks):
+            return "blocked_word"
+
+    for topic, pattern in BLOCKED_TOPIC_PATTERNS:
+        if any(pattern.search(text) for text in haystacks):
+            return f"blocked_topic:{topic}"
+
+    return None
 
 
 def http_get_json(url: str, params: dict[str, Any], timeout: int = 20) -> dict[str, Any]:
@@ -275,6 +493,59 @@ def read_completed_ranks(output_path: Path) -> set[int]:
     return completed
 
 
+def read_incomplete_output_ranks(output_path: Path) -> set[int]:
+    if not output_path.exists():
+        return set()
+
+    incomplete: set[int] = set()
+    with output_path.open("r", encoding="utf-8", newline="") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if len(row) < 5:
+                continue
+            try:
+                rank = int(row[3])
+            except ValueError:
+                # Skip header/malformed rows.
+                continue
+            if not row[0].strip() or not row[4].strip():
+                incomplete.add(rank)
+    return incomplete
+
+
+def strip_cloze_markup(text: str) -> str:
+    return re.sub(r"\{\{c\d+::(.*?)\}\}", r"\1", text)
+
+
+def sentence_key(sentence: str) -> str:
+    restored = strip_cloze_markup(sentence)
+    normalized = normalize_sentence_whitespace(restored)
+    return normalized.casefold()
+
+
+def read_output_sentences_by_rank(output_path: Path) -> dict[int, str]:
+    if not output_path.exists():
+        return {}
+
+    sentences_by_rank: dict[int, str] = {}
+    with output_path.open("r", encoding="utf-8", newline="") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if len(row) < 4:
+                continue
+            try:
+                rank = int(row[3])
+            except ValueError:
+                continue
+            candidate = (row[0] or "").strip()
+            if not candidate:
+                continue
+            restored = normalize_sentence_whitespace(strip_cloze_markup(candidate))
+            if restored:
+                sentences_by_rank[rank] = restored
+    return sentences_by_rank
+
+
 def extract_english_candidates(translations: Any) -> list[str]:
     if not isinstance(translations, list):
         return []
@@ -348,7 +619,171 @@ def passes_sentence_quality(
 
 def sentence_contains_word(sentence: str, word: str) -> bool:
     pattern = rf"(?<!\w){re.escape(word)}(?!\w)"
-    return re.search(pattern, sentence, flags=re.IGNORECASE) is not None
+    for match in re.finditer(pattern, sentence, flags=re.IGNORECASE):
+        start, end = match.span()
+        prev_char = sentence[start - 1] if start > 0 else ""
+        next_char = sentence[end] if end < len(sentence) else ""
+        next_next = sentence[end + 1] if end + 1 < len(sentence) else ""
+
+        # Reject domain/path-like fragments such as ".eh" or "eh.com".
+        if prev_char in {".", "@", "/"}:
+            continue
+        if next_char == "." and next_next.isalpha():
+            continue
+
+        return True
+    return False
+
+
+def normalize_sentence_whitespace(sentence: str) -> str:
+    # Keep output single-line and avoid section-header formatting artifacts.
+    return re.sub(r"\s+", " ", sentence).strip()
+
+
+def has_unwanted_formatting(sentence: str) -> bool:
+    if "\n" in sentence or "\r" in sentence or "\t" in sentence:
+        return True
+    compact = sentence.strip().lower()
+    bad_prefixes = {
+        "historia",
+        "història",
+        "inici",
+        "inicis",
+        "vegeu",
+        "referencies",
+        "referències",
+    }
+    return compact in bad_prefixes
+
+
+def strip_trailing_quotes_and_brackets(text: str) -> str:
+    return text.rstrip(" \t\n\r\"'”’»)]}")
+
+
+def has_non_terminal_ending(sentence: str) -> bool:
+    compact = strip_trailing_quotes_and_brackets(sentence.strip())
+    return compact.endswith(":") or compact.endswith(";")
+
+
+def has_target_acronym_context(sentence: str, word: str) -> bool:
+    letters_only = re.sub(r"[^A-Za-zÀ-ÖØ-öø-ÿ]", "", word)
+    if len(letters_only) < 2:
+        return False
+    if word.isupper():
+        return False
+
+    acronym = word.upper()
+    pattern = rf"(?<!\w){re.escape(acronym)}(?!\w)"
+    return re.search(pattern, sentence) is not None
+
+
+def is_likely_name_token(token: str) -> bool:
+    if len(token) < 2:
+        return False
+    if token.isupper():
+        return False
+    if not token[0].isupper():
+        return False
+    return any(ch.islower() for ch in token[1:])
+
+
+def has_target_name_context(sentence: str, word: str) -> bool:
+    letters_only = re.sub(r"[^A-Za-zÀ-ÖØ-öø-ÿ]", "", word)
+    if len(letters_only) < 2:
+        return False
+
+    token_matches = list(re.finditer(r"[A-Za-zÀ-ÖØ-öø-ÿ][A-Za-zÀ-ÖØ-öø-ÿ'’\-]*", sentence))
+    if not token_matches:
+        return False
+
+    for idx, token_match in enumerate(token_matches):
+        token = token_match.group(0)
+        if token.lower() != word.lower():
+            continue
+        if not is_likely_name_token(token):
+            continue
+
+        prev_is_name = idx > 0 and is_likely_name_token(token_matches[idx - 1].group(0))
+        next_is_name = idx + 1 < len(token_matches) and is_likely_name_token(token_matches[idx + 1].group(0))
+        if prev_is_name or next_is_name:
+            return True
+
+    return False
+
+
+def has_target_name_appositive_context(sentence: str, word: str) -> bool:
+    # Reject encyclopedia-like entries such as "Màxim II, patriarca ...".
+    name_literal = re.escape(word)
+    appositive_pattern = (
+        rf"(?<!\w){name_literal}(?!\w)"
+        rf"(?:\s+[IVXLCDM]+)?\s*,\s*[a-zà-öø-ÿ]"
+    )
+    return re.search(appositive_pattern, sentence, flags=re.IGNORECASE) is not None
+
+
+def has_target_hyphenated_name_context(sentence: str, word: str) -> bool:
+    # Reject place/person names where the target is a capitalized hyphenated segment,
+    # e.g. "Ver-sur-Launette" for target "ver".
+    name_literal = re.escape(word)
+    hyphen_name_pattern = rf"(?<!\w){name_literal}(?!\w)-[A-ZÀ-ÖØ-Þ]"
+    return re.search(hyphen_name_pattern, sentence) is not None
+
+
+def structural_filter_reason(sentence: str, word: str) -> str | None:
+    if has_non_terminal_ending(sentence):
+        return "non_terminal_ending"
+    if has_target_hyphenated_name_context(sentence, word):
+        return "name_hyphenated_context"
+    if has_target_name_appositive_context(sentence, word):
+        return "name_appositive_context"
+    if has_target_name_context(sentence, word):
+        return "name_context"
+    if has_target_acronym_context(sentence, word):
+        return "acronym_context"
+    return None
+
+
+def is_likely_wikipedia_visual_description(sentence: str) -> bool:
+    lowered = sentence.lower().strip()
+
+    visual_markers = (
+        "taula",
+        "taules",
+        "gràfic",
+        "grafic",
+        "gràfics",
+        "grafics",
+        "figura",
+        "fig.",
+        "diagrama",
+        "diagrames",
+        "chart",
+        "table",
+        "dataset",
+        "eix x",
+        "eix y",
+        "eix horitzontal",
+        "eix vertical",
+        "axis x",
+        "axis y",
+        "llegenda",
+        "font:",
+    )
+
+    if any(marker in lowered for marker in visual_markers):
+        return True
+
+    # Captions often look like "Figura 1" / "Taula 2".
+    if re.search(r"\b(figura|taula|gràfic|grafic)\s+\d+\b", lowered):
+        return True
+
+    # Axis descriptions in chart prose (e.g., "eix horitzontal (X)").
+    if re.search(r"\b(eix|axis)\s+(x|y|horitzontal|vertical)\b", lowered):
+        return True
+    if re.search(r"\b(eix|axis)\s+(horitzontal|vertical)\s*\(([xy])\)", lowered):
+        return True
+
+    return False
 
 
 def select_tatoeba_sentence(
@@ -358,6 +793,7 @@ def select_tatoeba_sentence(
     max_words: int,
     absolute_max_words: int,
     min_chars: int,
+    excluded_sentence_keys: set[str] | None = None,
 ) -> tuple[str, str | None] | None:
     preferred_sentence: str | None = None
     preferred_english: str | None = None
@@ -368,13 +804,30 @@ def select_tatoeba_sentence(
     for item in results:
         if not isinstance(item, dict):
             continue
-        sentence = (item.get("text") or "").strip()
+        lang = str(item.get("lang") or "").strip().lower()
+        if lang and lang != "cat":
+            continue
+
+        raw_sentence = (item.get("text") or "")
+        if has_unwanted_formatting(raw_sentence):
+            continue
+        sentence = normalize_sentence_whitespace(raw_sentence)
         if not sentence or not sentence_contains_word(sentence, word):
             continue
+        if excluded_sentence_keys and sentence_key(sentence) in excluded_sentence_keys:
+            continue
+        if not is_likely_catalan_sentence(sentence):
+            continue
+        if structural_filter_reason(sentence, word):
+            continue
+
         english = choose_best_english_translation(
             extract_english_candidates(item.get("translations")),
             word,
         )
+
+        if blocked_content_reason(sentence, english, target_word=word):
+            continue
 
         if not passes_sentence_quality(
             sentence,
@@ -408,6 +861,171 @@ def split_into_sentences(text: str) -> list[str]:
     return [part.strip() for part in parts if part.strip()]
 
 
+def is_likely_catalan_sentence(sentence: str) -> bool:
+    lowered = sentence.lower()
+
+    meta_prefixes = (
+        "vegeu tambe",
+        "vegeu també",
+        "referencies",
+        "referencies ",
+        "referencies:",
+        "referències",
+        "enllacos externs",
+        "enllaços externs",
+        "coordenades",
+    )
+    compact = lowered.strip()
+    if any(compact.startswith(prefix) for prefix in meta_prefixes):
+        return False
+
+    # Strong indicators the sentence is explicitly Spanish or quoted Spanish text.
+    blocked_phrases = {
+        "en espanyol",
+        "en espanol",
+        "en castellano",
+        "idioma espanyol",
+        "idioma espanol",
+    }
+    if any(phrase in lowered for phrase in blocked_phrases):
+        return False
+    if "¿" in sentence or "¡" in sentence:
+        return False
+
+    tokens = re.findall(r"[a-zA-ZÀ-ÖØ-öø-ÿ'’\-]+", lowered, flags=re.UNICODE)
+    if not tokens:
+        return False
+
+    catalan_markers = {
+        "els",
+        "les",
+        "dels",
+        "aquesta",
+        "aquest",
+        "aixo",
+        "perque",
+        "doncs",
+        "amb",
+        "ahir",
+        "avui",
+        "estic",
+        "vaig",
+        "llavors",
+        "mentre",
+    }
+    spanish_markers = {
+        "esta",
+        "este",
+        "esto",
+        "pero",
+        "para",
+        "muy",
+        "donde",
+        "como",
+        "cuando",
+        "porque",
+        "sin",
+        "usted",
+        "ustedes",
+        "espanol",
+        "español",
+        "castellano",
+    }
+
+    cat_score = sum(1 for token in tokens if token in catalan_markers)
+    if "l'" in lowered or "d'" in lowered:
+        cat_score += 1
+
+    es_score = sum(1 for token in tokens if token in spanish_markers)
+
+    if cat_score == 0 and es_score > 0:
+        return False
+    if es_score >= cat_score + 2:
+        return False
+    return True
+
+
+def select_sentence_from_wikipedia_text(
+    text: str,
+    word: str,
+    min_words: int,
+    max_words: int,
+    absolute_max_words: int,
+    min_chars: int,
+    excluded_sentence_keys: set[str] | None = None,
+) -> tuple[str | None, str]:
+    _ = absolute_max_words
+    extract = text.strip()
+    if not extract:
+        return None, "no_result"
+
+    saw_word_match = False
+
+    for sentence in split_into_sentences(extract):
+        if has_unwanted_formatting(sentence):
+            continue
+        sentence = normalize_sentence_whitespace(sentence)
+
+        if excluded_sentence_keys and sentence_key(sentence) in excluded_sentence_keys:
+            continue
+
+        if not sentence_contains_word(sentence, word):
+            continue
+        saw_word_match = True
+
+        if not is_likely_catalan_sentence(sentence):
+            continue
+        if structural_filter_reason(sentence, word):
+            continue
+        if is_likely_wikipedia_visual_description(sentence):
+            continue
+
+        if blocked_content_reason(sentence, target_word=word):
+            continue
+
+        if passes_sentence_quality(
+            sentence,
+            min_words=min_words,
+            max_words=max_words,
+            min_chars=min_chars,
+        ):
+            return sentence, "ok"
+
+    if saw_word_match:
+        return None, "no_quality_result"
+    return None, "no_result"
+
+
+def fetch_wikipedia_search_payload(
+    params: dict[str, Any],
+    retry_sleep_seconds: float,
+    wikipedia_sleep_seconds: float,
+) -> dict[str, Any]:
+    attempts = 3
+    for attempt in range(attempts):
+        try:
+            payload = http_get_json(
+                WIKIPEDIA_MEDIAWIKI_API_URL,
+                params=params,
+                timeout=25,
+            )
+            if wikipedia_sleep_seconds > 0:
+                time.sleep(wikipedia_sleep_seconds)
+            return payload
+        except urllib.error.HTTPError as exc:
+            if exc.code in {404, 429}:
+                if attempt == attempts - 1:
+                    raise
+                time.sleep(max(retry_sleep_seconds, 0.0))
+                continue
+            raise
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+            if attempt == attempts - 1:
+                raise
+            time.sleep(max(retry_sleep_seconds, 0.0))
+    raise RuntimeError("unreachable")
+
+
 def lookup_wikipedia_sentence(
     word: str,
     min_words: int,
@@ -415,9 +1033,12 @@ def lookup_wikipedia_sentence(
     absolute_max_words: int,
     min_chars: int,
     retry_sleep_seconds: float,
+    wikipedia_sleep_seconds: float,
+    excluded_sentence_keys: set[str] | None = None,
 ) -> dict[str, Any]:
     attempts = 3
     payload: dict[str, Any] | None = None
+    summary_missing = False
     encoded_word = urllib.parse.quote(word, safe="")
 
     for attempt in range(attempts):
@@ -428,10 +1049,17 @@ def lookup_wikipedia_sentence(
         try:
             with urllib.request.urlopen(request, timeout=25) as response:
                 payload = json.loads(response.read().decode("utf-8"))
+            if wikipedia_sleep_seconds > 0:
+                time.sleep(wikipedia_sleep_seconds)
             break
         except urllib.error.HTTPError as exc:
             if exc.code == 404:
-                return {"status": "no_result"}
+                if attempt == attempts - 1:
+                    summary_missing = True
+                    payload = {"extract": ""}
+                    break
+                time.sleep(max(retry_sleep_seconds, 0.0))
+                continue
             if exc.code == 429:
                 if attempt >= 1:
                     return {"status": "rate_limited"}
@@ -443,33 +1071,23 @@ def lookup_wikipedia_sentence(
                 return {"status": "request_error", "detail": "network_or_json_error"}
             time.sleep(max(retry_sleep_seconds, 0.0))
 
-    if not isinstance(payload, dict):
+    if not isinstance(payload, dict) and not summary_missing:
         return {"status": "request_error", "detail": "invalid_payload"}
 
-    extract = (payload.get("extract") or "").strip()
-    if not extract:
-        return {"status": "no_result"}
+    if not isinstance(payload, dict):
+        payload = {}
 
-    for sentence in split_into_sentences(extract):
-        if not sentence_contains_word(sentence, word):
-            continue
-        if not passes_sentence_quality(
-            sentence,
-            min_words=min_words,
-            max_words=max_words,
-            min_chars=min_chars,
-        ):
-            if len(sentence.strip()) < min_chars:
-                continue
-            if count_sentence_words(sentence) > absolute_max_words:
-                continue
-            return {
-                "status": "ok",
-                "sentence": sentence,
-                "english": None,
-                "source": "wikipedia_summary",
-            }
-            continue
+    extract = (payload.get("extract") or "")
+    sentence, status = select_sentence_from_wikipedia_text(
+        extract,
+        word,
+        min_words=min_words,
+        max_words=max_words,
+        absolute_max_words=absolute_max_words,
+        min_chars=min_chars,
+        excluded_sentence_keys=excluded_sentence_keys,
+    )
+    if status == "ok" and sentence:
         return {
             "status": "ok",
             "sentence": sentence,
@@ -477,7 +1095,92 @@ def lookup_wikipedia_sentence(
             "source": "wikipedia_summary",
         }
 
-    return {"status": "no_quality_result"}
+    summary_status = status
+    saw_quality_miss = summary_status == "no_quality_result"
+
+    try:
+        search_payload = fetch_wikipedia_search_payload(
+            {
+                "action": "query",
+                "format": "json",
+                "utf8": 1,
+                "list": "search",
+                "srsearch": f'"{word}"',
+                "srwhat": "text",
+                "srlimit": 8,
+            },
+            retry_sleep_seconds=retry_sleep_seconds,
+            wikipedia_sleep_seconds=wikipedia_sleep_seconds,
+        )
+    except urllib.error.HTTPError as exc:
+        if exc.code == 429:
+            return {"status": "rate_limited"}
+        return {"status": "request_error", "detail": f"http_{exc.code}"}
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+        return {"status": "request_error", "detail": "network_or_json_error"}
+
+    search_results = ((search_payload.get("query") or {}).get("search") or [])
+    if not isinstance(search_results, list) or not search_results:
+        return {"status": summary_status}
+
+    for item in search_results:
+        if not isinstance(item, dict):
+            continue
+        title = (item.get("title") or "").strip()
+        if not title:
+            continue
+
+        try:
+            page_payload = fetch_wikipedia_search_payload(
+                {
+                    "action": "query",
+                    "format": "json",
+                    "utf8": 1,
+                    "prop": "extracts",
+                    "explaintext": 1,
+                    "exsectionformat": "plain",
+                    "titles": title,
+                },
+                retry_sleep_seconds=retry_sleep_seconds,
+                wikipedia_sleep_seconds=wikipedia_sleep_seconds,
+            )
+        except urllib.error.HTTPError as exc:
+            if exc.code == 429:
+                return {"status": "rate_limited"}
+            continue
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+            continue
+
+        pages = ((page_payload.get("query") or {}).get("pages") or {})
+        if not isinstance(pages, dict):
+            continue
+
+        for page_data in pages.values():
+            if not isinstance(page_data, dict):
+                continue
+            page_extract = page_data.get("extract") or ""
+            search_sentence, search_status = select_sentence_from_wikipedia_text(
+                str(page_extract),
+                word,
+                min_words=min_words,
+                max_words=max_words,
+                absolute_max_words=absolute_max_words,
+                min_chars=min_chars,
+                excluded_sentence_keys=excluded_sentence_keys,
+            )
+            if search_status == "ok" and search_sentence:
+                return {
+                    "status": "ok",
+                    "sentence": search_sentence,
+                    "english": None,
+                    "source": "wikipedia_search",
+                }
+            if search_status == "no_quality_result":
+                saw_quality_miss = True
+
+    if saw_quality_miss:
+        return {"status": "no_quality_result"}
+    return {"status": "no_result"}
 
 
 def lookup_tatoeba(
@@ -488,6 +1191,7 @@ def lookup_tatoeba(
     min_chars: int,
     retry_sleep_seconds: float,
     max_pages: int,
+    excluded_sentence_keys: set[str] | None = None,
 ) -> dict[str, Any]:
     saw_results = False
 
@@ -504,6 +1208,11 @@ def lookup_tatoeba(
                 )
                 break
             except urllib.error.HTTPError as exc:
+                if exc.code == 404:
+                    if attempt == attempts - 1:
+                        return {"status": "request_error", "detail": "http_404"}
+                    time.sleep(max(retry_sleep_seconds, 0.0))
+                    continue
                 if exc.code == 429:
                     if attempt >= 1:
                         return {"status": "rate_limited"}
@@ -543,6 +1252,7 @@ def lookup_tatoeba(
             max_words=max_words,
             absolute_max_words=absolute_max_words,
             min_chars=min_chars,
+            excluded_sentence_keys=excluded_sentence_keys,
         )
         if selected:
             sentence, english = selected
@@ -597,15 +1307,48 @@ def translate_with_libretranslate(text: str, endpoint: str) -> str | None:
 
 def make_cloze(sentence: str, word: str) -> tuple[str, str] | None:
     pattern = rf"(?<!\w)({re.escape(word)})(?!\w)"
-    match = re.search(pattern, sentence, flags=re.IGNORECASE)
-    if not match:
+    matches = list(re.finditer(pattern, sentence, flags=re.IGNORECASE))
+    if not matches:
         return None
 
-    surface = match.group(1)
+    surface = matches[0].group(1)
     cloze_token = "{{c1::" + surface + "}}"
-    start, end = match.span(1)
-    sentence_with_cloze = sentence[:start] + cloze_token + sentence[end:]
+
+    def replacer(match: re.Match[str]) -> str:
+        return "{{c1::" + match.group(1) + "}}"
+
+    sentence_with_cloze = re.sub(pattern, replacer, sentence, flags=re.IGNORECASE)
     return sentence_with_cloze, cloze_token
+
+
+def strip_outer_quotes_for_non_dialogue(text: str) -> str:
+    compact = text.strip()
+    if len(compact) < 2:
+        return text
+
+    quote_pairs = {
+        '"': '"',
+        "'": "'",
+        "“": "”",
+        "‘": "’",
+        "«": "»",
+    }
+    opening = compact[0]
+    closing = compact[-1]
+    if quote_pairs.get(opening) != closing:
+        return text
+
+    inner = compact[1:-1].strip()
+    if not inner:
+        return text
+
+    # Keep quotes when the sentence likely contains dialogue turns.
+    if "—" in inner:
+        return text
+    if re.search(r"['\"«“].+?[?!.]['\"»”]\s+['\"«“]", inner):
+        return text
+
+    return inner
 
 
 def normalize_nested_quotes(text: str) -> str:
@@ -818,6 +1561,7 @@ def print_status_summary(log_path: Path) -> None:
 
 def main() -> None:
     args = parse_args()
+    configure_content_filters(args)
 
     input_path = Path(args.input)
     output_path = Path(args.output)
@@ -841,6 +1585,8 @@ def main() -> None:
         raise ValueError("--min-chars must be at least 1")
     if args.retry_sleep_seconds < 0:
         raise ValueError("--retry-sleep-seconds cannot be negative")
+    if args.wikipedia_sleep_seconds < 0:
+        raise ValueError("--wikipedia-sleep-seconds cannot be negative")
     if args.rate_limit_cooldown_seconds < 0:
         raise ValueError("--rate-limit-cooldown-seconds cannot be negative")
     if args.max_deferred_passes < 0:
@@ -858,6 +1604,26 @@ def main() -> None:
 
     words_with_rank = read_sorted_input(input_path, args.word_column)
     cache = load_cache(cache_path)
+    refresh_words = {w.lower() for w in split_csv_items(args.refresh_words)}
+    refresh_ranks = parse_rank_spec(args.refresh_ranks)
+    retry_incomplete_ranks = read_incomplete_output_ranks(output_path) if args.retry_empty_output else set()
+    existing_sentences_by_rank = read_output_sentences_by_rank(output_path)
+    sentence_key_counts: dict[str, int] = collections.Counter(
+        sentence_key(sentence) for sentence in existing_sentences_by_rank.values()
+    )
+
+    if refresh_words:
+        prioritized = [
+            (rank, word)
+            for rank, word in words_with_rank
+            if word.lower() in refresh_words
+        ]
+        remaining = [
+            (rank, word)
+            for rank, word in words_with_rank
+            if word.lower() not in refresh_words
+        ]
+        words_with_rank = prioritized + remaining
 
     completed_ranks = read_completed_ranks(output_path) if args.resume else set()
 
@@ -868,19 +1634,66 @@ def main() -> None:
     review_count = 0
     deferred_rate_limited: list[tuple[int, str]] = []
 
+    def should_force_refresh(rank: int, word: str) -> bool:
+        if args.ignore_cache:
+            return True
+        if rank in retry_incomplete_ranks:
+            return True
+        if rank in refresh_ranks:
+            return True
+        if word.lower() in refresh_words:
+            return True
+        return False
+
     def process_word(rank: int, word: str) -> str:
         nonlocal written, errors, review_count
 
-        cached = cache.get(word)
+        force_refresh = should_force_refresh(rank, word)
+        cached = None if force_refresh else cache.get(word)
+        existing_sentence = existing_sentences_by_rank.get(rank)
+        existing_sentence_key = sentence_key(existing_sentence) if existing_sentence else None
+        excluded_sentence_keys: set[str] = set(sentence_key_counts.keys())
+
+        # Allow keeping the same sentence when updating the same rank unless a refresh-word
+        # explicitly requests a different sentence for that rank.
+        if existing_sentence_key:
+            excluded_sentence_keys.discard(existing_sentence_key)
+            if word.lower() in refresh_words:
+                excluded_sentence_keys.add(existing_sentence_key)
         sentence: str | None = None
         english: str | None = None
         source = ""
 
         if isinstance(cached, dict) and cached.get("status") == "ok":
-            sentence = cached.get("sentence")
+            cached_sentence = cached.get("sentence")
             english = cached.get("english")
             source = cached.get("source", "cache")
-        else:
+
+            # Re-validate old cache entries against current quality rules.
+            if isinstance(cached_sentence, str):
+                cleaned_cached_sentence = normalize_sentence_whitespace(cached_sentence)
+                cached_is_valid = (
+                    bool(cleaned_cached_sentence)
+                    and (
+                        not excluded_sentence_keys
+                        or sentence_key(cleaned_cached_sentence) not in excluded_sentence_keys
+                    )
+                    and not has_unwanted_formatting(cached_sentence)
+                    and sentence_contains_word(cleaned_cached_sentence, word)
+                    and is_likely_catalan_sentence(cleaned_cached_sentence)
+                    and structural_filter_reason(cleaned_cached_sentence, word) is None
+                    and blocked_content_reason(cleaned_cached_sentence, english, target_word=word)
+                    is None
+                )
+                sentence = cleaned_cached_sentence if cached_is_valid else None
+            else:
+                sentence = None
+
+            if not sentence or not isinstance(english, str) or not english.strip():
+                # Ignore stale/invalid cached record and force fresh lookup.
+                cached = None
+
+        if not (isinstance(cached, dict) and cached.get("status") == "ok" and sentence and english):
             looked_up = lookup_tatoeba(
                 word,
                 min_words=args.min_words,
@@ -889,10 +1702,19 @@ def main() -> None:
                 min_chars=args.min_chars,
                 retry_sleep_seconds=args.retry_sleep_seconds,
                 max_pages=args.tatoeba_max_pages,
+                excluded_sentence_keys=excluded_sentence_keys,
             )
 
-            lookup_status = looked_up.get("status")
-            if lookup_status == "no_result" and args.backup_sentence_api != "none":
+            lookup_status = str(looked_up.get("status") or "")
+            lookup_detail = str(looked_up.get("detail") or "")
+            should_try_backup = (
+                args.backup_sentence_api != "none"
+                and (
+                    lookup_status in {"no_result", "no_quality_result"}
+                    or (lookup_status == "request_error" and lookup_detail == "http_404")
+                )
+            )
+            if should_try_backup:
                 backup = lookup_wikipedia_sentence(
                     word,
                     min_words=args.min_words,
@@ -900,6 +1722,8 @@ def main() -> None:
                     absolute_max_words=args.absolute_max_words,
                     min_chars=args.min_chars,
                     retry_sleep_seconds=args.retry_sleep_seconds,
+                    wikipedia_sleep_seconds=args.wikipedia_sleep_seconds,
+                    excluded_sentence_keys=excluded_sentence_keys,
                 )
                 backup_status = backup.get("status")
                 if backup_status == "ok":
@@ -908,7 +1732,10 @@ def main() -> None:
                 elif backup_status == "rate_limited":
                     return "rate_limited"
                 else:
-                    detail = f"tatoeba_no_result;backup_{args.backup_sentence_api}_{backup_status}"
+                    tatoeba_detail = f"tatoeba_{lookup_status}"
+                    if lookup_detail:
+                        tatoeba_detail = f"{tatoeba_detail}:{lookup_detail}"
+                    detail = f"{tatoeba_detail};backup_{args.backup_sentence_api}_{backup_status}"
                     if backup.get("detail"):
                         detail = detail + ":" + str(backup["detail"])
                     cache[word] = {
@@ -926,11 +1753,11 @@ def main() -> None:
                     return "rate_limited"
 
                 detail = f"tatoeba_{lookup_status}"
-                if looked_up.get("detail"):
-                    detail = detail + ":" + str(looked_up["detail"])
+                if lookup_detail:
+                    detail = detail + ":" + lookup_detail
 
                 # Cache only stable misses, not transient request/rate-limit failures.
-                if lookup_status == "no_result":
+                if lookup_status in {"no_result", "no_quality_result"}:
                     cache[word] = {
                         "status": "error",
                         "error": detail,
@@ -987,6 +1814,24 @@ def main() -> None:
             errors += 1
             return "error"
 
+        candidate_key = sentence_key(sentence)
+        if candidate_key in excluded_sentence_keys:
+            append_log_row(log_path, [str(rank), word, "error", "duplicate_sentence_reused"])
+            errors += 1
+            return "error"
+
+        structural_reason = structural_filter_reason(sentence, word)
+        if structural_reason:
+            append_log_row(log_path, [str(rank), word, "error", structural_reason])
+            errors += 1
+            return "error"
+
+        blocked_reason = blocked_content_reason(sentence, english, target_word=word)
+        if blocked_reason:
+            append_log_row(log_path, [str(rank), word, "error", blocked_reason])
+            errors += 1
+            return "error"
+
         cloze = make_cloze(sentence, word)
         if not cloze:
             append_log_row(log_path, [str(rank), word, "error", "word_not_found_in_sentence"])
@@ -994,6 +1839,7 @@ def main() -> None:
             return "error"
 
         sentence_with_cloze, cloze_token = cloze
+        sentence_with_cloze = strip_outer_quotes_for_non_dialogue(sentence_with_cloze)
         sentence_with_cloze = normalize_nested_quotes(sentence_with_cloze)
         english = normalize_nested_quotes(english)
 
@@ -1002,6 +1848,17 @@ def main() -> None:
             [sentence_with_cloze, word, cloze_token, str(rank), english],
             with_header=args.with_header,
         )
+
+        # Keep in-memory duplicate tracking up to date for this run.
+        if existing_sentence_key:
+            previous_count = sentence_key_counts.get(existing_sentence_key, 0)
+            if previous_count <= 1:
+                sentence_key_counts.pop(existing_sentence_key, None)
+            else:
+                sentence_key_counts[existing_sentence_key] = previous_count - 1
+        sentence_key_counts[candidate_key] = sentence_key_counts.get(candidate_key, 0) + 1
+        existing_sentences_by_rank[rank] = sentence
+
         append_log_row(log_path, [str(rank), word, "ok", source])
 
         if args.manual_review_mode:
@@ -1034,7 +1891,7 @@ def main() -> None:
 
         processed += 1
 
-        if args.resume and rank in completed_ranks:
+        if args.resume and rank in completed_ranks and not should_force_refresh(rank, word):
             skipped += 1
             continue
         status = process_word(rank, word)
