@@ -39,8 +39,11 @@ from typing import Any
 TATOEBA_SEARCH_URL = "https://tatoeba.org/en/api_v0/search"
 MYMEMORY_TRANSLATE_URL = "https://api.mymemory.translated.net/get"
 LIBRETRANSLATE_URL_DEFAULT = "https://libretranslate.com/translate"
+APERTIUM_TRANSLATE_URL = "https://apertium.org/apy/translate"
+LINGVA_URL_DEFAULT = "https://lingva.ml/api/v1"
 WIKIPEDIA_SUMMARY_URL = "https://ca.wikipedia.org/api/rest_v1/page/summary"
 WIKIPEDIA_MEDIAWIKI_API_URL = "https://ca.wikipedia.org/w/api.php"
+WIKTIONARY_MEDIAWIKI_API_URL = "https://ca.wiktionary.org/w/api.php"
 USER_AGENT = "Mozilla/5.0 (compatible; CatalanClozeBot/1.0)"
 
 
@@ -107,6 +110,21 @@ def parse_args() -> argparse.Namespace:
         help="Delay between successful Wikipedia API requests.",
     )
     parser.add_argument(
+        "--wiktionary-sleep-seconds",
+        type=float,
+        default=1,
+        help="Delay between successful Viccionari (Wiktionary) API requests.",
+    )
+    parser.add_argument(
+        "--opensubtitles-corpus-path",
+        default="data/opensubtitles_ca.txt",
+        help=(
+            "Path to a local, one-sentence-per-line Catalan subtitles corpus "
+            "(e.g. an OPUS OpenSubtitles ca.txt export). Used only if the file exists; "
+            "missing file is treated as an empty backup source, not an error."
+        ),
+    )
+    parser.add_argument(
         "--rate-limit-cooldown-seconds",
         type=float,
         default=600.0,
@@ -150,9 +168,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--backup-sentence-api",
-        choices=["none", "wikipedia"],
-        default="wikipedia",
-        help="Backup sentence source when Tatoeba returns no results.",
+        default="wikipedia,wiktionary,opensubtitles",
+        help=(
+            "Comma-separated, ordered chain of backup sentence sources to try when "
+            "Tatoeba returns no results. Choices: none, wikipedia, wiktionary, "
+            "opensubtitles. Use 'none' alone to disable all backups."
+        ),
     )
     parser.add_argument(
         "--resume",
@@ -172,14 +193,22 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--fallback-translator",
-        choices=["mymemory", "libretranslate", "none"],
-        default="mymemory",
-        help="Fallback translator when Tatoeba has no linked English translation.",
+        default="mymemory,libretranslate,apertium,lingva",
+        help=(
+            "Comma-separated, ordered chain of fallback translators to try when Tatoeba "
+            "has no linked English translation. Choices: none, mymemory, libretranslate, "
+            "apertium, lingva. Use 'none' alone to disable all fallback translation."
+        ),
     )
     parser.add_argument(
         "--libretranslate-url",
         default=LIBRETRANSLATE_URL_DEFAULT,
         help="LibreTranslate endpoint URL.",
+    )
+    parser.add_argument(
+        "--lingva-url",
+        default=LINGVA_URL_DEFAULT,
+        help="Lingva Translate endpoint base URL (self-hostable).",
     )
     parser.add_argument(
         "--manual-review-mode",
@@ -230,7 +259,41 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Force refresh only rows with empty/incomplete output fields.",
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+
+    valid_backup_sources = {"none", "wikipedia", "wiktionary", "opensubtitles"}
+    backup_chain = [
+        item.strip().lower()
+        for item in args.backup_sentence_api.split(",")
+        if item.strip()
+    ]
+    unknown = [item for item in backup_chain if item not in valid_backup_sources]
+    if unknown:
+        parser.error(
+            f"Invalid --backup-sentence-api entries: {', '.join(unknown)}. "
+            f"Valid choices: {', '.join(sorted(valid_backup_sources))}."
+        )
+    if "none" in backup_chain:
+        backup_chain = []
+    args.backup_sentence_chain = backup_chain
+
+    valid_translators = {"none", "mymemory", "libretranslate", "apertium", "lingva"}
+    translator_chain = [
+        item.strip().lower()
+        for item in args.fallback_translator.split(",")
+        if item.strip()
+    ]
+    unknown_translators = [item for item in translator_chain if item not in valid_translators]
+    if unknown_translators:
+        parser.error(
+            f"Invalid --fallback-translator entries: {', '.join(unknown_translators)}. "
+            f"Valid choices: {', '.join(sorted(valid_translators))}."
+        )
+    if "none" in translator_chain:
+        translator_chain = []
+    args.fallback_translator_chain = translator_chain
+
+    return args
 
 
 def split_csv_items(raw: str) -> list[str]:
@@ -352,6 +415,26 @@ _DEFINITION_ALT_FORM_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Full Catalan-style calendar dates ("DD de <mes> de AAAA", optionally a day range like
+# "13 i 14 de setembre de 1515"), whether inside a parenthetical or in running text.
+# Covers Wikipedia-lede birth/death date ranges, e.g.
+# "Oriol de Bolòs i Capdevila (Olot, 16 de març de 1924 - Barcelona, 22 de març de 2007)
+# fou un botànic català." as well as bare historical-fact dates, e.g.
+# "La batalla de Martignano tíngué lloc el 13 i 14 de setembre de 1515."
+_CATALAN_MONTHS_RE = (
+    r"(?:gener|febrer|març|abril|maig|juny|juliol|agost|"
+    r"setembre|octubre|novembre|desembre)"
+)
+_FULL_DATE_RE = re.compile(
+    r"\b\d{1,2}\s*(?:i\s+\d{1,2}\s*)?de\s+" + _CATALAN_MONTHS_RE + r"\s+de\s+\d{3,4}\b",
+    re.IGNORECASE,
+)
+
+# Sentences that are actually the caption/legend of a diagram or formula image, e.g.
+# "es llegeix: el conjunt C és igual a la unió dels conjunts A i B." — these describe how
+# to read a figure rather than using the target word in a natural sentence.
+_CAPTION_LEAD_RE = re.compile(r"^\s*es\s+llegeix\s*:", re.IGNORECASE)
+
 
 def _skip_parenthetical_and_alt(rest: str) -> str:
     """Skip an optional parenthetical and/or 'o AlternateForm' in a lowercased string."""
@@ -439,6 +522,16 @@ def blocked_content_reason(
     if _DEFINITION_ALT_FORM_RE.search(sentence):
         return "definition_sentence"
 
+    # Sentences containing a full Catalan calendar date, e.g.
+    # "... (Olot, 16 de març de 1924 - Barcelona, 22 de març de 2007) ..." or
+    # "La batalla de Martignano tíngué lloc el 13 i 14 de setembre de 1515."
+    if _FULL_DATE_RE.search(sentence):
+        return "historical_date"
+
+    # Sentences that are diagram/formula-image captions, e.g. "es llegeix: ..."
+    if _CAPTION_LEAD_RE.search(sentence):
+        return "caption_sentence"
+
     # Sentence opens with the target word as grammatical subject + copula
     if target_word and _is_definition_lead(sentence, target_word):
         return "definition_sentence"
@@ -475,8 +568,9 @@ def blocked_content_reason(
 
 def http_get_json(url: str, params: dict[str, Any], timeout: int = 20) -> dict[str, Any]:
     query = urllib.parse.urlencode(params)
+    full_url = f"{url}?{query}" if query else url
     request = urllib.request.Request(
-        f"{url}?{query}",
+        full_url,
         headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
     )
     with urllib.request.urlopen(request, timeout=timeout) as response:
@@ -1259,6 +1353,267 @@ def lookup_wikipedia_sentence(
     return {"status": "no_result"}
 
 
+def fetch_wiktionary_query_payload(
+    params: dict[str, Any],
+    retry_sleep_seconds: float,
+    wiktionary_sleep_seconds: float,
+) -> dict[str, Any]:
+    attempts = 3
+    for attempt in range(attempts):
+        try:
+            payload = http_get_json(
+                WIKTIONARY_MEDIAWIKI_API_URL,
+                params=params,
+                timeout=25,
+            )
+            if wiktionary_sleep_seconds > 0:
+                time.sleep(wiktionary_sleep_seconds)
+            return payload
+        except urllib.error.HTTPError as exc:
+            if exc.code in {404, 429}:
+                if attempt == attempts - 1:
+                    raise
+                time.sleep(max(retry_sleep_seconds, 0.0))
+                continue
+            raise
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+            if attempt == attempts - 1:
+                raise
+            time.sleep(max(retry_sleep_seconds, 0.0))
+    raise RuntimeError("unreachable")
+
+
+def lookup_wiktionary_sentence(
+    word: str,
+    min_words: int,
+    max_words: int,
+    absolute_max_words: int,
+    min_chars: int,
+    retry_sleep_seconds: float,
+    wiktionary_sleep_seconds: float,
+    excluded_sentence_keys: set[str] | None = None,
+) -> dict[str, Any]:
+    """Look up a Catalan usage sentence from Viccionari (ca.wiktionary.org).
+
+    Viccionari has no REST 'summary' endpoint like Wikipedia, so this goes straight to
+    the MediaWiki query API: first the word's own page (titles=<word>, since Viccionari
+    entries are usually titled exactly as the lemma), then falls back to a text search
+    for other pages that quote/use the word (e.g. usage examples on related entries).
+    """
+    saw_quality_miss = False
+
+    try:
+        page_payload = fetch_wiktionary_query_payload(
+            {
+                "action": "query",
+                "format": "json",
+                "utf8": 1,
+                "prop": "extracts",
+                "explaintext": 1,
+                "exsectionformat": "plain",
+                "titles": word,
+            },
+            retry_sleep_seconds=retry_sleep_seconds,
+            wiktionary_sleep_seconds=wiktionary_sleep_seconds,
+        )
+    except urllib.error.HTTPError as exc:
+        if exc.code == 429:
+            return {"status": "rate_limited"}
+        return {"status": "request_error", "detail": f"http_{exc.code}"}
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+        return {"status": "request_error", "detail": "network_or_json_error"}
+
+    pages = ((page_payload.get("query") or {}).get("pages") or {})
+    if isinstance(pages, dict):
+        for page_data in pages.values():
+            if not isinstance(page_data, dict) or "missing" in page_data:
+                continue
+            extract = page_data.get("extract") or ""
+            sentence, status = select_sentence_from_wikipedia_text(
+                str(extract),
+                word,
+                min_words=min_words,
+                max_words=max_words,
+                absolute_max_words=absolute_max_words,
+                min_chars=min_chars,
+                excluded_sentence_keys=excluded_sentence_keys,
+            )
+            if status == "ok" and sentence:
+                return {
+                    "status": "ok",
+                    "sentence": sentence,
+                    "english": None,
+                    "source": "wiktionary_page",
+                }
+            if status == "no_quality_result":
+                saw_quality_miss = True
+
+    try:
+        search_payload = fetch_wiktionary_query_payload(
+            {
+                "action": "query",
+                "format": "json",
+                "utf8": 1,
+                "list": "search",
+                "srsearch": f'"{word}"',
+                "srwhat": "text",
+                "srlimit": 8,
+            },
+            retry_sleep_seconds=retry_sleep_seconds,
+            wiktionary_sleep_seconds=wiktionary_sleep_seconds,
+        )
+    except urllib.error.HTTPError as exc:
+        if exc.code == 429:
+            return {"status": "rate_limited"}
+        return {"status": "request_error", "detail": f"http_{exc.code}"}
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+        return {"status": "request_error", "detail": "network_or_json_error"}
+
+    search_results = ((search_payload.get("query") or {}).get("search") or [])
+    if not isinstance(search_results, list) or not search_results:
+        return {"status": "no_quality_result" if saw_quality_miss else "no_result"}
+
+    for item in search_results:
+        if not isinstance(item, dict):
+            continue
+        title = (item.get("title") or "").strip()
+        if not title:
+            continue
+
+        try:
+            title_payload = fetch_wiktionary_query_payload(
+                {
+                    "action": "query",
+                    "format": "json",
+                    "utf8": 1,
+                    "prop": "extracts",
+                    "explaintext": 1,
+                    "exsectionformat": "plain",
+                    "titles": title,
+                },
+                retry_sleep_seconds=retry_sleep_seconds,
+                wiktionary_sleep_seconds=wiktionary_sleep_seconds,
+            )
+        except urllib.error.HTTPError as exc:
+            if exc.code == 429:
+                return {"status": "rate_limited"}
+            continue
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+            continue
+
+        title_pages = ((title_payload.get("query") or {}).get("pages") or {})
+        if not isinstance(title_pages, dict):
+            continue
+
+        for page_data in title_pages.values():
+            if not isinstance(page_data, dict):
+                continue
+            extract = page_data.get("extract") or ""
+            search_sentence, search_status = select_sentence_from_wikipedia_text(
+                str(extract),
+                word,
+                min_words=min_words,
+                max_words=max_words,
+                absolute_max_words=absolute_max_words,
+                min_chars=min_chars,
+                excluded_sentence_keys=excluded_sentence_keys,
+            )
+            if search_status == "ok" and search_sentence:
+                return {
+                    "status": "ok",
+                    "sentence": search_sentence,
+                    "english": None,
+                    "source": "wiktionary_search",
+                }
+            if search_status == "no_quality_result":
+                saw_quality_miss = True
+
+    if saw_quality_miss:
+        return {"status": "no_quality_result"}
+    return {"status": "no_result"}
+
+
+# In-memory cache of loaded local subtitle corpora, keyed by file path, so the (possibly
+# large) file is only read from disk once per script run rather than once per word.
+_OPENSUBTITLES_CORPUS_CACHE: dict[str, list[str]] = {}
+
+
+def _load_opensubtitles_corpus(corpus_path: str) -> list[str]:
+    cached = _OPENSUBTITLES_CORPUS_CACHE.get(corpus_path)
+    if cached is not None:
+        return cached
+
+    path = Path(corpus_path)
+    lines: list[str] = []
+    if path.is_file():
+        with path.open("r", encoding="utf-8", errors="ignore") as handle:
+            for raw_line in handle:
+                line = raw_line.strip()
+                if line:
+                    lines.append(line)
+
+    _OPENSUBTITLES_CORPUS_CACHE[corpus_path] = lines
+    return lines
+
+
+def lookup_opensubtitles_sentence(
+    word: str,
+    min_words: int,
+    max_words: int,
+    absolute_max_words: int,
+    min_chars: int,
+    corpus_path: str,
+    excluded_sentence_keys: set[str] | None = None,
+) -> dict[str, Any]:
+    """Look up a natural, conversational Catalan sentence from a local subtitles corpus.
+
+    Expects a plain-text file at `corpus_path` with one subtitle line/sentence per line
+    (e.g. an OPUS OpenSubtitles Catalan monolingual export — see
+    https://opus.nlpl.eu/OpenSubtitles.php). If the file is not present, this backup
+    source is simply a no-op ('no_result'), never an error, since it is optional.
+    """
+    _ = absolute_max_words
+    lines = _load_opensubtitles_corpus(corpus_path)
+    if not lines:
+        return {"status": "no_result"}
+
+    saw_word_match = False
+    for raw_line in lines:
+        if has_unwanted_formatting(raw_line):
+            continue
+        sentence = normalize_sentence_whitespace(raw_line)
+
+        if excluded_sentence_keys and sentence_key(sentence) in excluded_sentence_keys:
+            continue
+        if not sentence_contains_word(sentence, word):
+            continue
+        saw_word_match = True
+
+        if not is_likely_catalan_sentence(sentence):
+            continue
+        if structural_filter_reason(sentence, word):
+            continue
+        if blocked_content_reason(sentence, target_word=word):
+            continue
+
+        if passes_sentence_quality(
+            sentence,
+            min_words=min_words,
+            max_words=max_words,
+            min_chars=min_chars,
+        ):
+            return {
+                "status": "ok",
+                "sentence": sentence,
+                "english": None,
+                "source": "opensubtitles",
+            }
+
+    if saw_word_match:
+        return {"status": "no_quality_result"}
+    return {"status": "no_result"}
+
+
 def lookup_tatoeba(
     word: str,
     min_words: int,
@@ -1380,6 +1735,39 @@ def translate_with_libretranslate(text: str, endpoint: str) -> tuple[str | None,
         return None, "request_error"
 
     translated = (data.get("translatedText") or "").strip()
+    if not translated:
+        return None, "empty_translation"
+    return translated, "ok"
+
+
+def translate_with_apertium(text: str) -> tuple[str | None, str]:
+    try:
+        payload = http_get_json(
+            APERTIUM_TRANSLATE_URL,
+            params={"langpair": "cat|eng", "q": text},
+            timeout=25,
+        )
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+        return None, "request_error"
+
+    response_data = payload.get("responseData")
+    if not isinstance(response_data, dict):
+        return None, "invalid_payload"
+
+    translated = (response_data.get("translatedText") or "").strip()
+    if not translated:
+        return None, "empty_translation"
+    return translated, "ok"
+
+
+def translate_with_lingva(text: str, endpoint: str) -> tuple[str | None, str]:
+    url = f"{endpoint.rstrip('/')}/ca/en/{urllib.parse.quote(text, safe='')}"
+    try:
+        payload = http_get_json(url, params={}, timeout=25)
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+        return None, "request_error"
+
+    translated = (payload.get("translation") or "").strip()
     if not translated:
         return None, "empty_translation"
     return translated, "ok"
@@ -1513,26 +1901,25 @@ def append_review_row(path: Path, row: list[str]) -> None:
 
 def translate_sentence(
     sentence: str,
-    fallback_translator: str,
+    fallback_translator_chain: list[str],
     libretranslate_url: str,
+    lingva_url: str,
 ) -> tuple[str | None, str, str]:
-    if fallback_translator == "none":
+    if not fallback_translator_chain:
         return None, "none", "translation_disabled"
 
-    providers: list[str]
-    if fallback_translator == "mymemory":
-        providers = ["mymemory", "libretranslate"]
-    elif fallback_translator == "libretranslate":
-        providers = ["libretranslate", "mymemory"]
-    else:
-        providers = []
-
     attempt_details: list[str] = []
-    for provider in providers:
+    for provider in fallback_translator_chain:
         if provider == "mymemory":
             translated, detail = translate_with_mymemory(sentence)
-        else:
+        elif provider == "libretranslate":
             translated, detail = translate_with_libretranslate(sentence, libretranslate_url)
+        elif provider == "apertium":
+            translated, detail = translate_with_apertium(sentence)
+        elif provider == "lingva":
+            translated, detail = translate_with_lingva(sentence, lingva_url)
+        else:
+            continue
         if translated:
             return translated, provider, f"{provider}:ok"
         attempt_details.append(f"{provider}:{detail}")
@@ -1803,36 +2190,70 @@ def main() -> None:
             lookup_status = str(looked_up.get("status") or "")
             lookup_detail = str(looked_up.get("detail") or "")
             should_try_backup = (
-                args.backup_sentence_api != "none"
+                bool(args.backup_sentence_chain)
                 and (
                     lookup_status in {"no_result", "no_quality_result"}
                     or (lookup_status == "request_error" and lookup_detail == "http_404")
                 )
             )
             if should_try_backup:
-                backup = lookup_wikipedia_sentence(
-                    word,
-                    min_words=args.min_words,
-                    max_words=args.max_words,
-                    absolute_max_words=args.absolute_max_words,
-                    min_chars=args.min_chars,
-                    retry_sleep_seconds=args.retry_sleep_seconds,
-                    wikipedia_sleep_seconds=args.wikipedia_sleep_seconds,
-                    excluded_sentence_keys=excluded_sentence_keys,
-                )
-                backup_status = backup.get("status")
-                if backup_status == "ok":
-                    looked_up = backup
-                    lookup_status = "ok"
-                elif backup_status == "rate_limited":
-                    return "rate_limited"
-                else:
+                backup_detail_parts: list[str] = []
+                backup_found = False
+                for backup_source in args.backup_sentence_chain:
+                    if backup_source == "wikipedia":
+                        backup = lookup_wikipedia_sentence(
+                            word,
+                            min_words=args.min_words,
+                            max_words=args.max_words,
+                            absolute_max_words=args.absolute_max_words,
+                            min_chars=args.min_chars,
+                            retry_sleep_seconds=args.retry_sleep_seconds,
+                            wikipedia_sleep_seconds=args.wikipedia_sleep_seconds,
+                            excluded_sentence_keys=excluded_sentence_keys,
+                        )
+                    elif backup_source == "wiktionary":
+                        backup = lookup_wiktionary_sentence(
+                            word,
+                            min_words=args.min_words,
+                            max_words=args.max_words,
+                            absolute_max_words=args.absolute_max_words,
+                            min_chars=args.min_chars,
+                            retry_sleep_seconds=args.retry_sleep_seconds,
+                            wiktionary_sleep_seconds=args.wiktionary_sleep_seconds,
+                            excluded_sentence_keys=excluded_sentence_keys,
+                        )
+                    elif backup_source == "opensubtitles":
+                        backup = lookup_opensubtitles_sentence(
+                            word,
+                            min_words=args.min_words,
+                            max_words=args.max_words,
+                            absolute_max_words=args.absolute_max_words,
+                            min_chars=args.min_chars,
+                            corpus_path=args.opensubtitles_corpus_path,
+                            excluded_sentence_keys=excluded_sentence_keys,
+                        )
+                    else:
+                        continue
+
+                    backup_status = backup.get("status")
+                    if backup_status == "ok":
+                        looked_up = backup
+                        lookup_status = "ok"
+                        backup_found = True
+                        break
+                    if backup_status == "rate_limited":
+                        return "rate_limited"
+
+                    part = f"backup_{backup_source}_{backup_status}"
+                    if backup.get("detail"):
+                        part = part + ":" + str(backup["detail"])
+                    backup_detail_parts.append(part)
+
+                if not backup_found:
                     tatoeba_detail = f"tatoeba_{lookup_status}"
                     if lookup_detail:
                         tatoeba_detail = f"{tatoeba_detail}:{lookup_detail}"
-                    detail = f"{tatoeba_detail};backup_{args.backup_sentence_api}_{backup_status}"
-                    if backup.get("detail"):
-                        detail = detail + ":" + str(backup["detail"])
+                    detail = ";".join([tatoeba_detail, *backup_detail_parts])
                     cache[word] = {
                         "status": "error",
                         "error": detail,
@@ -1874,8 +2295,9 @@ def main() -> None:
             if not english:
                 english, fallback_source, translation_detail = translate_sentence(
                     sentence,
-                    fallback_translator=args.fallback_translator,
+                    fallback_translator_chain=args.fallback_translator_chain,
                     libretranslate_url=args.libretranslate_url,
+                    lingva_url=args.lingva_url,
                 )
                 if english:
                     if source and source != fallback_source:

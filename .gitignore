@@ -3,5 +3,7 @@
 /scripts/__pycache__*
 /archive*
 /logs*
-/data*
+/data/*
+!/data/catalan_cloze_output.csv
+!/data/items-words.sorted-by-relative-frequency.tsv
 *.cypthon-312.pyc
