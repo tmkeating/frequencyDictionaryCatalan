@@ -361,7 +361,10 @@ def load_blocked_words_file(path: str) -> list[str]:
 
 def compile_keyword_pattern(keyword: str) -> re.Pattern[str]:
     escaped = re.escape(keyword.strip())
-    pattern = rf"(?<!\w){escaped}(?!\w)"
+    # Treat the interpunct (·) as part of a word for boundary purposes, e.g. so the
+    # blocked brand name "Intel" does not false-positive match inside the unrelated
+    # Catalan word "intel·ligent" (and likewise for other l·l digraph words).
+    pattern = rf"(?<![\w·]){escaped}(?![\w·])"
     return re.compile(pattern, flags=re.IGNORECASE)
 
 
@@ -628,17 +631,17 @@ def blocked_content_reason(
     if not BLOCKED_WORD_RULES:
         return None
 
-    haystacks = [sentence]
-    if isinstance(english, str) and english:
-        haystacks.append(english)
-
+    # Only scan the Catalan sentence. Scanning the English translation too caused false
+    # positives: e.g. blocking the brand name "Apple" also blocked the common noun
+    # "apple" (the fruit) whenever it showed up in the English translation of an
+    # unrelated Catalan sentence like "Després menjaré la poma."
     target_key = normalize_match_key(target_word or "") if target_word else ""
 
     for blocked_key, pattern in BLOCKED_WORD_RULES:
         # Avoid self-conflict: the target term itself should not auto-block this row.
         if target_key and blocked_key == target_key:
             continue
-        if any(pattern.search(text) for text in haystacks):
+        if pattern.search(sentence):
             return "blocked_word"
 
     return None
