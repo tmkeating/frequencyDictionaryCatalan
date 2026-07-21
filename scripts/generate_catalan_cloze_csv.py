@@ -48,6 +48,7 @@ USER_AGENT = "Mozilla/5.0 (compatible; CatalanClozeBot/1.0)"
 
 
 BLOCKED_WORD_RULES: list[tuple[str, re.Pattern[str]]] = []
+ALLOWED_NAME_TERMS: set[str] = set()
 
 
 def parse_args() -> argparse.Namespace:
@@ -242,6 +243,15 @@ def parse_args() -> argparse.Namespace:
         help="Path to text file with blocked words/phrases (one per line).",
     )
     parser.add_argument(
+        "--allowed-terms-file",
+        default="data/allowed_terms.txt",
+        help=(
+            "Path to text file listing well-known person/place names (one per line, "
+            "multi-word phrases allowed) that are exempt from the name_mention "
+            "structural filter."
+        ),
+    )
+    parser.add_argument(
         "--ignore-cache",
         action="store_true",
         help="Ignore cache for all words and force fresh lookup.",
@@ -373,13 +383,18 @@ def normalize_match_key(text: str) -> str:
 
 
 def configure_content_filters(args: argparse.Namespace) -> None:
-    global BLOCKED_WORD_RULES
+    global BLOCKED_WORD_RULES, ALLOWED_NAME_TERMS
 
     blocked_words = split_csv_items(args.blocked_words)
     blocked_words.extend(load_blocked_words_file(args.blocked_words_file))
     BLOCKED_WORD_RULES = [
         (normalize_match_key(item), compile_keyword_pattern(item)) for item in blocked_words
     ]
+
+    allowed_terms_file = getattr(args, "allowed_terms_file", "")
+    ALLOWED_NAME_TERMS = {
+        normalize_match_key(item) for item in load_blocked_words_file(allowed_terms_file)
+    }
 
 
 _PHONETIC_BRACKET_RE = re.compile(r"\[.+?\]")
@@ -835,8 +850,13 @@ def choose_best_english_translation(candidates: list[str], target_word: str) -> 
 
 
 def count_sentence_words(sentence: str) -> int:
-    # Count tokens containing at least one letter-like character.
-    tokens = re.findall(r"[\wÀ-ÖØ-öø-ÿ'’\-]+", sentence.strip(), flags=re.UNICODE)
+    # Count tokens containing at least one letter-like character. The apostrophe is
+    # treated as a word boundary (not kept inside the token) because in Catalan it
+    # marks elision/enclisis between two real words, e.g. "d'aigua" = "de" + "aigua",
+    # "l'infern" = "el" + "infern", "salva't" = "salva" + "et" (clitic pronoun). Keeping
+    # the apostrophe attached previously undercounted such sentences as having fewer
+    # real words than they do (e.g. "Salva't." was counted as a single token).
+    tokens = re.findall(r"[\wÀ-ÖØ-öø-ÿ\-]+", sentence.strip(), flags=re.UNICODE)
     return len(tokens)
 
 
@@ -980,6 +1000,62 @@ def has_target_hyphenated_name_context(sentence: str, word: str) -> bool:
     return re.search(hyphen_name_pattern, sentence) is not None
 
 
+def contains_unrelated_name_mention(sentence: str) -> bool:
+    # Reject sentences that mention what looks like a person or place name anywhere
+    # in the sentence, e.g. "En Joan va anar a Barcelona." (contains "Joan" and
+    # "Barcelona"), even when the cloze target word itself has nothing to do with
+    # the name. Catalan doesn't capitalize common nouns mid-sentence, so a
+    # capitalized, non-all-caps token that isn't the first word of the sentence is
+    # very likely a proper noun.
+    #
+    # ALLOWED_NAME_TERMS (data/allowed_terms.txt) whitelists well-known, common
+    # names (people, cities, provinces, countries) so ordinary sentences that
+    # mention them aren't discarded. Multi-word entries (e.g. "Estats Units") are
+    # matched against runs of adjacent capitalized tokens.
+    token_matches = list(re.finditer(r"[A-Za-zÀ-ÖØ-öø-ÿ][A-Za-zÀ-ÖØ-öø-ÿ'’\-]*", sentence))
+    if len(token_matches) < 2:
+        return False
+
+    idx = 1  # sentence-initial capitalization isn't indicative of a name
+    while idx < len(token_matches):
+        token_match = token_matches[idx]
+        token = token_match.group(0)
+        if not is_likely_name_token(token):
+            idx += 1
+            continue
+
+        # Capitals introduced by a quotation, aside, or question/exclamation mark
+        # usually start a new clause rather than a proper noun, e.g. 'Va dir: "Vine."'
+        # or a dialogue exchange like "'Gràcies.' 'De res.'".
+        preceding = sentence[: token_match.start()].rstrip()
+        if preceding and preceding[-1] in ':"\'\u2018\u2019\u201c\u00ab\u00bf\u00a1(':
+            idx += 1
+            continue
+
+        # Grow the run to include any immediately-adjacent (whitespace-only gap)
+        # name-like tokens, so multi-word names/places (e.g. "Estats Units",
+        # "Nova York") are checked against the whitelist as a whole phrase.
+        run_end = idx + 1
+        while (
+            run_end < len(token_matches)
+            and is_likely_name_token(token_matches[run_end].group(0))
+            and sentence[token_matches[run_end - 1].end() : token_matches[run_end].start()].strip() == ""
+        ):
+            run_end += 1
+
+        run_tokens = [token_matches[i].group(0) for i in range(idx, run_end)]
+        run_phrase = normalize_match_key(" ".join(run_tokens))
+        if run_phrase in ALLOWED_NAME_TERMS or all(
+            normalize_match_key(t) in ALLOWED_NAME_TERMS for t in run_tokens
+        ):
+            idx = run_end
+            continue
+
+        return True
+
+    return False
+
+
 def structural_filter_reason(sentence: str, word: str) -> str | None:
     if has_non_terminal_ending(sentence):
         return "non_terminal_ending"
@@ -991,6 +1067,8 @@ def structural_filter_reason(sentence: str, word: str) -> str | None:
         return "name_context"
     if has_target_acronym_context(sentence, word):
         return "acronym_context"
+    if contains_unrelated_name_mention(sentence):
+        return "name_mention"
     return None
 
 

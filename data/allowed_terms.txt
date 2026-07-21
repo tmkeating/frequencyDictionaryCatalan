@@ -1,0 +1,648 @@
+# Allowed name terms list (one entry per line)
+# Lines starting with # are ignored.
+# Matching is case-insensitive. Multi-word entries (e.g. "Estats Units") are matched
+# as a whole phrase against consecutive capitalized tokens in the sentence.
+#
+# Purpose: the "name_mention" structural filter in generate_catalan_cloze_csv.py
+# rejects sentences containing capitalized tokens that look like proper nouns
+# (person/place names), to avoid random or obscure names showing up in flashcards.
+# This whitelist exempts well-known, common names so useful sentences that happen to
+# mention them (e.g. Tatoeba's recurring "Tom"/"Maria" characters, or everyday
+# references to Barcelona, Catalunya, França, etc.) are not discarded.
+
+# Recurring Tatoeba placeholder character names
+Tom
+Maria
+Mary
+John
+Jane
+Alice
+Bob
+Kate
+Linda
+Ken
+Dan
+Bill
+Jim
+George
+Meg
+Nancy
+Ann
+Susan
+Karen
+Steve
+Fred
+Mike
+Tony
+Jack
+Sam
+Ted
+Joe
+Sue
+Amy
+Judy
+Helen
+Betty
+Carol
+Barbara
+Patricia
+Nick
+Pat
+Roy
+Ellen
+Ronald
+Donald
+Oliver
+Chuck
+Andy
+Grace
+Emi
+Yumi
+Taro
+Keiko
+Hiroshi
+Satoshi
+Yoko
+Yuki
+
+# Common Catalan person names
+Joan
+Jordi
+Josep
+Pere
+Marc
+Martí
+Pau
+Pol
+Xavier
+Xavi
+Carles
+Toni
+Antoni
+Miquel
+Ramon
+Ferran
+Gerard
+Oriol
+Arnau
+Bernat
+Ignasi
+Lluís
+Enric
+Eduard
+Àlex
+Alex
+Víctor
+Victor
+David
+Daniel
+Marcos
+Marc
+Anna
+Núria
+Laia
+Marta
+Montserrat
+Elena
+Clàudia
+Claudia
+Ona
+Aina
+Judit
+Judith
+Sílvia
+Silvia
+Cristina
+Sandra
+Mireia
+Berta
+Roser
+Dolors
+Teresa
+Rosa
+Carme
+Àngels
+Angels
+Susanna
+Alba
+Emma
+Sara
+Julia
+Júlia
+Paula
+Lucia
+Lúcia
+Ricard
+Ricardo
+Esther
+Ester
+Roger
+Adrià
+Jaume
+Guillem
+Nil
+Biel
+Iu
+Otger
+Bru
+Gal·la
+Blanca
+Èlia
+Gemma
+Vicenç
+Vicent
+Salvador
+Ramona
+Assumpta
+Immaculada
+Concepció
+Neus
+Mercè
+
+# Common Catalan surnames
+García
+Garcia
+López
+Martínez
+Fernández
+González
+Rodríguez
+Pérez
+Sánchez
+Ramírez
+Torres
+Flores
+Rivera
+Gómez
+Díaz
+Cruz
+Morales
+Reyes
+Puig
+Serra
+Ferrer
+Vidal
+Vila
+Roca
+Soler
+Bosch
+Camps
+Casals
+Riera
+Prat
+Costa
+Font
+Ribas
+Vives
+Fontanet
+
+# International first names commonly used in example sentences / dictionaries
+Peter
+Paul
+Michael
+James
+Robert
+William
+Richard
+Charles
+Thomas
+George
+Henry
+Edward
+Anna
+Maria
+Sophie
+Sofia
+Emily
+Emma
+Laura
+Julia
+Carlos
+Miguel
+Manuel
+Pedro
+Antonio
+Francisco
+Luis
+Diego
+
+# Catalan provinces / demarcations
+Barcelona
+Girona
+Lleida
+Tarragona
+
+# Provinces of Spain (all 50 + the 2 autonomous cities)
+Àlava
+Araba
+Albacete
+Alacant
+Alicante
+Almeria
+Àvila
+Badajoz
+Barcelona
+Burgos
+Càceres
+Cadis
+Cádiz
+Cantàbria
+Castelló
+Castellón
+Ciudad Real
+Córdova
+Còrdova
+Conca
+Cuenca
+Girona
+Granada
+Guadalajara
+Guipúscoa
+Gipuzkoa
+Huelva
+Osca
+Huesca
+Illes Balears
+Jaén
+La Corunya
+Coruña
+La Rioja
+Las Palmas
+Lleida
+Lleó
+León
+Lugo
+Madrid
+Málaga
+Malaga
+Múrcia
+Murcia
+Navarra
+Ourense
+Palència
+Palencia
+Pontevedra
+Salamanca
+Santa Cruz de Tenerife
+Segòvia
+Sevilla
+Sòria
+Soria
+Tarragona
+Terol
+Teruel
+Toledo
+València
+Valencia
+Valladolid
+Biscaia
+Vizcaya
+Bizkaia
+Zamora
+Zaragoza
+Ceuta
+Melilla
+
+# Autonomous communities of Spain
+Andalusia
+Aragó
+Astúries
+Principat d'Astúries
+Illes Balears
+Canàries
+Cantàbria
+Castella-la Manxa
+Castella i Lleó
+Catalunya
+Comunitat Valenciana
+Extremadura
+Galícia
+La Rioja
+Comunitat de Madrid
+Regió de Múrcia
+Comunitat Foral de Navarra
+País Basc
+
+# Catalan comarques capitals and major cities
+Reus
+Mataró
+Sabadell
+Terrassa
+Badalona
+Manresa
+Vic
+Igualada
+Berga
+Olot
+Figueres
+Blanes
+Salt
+Tortosa
+Amposta
+Cerdanyola
+Sitges
+Vilafranca
+Vilanova i la Geltrú
+Mollet
+Granollers
+Ripoll
+Puigcerdà
+Solsona
+Montblanc
+Valls
+El Vendrell
+Gandesa
+Balaguer
+Tremp
+La Seu d'Urgell
+Sant Feliu de Guíxols
+Palafrugell
+Calella
+Mollerussa
+Sant Cugat
+Castelldefels
+Rubí
+Viladecans
+Montcada
+
+# Catalan institutions
+Mossos d'Esquadra
+Generalitat
+Generalitat de Catalunya
+Parlament de Catalunya
+Diputació
+Ajuntament
+Ajuntament de Barcelona
+Bombers
+Guàrdia Urbana
+Creu Roja
+TV3
+Catalunya Ràdio
+Universitat de Barcelona
+Universitat Autònoma de Barcelona
+Universitat Pompeu Fabra
+Institut d'Estudis Catalans
+Sagrada Família
+Camp Nou
+Palau de la Música
+FC Barcelona
+Barça
+Espanyol
+Girona FC
+
+# Catalan holidays
+Nadal
+Cap d'Any
+Reis
+Reis Mags
+Sant Jordi
+Setmana Santa
+Divendres Sant
+Pasqua
+Sant Joan
+Sant Pere
+Sant Esteve
+Tots Sants
+Diada
+Diada de Catalunya
+Carnaval
+Corpus
+
+# Major Spanish cities / regions
+Madrid
+Sevilla
+València
+Valencia
+Bilbao
+Zaragoza
+Málaga
+Malaga
+Granada
+Toledo
+Salamanca
+Cadis
+Cádiz
+Córdova
+Còrdova
+Murcia
+Palma
+Palma de Mallorca
+Santander
+Oviedo
+Vigo
+Coruña
+La Corunya
+Vitòria
+Pamplona
+Sant Sebastià
+Badajoz
+Càceres
+Alacant
+Alicante
+Castelló
+Castellón
+Huelva
+Jaén
+Almeria
+Lleó
+Burgos
+Valladolid
+Segòvia
+Àvila
+Cuenca
+Andalusia
+Aragó
+Asturies
+Cantàbria
+Castella i Lleó
+Castella-la Manxa
+Extremadura
+Galícia
+La Rioja
+Múrcia
+Navarra
+País Basc
+Illes Balears
+Illes Canàries
+
+# Major world cities
+Paris
+París
+Londres
+Roma
+Berlín
+Berlin
+Amsterdam
+Lisboa
+Atenes
+Viena
+Praga
+Varsòvia
+Moscou
+Moscú
+Tòquio
+Tokio
+Pequín
+Beijing
+Nova York
+Los Angeles
+Chicago
+Toronto
+Mèxic
+Buenos Aires
+Rio de Janeiro
+São Paulo
+El Caire
+Istanbul
+Dubai
+Sydney
+Brussel·les
+Copenhaguen
+Estocolm
+Oslo
+Hèlsinki
+Dublín
+Edimburg
+Zuric
+Ginebra
+Munic
+Hamburg
+Frankfurt
+Milà
+Nàpols
+Venècia
+Florència
+Toronto
+Montreal
+Vancouver
+Miami
+Boston
+Washington
+San Francisco
+Seül
+Hong Kong
+Singapur
+Bangkok
+Jakarta
+Manila
+Mumbai
+Delhi
+Johannesburg
+Ciutat del Cap
+Casablanca
+Tunis
+Lagos
+Nairobi
+Santiago de Xile
+Bogotà
+Lima
+Caracas
+Quito
+Montevideo
+Asunción
+La Paz
+Havana
+
+# Countries and nationalities' homelands
+Catalunya
+Espanya
+Andorra
+França
+Itàlia
+Alemanya
+Portugal
+Anglaterra
+Regne Unit
+Escòcia
+Irlanda
+Holanda
+Bèlgica
+Suïssa
+Àustria
+Grècia
+Suècia
+Noruega
+Dinamarca
+Finlàndia
+Polònia
+Rússia
+Ucraïna
+Turquia
+Xina
+Japó
+Corea
+Índia
+Canadà
+Mèxic
+Brasil
+Argentina
+Xile
+Perú
+Colòmbia
+Veneçuela
+Cuba
+Marroc
+Egipte
+Austràlia
+Nova Zelanda
+Tunísia
+Algèria
+Sud-àfrica
+Nigèria
+Kenya
+Etiòpia
+Palestina
+Líban
+Jordània
+Aràbia Saudita
+Iran
+Iraq
+Pakistan
+Bangladesh
+Indonèsia
+Tailàndia
+Vietnam
+Filipines
+Malàisia
+Singapur
+Equador
+Bolívia
+Paraguai
+Uruguai
+República Dominicana
+Hondures
+Guatemala
+Panamà
+Costa Rica
+Nicaragua
+El Salvador
+Íslàndia
+Luxemburg
+Mònaco
+Malta
+Xipre
+Eslovàquia
+Eslovènia
+Croàcia
+Sèrbia
+Bòsnia
+Montenegro
+Macedònia
+Albània
+Bulgària
+Romania
+Lituània
+Letònia
+Estònia
+Geòrgia
+Armènia
+Azerbaidjan
+Kazakhstan
+
+# Continents
+Europa
+Àsia
+Àfrica
+Amèrica del Sud
+Oceania
+Antàrtida
