@@ -94,7 +94,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--sleep-seconds",
         type=float,
-        default=3.5,
+        default=5,
         help="Delay between API calls to be polite to public APIs.",
     )
     parser.add_argument(
@@ -106,13 +106,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--wikipedia-sleep-seconds",
         type=float,
-        default=1.5,
+        default=5,
         help="Delay between successful Wikipedia API requests.",
     )
     parser.add_argument(
         "--wiktionary-sleep-seconds",
         type=float,
-        default=1.5,
+        default=5,
         help="Delay between successful Viccionari (Wiktionary) API requests.",
     )
     parser.add_argument(
@@ -127,7 +127,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--rate-limit-cooldown-seconds",
         type=float,
-        default=900.0,
+        default=1800.0,
         help="Global cooldown before retrying deferred rate-limited words.",
     )
     parser.add_argument(
@@ -252,13 +252,21 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Comma-separated words to force refresh (bypass cache and resume). "
             "For these words, the script also tries to avoid reusing the existing sentence "
-            "already written for the same rank."
+            "already written for the same rank. When set, the script processes ONLY these "
+            "words (plus any --refresh-ranks matches) — it does not iterate through every "
+            "other rank, so unrelated rows are never touched. --start-rank is ignored in "
+            "this mode."
         ),
     )
     parser.add_argument(
         "--refresh-ranks",
         default="",
-        help="Comma-separated ranks or ranges to force refresh (example: 62,480-482).",
+        help=(
+            "Comma-separated ranks or ranges to force refresh (example: 62,480-482). "
+            "When set, the script processes ONLY these ranks (plus any --refresh-words "
+            "matches) — it does not iterate through every rank in between, so unrelated "
+            "rows are never touched. --start-rank is ignored in this mode."
+        ),
     )
     parser.add_argument(
         "--retry-empty-output",
@@ -2207,18 +2215,16 @@ def main() -> None:
         sentence_key(sentence) for sentence in existing_sentences_by_rank.values()
     )
 
-    if refresh_words:
-        prioritized = [
+    if refresh_ranks or refresh_words:
+        # Restrict iteration to exactly the requested ranks and/or words instead of
+        # sweeping through every rank in the --start-rank/--limit window. This avoids
+        # unrelated rows being incidentally rewritten by cache re-validation or
+        # blank-placeholder fill-in as the loop passes over them.
+        words_with_rank = [
             (rank, word)
             for rank, word in words_with_rank
-            if word.lower() in refresh_words
+            if rank in refresh_ranks or word.lower() in refresh_words
         ]
-        remaining = [
-            (rank, word)
-            for rank, word in words_with_rank
-            if word.lower() not in refresh_words
-        ]
-        words_with_rank = prioritized + remaining
 
     completed_ranks = read_completed_ranks(output_path) if args.resume else set()
 
@@ -2520,7 +2526,11 @@ def main() -> None:
         return "ok"
 
     for rank, word in words_with_rank:
-        if rank < args.start_rank:
+        # --start-rank only bounds the default sequential sweep; when --refresh-ranks or
+        # --refresh-words is set, words_with_rank has already been narrowed to exactly the
+        # requested ranks/words, so every entry here should be processed regardless of
+        # --start-rank.
+        if not (refresh_ranks or refresh_words) and rank < args.start_rank:
             continue
         if args.limit and processed >= args.limit:
             break
