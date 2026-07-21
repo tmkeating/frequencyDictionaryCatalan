@@ -127,7 +127,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--rate-limit-cooldown-seconds",
         type=float,
-        default=600.0,
+        default=900.0,
         help="Global cooldown before retrying deferred rate-limited words.",
     )
     parser.add_argument(
@@ -195,11 +195,14 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--fallback-translator",
-        default="mymemory,libretranslate,apertium,lingva",
+        default="mymemory,libretranslate,lingva,apertium",
         help=(
             "Comma-separated, ordered chain of fallback translators to try when Tatoeba "
             "has no linked English translation. Choices: none, mymemory, libretranslate, "
-            "apertium, lingva. Use 'none' alone to disable all fallback translation."
+            "apertium, lingva. Lingva (a neural Google Translate front-end) is ordered "
+            "before apertium (a rule-based, word-by-word engine) since apertium's output "
+            "is only used as a last resort. Use 'none' alone to disable all fallback "
+            "translation."
         ),
     )
     parser.add_argument(
@@ -450,6 +453,12 @@ _ENGLISH_PRONOUN_CONTRACTION_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Sentences that open with a dictionary/reference-style numeric citation lead, e.g.
+# "12,12b), rotllo anglès de c." or "3a) Definició del terme." — malformed source entries
+# where a section/sense-number citation (optionally comma-separated, with a trailing
+# letter like "12b") stands in for an actual example sentence.
+_CITATION_REFERENCE_RE = re.compile(r"^\s*\d+[a-z]?(?:,\s*\d+[a-z]?)*\)", re.IGNORECASE)
+
 
 def _skip_parenthetical_and_alt(rest: str) -> str:
     """Skip an optional parenthetical and/or 'o AlternateForm' in a lowercased string."""
@@ -550,6 +559,16 @@ def blocked_content_reason(
     # Sentences that are actually in English, not Catalan (malformed source data)
     if _ENGLISH_NEGATION_CONTRACTION_RE.search(sentence) or _ENGLISH_PRONOUN_CONTRACTION_RE.search(sentence):
         return "english_sentence"
+
+    # General English/Spanish word-marker check (catches plain English sentences with
+    # no contractions, e.g. "The green web : a union for world conservation.")
+    if not is_likely_catalan_sentence(sentence):
+        return "non_catalan_sentence"
+
+    # Sentences that open with a dictionary/reference-style numeric citation, e.g.
+    # "12,12b), rotllo anglès de c."
+    if _CITATION_REFERENCE_RE.search(sentence):
+        return "citation_reference"
 
     # Sentence opens with the target word as grammatical subject + copula
     if target_word and _is_definition_lead(sentence, target_word):
@@ -1120,16 +1139,50 @@ def is_likely_catalan_sentence(sentence: str) -> bool:
         "español",
         "castellano",
     }
+    # Unambiguous English function words — none of these are Catalan words, so any
+    # occurrence is a strong signal the "Catalan" side of the entry is really English
+    # (e.g. malformed Tatoeba/Wikipedia entries like "The green web : a union for world
+    # conservation.").
+    english_markers = {
+        "the",
+        "and",
+        "with",
+        "this",
+        "that",
+        "from",
+        "are",
+        "was",
+        "were",
+        "have",
+        "will",
+        "would",
+        "should",
+        "which",
+        "their",
+        "your",
+        "our",
+        "these",
+        "those",
+        "into",
+        "about",
+        "world",
+        "union",
+    }
 
     cat_score = sum(1 for token in tokens if token in catalan_markers)
     if "l'" in lowered or "d'" in lowered:
         cat_score += 1
 
     es_score = sum(1 for token in tokens if token in spanish_markers)
+    en_score = sum(1 for token in tokens if token in english_markers)
 
     if cat_score == 0 and es_score > 0:
         return False
     if es_score >= cat_score + 2:
+        return False
+    if cat_score == 0 and en_score > 0:
+        return False
+    if en_score >= cat_score + 2:
         return False
     return True
 
@@ -1776,6 +1829,15 @@ def translate_with_apertium(text: str) -> tuple[str | None, str]:
     translated = (response_data.get("translatedText") or "").strip()
     if not translated:
         return None, "empty_translation"
+
+    # Apertium is a rule-based (non-neural) engine that translates word-by-word and
+    # marks any word missing from its bilingual dictionary with a leading "*", e.g.
+    # "*The *green web : at *union *for *world *conservation." Such output is
+    # unusably literal/garbled, so treat it as a failed attempt and let the chain
+    # fall through to the next fallback translator instead of accepting it.
+    if "*" in translated:
+        return None, "untranslated_word_marker"
+
     return translated, "ok"
 
 
@@ -2156,9 +2218,13 @@ def main() -> None:
         excluded_sentence_keys: set[str] = set(sentence_key_counts.keys())
 
         # Allow keeping the same sentence when updating the same rank unless a refresh-word
-        # explicitly requests a different sentence for that rank.
+        # explicitly requests a different sentence for that rank. Only relax the exclusion
+        # when this rank is the sole holder of that sentence across the whole output file;
+        # if another rank already shares the same underlying sentence, keep it excluded so a
+        # refresh picks a non-duplicate replacement instead of perpetuating the collision.
         if existing_sentence_key:
-            excluded_sentence_keys.discard(existing_sentence_key)
+            if sentence_key_counts.get(existing_sentence_key, 0) <= 1:
+                excluded_sentence_keys.discard(existing_sentence_key)
             if word.lower() in refresh_words:
                 excluded_sentence_keys.add(existing_sentence_key)
         sentence: str | None = None

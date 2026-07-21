@@ -6,4 +6,5 @@
 /data/*
 !/data/catalan_cloze_output.csv
 !/data/items-words.sorted-by-relative-frequency.tsv
+!/data/blocked_terms.txt
 *.cypthon-312.pyc

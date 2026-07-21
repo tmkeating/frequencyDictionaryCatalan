@@ -1,0 +1,236 @@
+# Blocked terms list (one entry per line)
+# Lines starting with # are ignored.
+# Add words or full phrases in Catalan/Spanish/English.
+# Matching is case-insensitive.
+
+# General
+violar
+violació
+genocidi
+genocida
+terroristes
+terroriste
+morir
+suïcidi
+racisme
+coronavirus
+covid-19
+puta
+puto
+cony
+cul
+cabró
+cabrón
+cabron
+merda
+mierda
+hòstia
+hostia
+joder
+coño
+fotre
+cojones
+gilipollas
+capullo
+Déu
+jesús
+bíblia
+cel
+l'infern
+israel
+nazi
+wehrmacht
+EEUU
+americà
+nord-americana
+esperanto
+podcast
+milles
+IA
+l'ia
+conjuga
+turc
+turca
+
+# Popular company / brand names
+Apple
+Google
+Microsoft
+Amazon
+Meta
+Tesla
+Samsung
+IBM
+Intel
+Nvidia
+Oracle
+Netflix
+Disney
+Coca-Cola
+Pepsi
+McDonald's
+Nike
+Adidas
+Toyota
+Honda
+Ford
+BMW
+Mercedes-Benz
+Volkswagen
+Nissan
+Airbus
+Boeing
+Walmart
+Starbucks
+Visa
+Mastercard
+PayPal
+Uber
+Spotify
+Twitter
+LinkedIn
+WhatsApp
+YouTube
+Adobe
+HP
+Dell
+Cisco
+Huawei
+Xiaomi
+LG
+Panasonic
+Siemens
+Shell
+Pfizer
+Nestlé
+Alphabet
+Berkshire Hathaway
+JPMorgan Chase
+Bank of America
+Wells Fargo
+Goldman Sachs
+Morgan Stanley
+Citigroup
+HSBC
+Barclays
+Deutsche Bank
+UBS
+Chevron
+ExxonMobil
+BP
+TotalEnergies
+Petrobras
+Saudi Aramco
+Gazprom
+Volvo
+Renault
+Peugeot
+Fiat
+Ferrari
+Porsche
+Audi
+Lamborghini
+Bentley
+Rolls-Royce
+Jaguar
+Land Rover
+Subaru
+Mazda
+Mitsubishi
+Hyundai
+Kia
+General Motors
+Chrysler
+Bosch
+General Electric
+Honeywell
+3M
+DuPont
+BASF
+Bayer
+Roche
+Novartis
+Merck
+Sanofi
+GlaxoSmithKline
+AbbVie
+Moderna
+Unilever
+Procter & Gamble
+Colgate-Palmolive
+Kimberly-Clark
+L'Oréal
+Estée Lauder
+Gillette
+Kraft Heinz
+Mondelez
+Danone
+General Mills
+Kellogg's
+Heineken
+Anheuser-Busch
+Budweiser
+Diageo
+PepsiCo
+Burger King
+KFC
+Subway
+Domino's
+Pizza Hut
+Taco Bell
+Wendy's
+Zara
+H&M
+Ikea
+Lidl
+Aldi
+Carrefour
+Tesco
+Costco
+Target
+eBay
+Alibaba
+Tencent
+Baidu
+ByteDance
+Nintendo
+Canon
+Nikon
+Fujifilm
+Lenovo
+Acer
+Asus
+Qualcomm
+AMD
+SAP
+tiktok
+facebook
+instagram
+snapchat
+astrazeneca
+philips
+sony
+toshiba
+
+# Example phrases
+violencia de género
+crim d'odi
+estats units
+les pàgines grogues 
+intel·ligència artificial
+se'm posa dura
+
+# Biography / sports profile terms
+biografia
+va néixer
+va nàixer
+márquez
+marquez
+
+# Descriptions
+tercera persona del plural
+
+# Subtitles
+sincronitzat i fixats
+subtitles
+subs
