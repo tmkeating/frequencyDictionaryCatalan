@@ -195,14 +195,15 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--fallback-translator",
-        default="mymemory,libretranslate,lingva,apertium",
+        default="mymemory,libretranslate,lingva",
         help=(
             "Comma-separated, ordered chain of fallback translators to try when Tatoeba "
             "has no linked English translation. Choices: none, mymemory, libretranslate, "
-            "apertium, lingva. Lingva (a neural Google Translate front-end) is ordered "
-            "before apertium (a rule-based, word-by-word engine) since apertium's output "
-            "is only used as a last resort. Use 'none' alone to disable all fallback "
-            "translation."
+            "apertium, lingva. Apertium is excluded from the default chain because it is a "
+            "rule-based, word-by-word engine that produces low-quality, sometimes "
+            "literally-untranslated (asterisk-marked) output; pass it explicitly "
+            "(e.g. 'mymemory,libretranslate,lingva,apertium') to re-enable it as a last "
+            "resort. Use 'none' alone to disable all fallback translation."
         ),
     )
     parser.add_argument(
@@ -459,6 +460,19 @@ _ENGLISH_PRONOUN_CONTRACTION_RE = re.compile(
 # letter like "12b") stands in for an actual example sentence.
 _CITATION_REFERENCE_RE = re.compile(r"^\s*\d+[a-z]?(?:,\s*\d+[a-z]?)*\)", re.IGNORECASE)
 
+# Sentences containing parenthetical asides. In practice these are almost always
+# encyclopedic/reference clutter (disambiguation glosses like "(handbol)", etymology
+# breakdowns, taxonomic names, bibliographic citations like "(23a edició, Madrid: 2014)",
+# acronym expansions, etc.) rather than natural example sentences — they cause more
+# translation/quality problems than they solve. The one common, legitimate exception is
+# a leading pro-drop subject pronoun, e.g. "(Jo) estava a punt de saltar per damunt del
+# mur.", a standard Tatoeba convention for showing the implied subject.
+_PARENTHETICAL_RE = re.compile(r"\(([^)]*)\)")
+_PARENTHETICAL_SUBJECT_PRONOUNS = {
+    "jo", "tu", "ell", "ella", "vós", "vostè", "nosaltres", "vosaltres", "vostès",
+    "ells", "elles",
+}
+
 
 def _skip_parenthetical_and_alt(rest: str) -> str:
     """Skip an optional parenthetical and/or 'o AlternateForm' in a lowercased string."""
@@ -569,6 +583,24 @@ def blocked_content_reason(
     # "12,12b), rotllo anglès de c."
     if _CITATION_REFERENCE_RE.search(sentence):
         return "citation_reference"
+
+    # Sentences containing a parenthetical aside, e.g. "(23a edició, Madrid: 2014)" or
+    # "Central (handbol)" — usually encyclopedic clutter. Allow the single, common
+    # exception of a leading pro-drop subject pronoun like "(Jo) estava...".
+    paren_matches = _PARENTHETICAL_RE.findall(sentence)
+    if paren_matches:
+        is_allowed_leading_pronoun = (
+            len(paren_matches) == 1
+            and paren_matches[0].strip().lower() in _PARENTHETICAL_SUBJECT_PRONOUNS
+            and sentence.lstrip().startswith("(" + paren_matches[0] + ")")
+        )
+        if not is_allowed_leading_pronoun:
+            return "parenthetical_content"
+
+    # Unbalanced/orphan parenthesis, e.g. "Les interjeccions poden expressar sorpresa
+    # (caram!" — a truncated source sentence missing its closing paren.
+    if sentence.count("(") != sentence.count(")"):
+        return "parenthetical_content"
 
     # Sentence opens with the target word as grammatical subject + copula
     if target_word and _is_definition_lead(sentence, target_word):

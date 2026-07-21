@@ -51,6 +51,7 @@ l'ia
 conjuga
 turc
 turca
+pdf
 
 # Popular company / brand names
 Apple
