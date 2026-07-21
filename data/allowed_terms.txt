@@ -226,11 +226,90 @@ Francisco
 Luis
 Diego
 
+# Famous Catalan People
+Antoni Gaudí
+Gaudí
+Salvador Dalí
+Dalí
+Joan Miró
+Miró
+Antoni Tàpies
+Tàpies
+Ramon Casas
+Pau Casals
+Jordi Savall
+Montserrat Caballé
+Josep Carreras
+Joan Manuel Serrat
+Serrat
+Lluís Llach
+Raimon
+Jacint Verdaguer
+Verdaguer
+Josep Pla
+Mercè Rodoreda
+Rodoreda
+Salvador Espriu
+Espriu
+Joan Maragall
+Narcís Oller
+Ramon Llull
+Llull
+Josep Carner
+Manuel de Pedrolo
+Quim Monzó
+Baltasar Porcel
+Montserrat Roig
+Pere Calders
+Isaac Albéniz
+Enric Granados
+Lluís Domènech i Montaner
+Josep Puig i Cadafalch
+Ricardo Bofill
+Narcís Monturiol
+Monturiol
+Josep Trueta
+Jaume I
+Ramon Berenguer IV
+Lluís Companys
+Companys
+Francesc Macià
+Macià
+Jordi Pujol
+Pujol
+Josep Tarradellas
+Pasqual Maragall
+Artur Mas
+Carles Puigdemont
+Puigdemont
+Pau Gasol
+Marc Gasol
+Carles Puyol
+Puyol
+Xavi Hernández
+Gerard Piqué
+Piqué
+Marc Márquez
+Mireia Belmonte
+Ona Carbonell
+Ferran Adrià
+
+
 # Catalan provinces / demarcations
 Barcelona
 Girona
 Lleida
 Tarragona
+Illes Balears
+Balears
+Mallorca
+Menorca
+Ibiza
+Formentera
+Cabrera
+Alguer
+Alghero
+
 
 # Provinces of Spain (all 50 + the 2 autonomous cities)
 Àlava
@@ -462,7 +541,6 @@ La Rioja
 Múrcia
 Navarra
 País Basc
-Illes Balears
 Illes Canàries
 
 # Major world cities

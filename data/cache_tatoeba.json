@@ -13829,11 +13829,9 @@
     "updated_at": 1784657978
   },
   "paula": {
-    "status": "ok",
-    "sentence": "Múrcia: Francisco de Paula del Villar y Lozano, arquitecte espanyol.",
-    "english": "Murcia: Francisco de Paula del Villar y Lozano, Spanish architect.",
-    "source": "wikipedia_search+lingva",
-    "updated_at": 1784658029
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784664230
   },
   "denunciar": {
     "status": "ok",

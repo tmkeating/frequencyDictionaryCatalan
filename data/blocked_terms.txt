@@ -225,11 +225,10 @@ se'm posa dura
 biografia
 va néixer
 va nàixer
-márquez
-marquez
 
 # Descriptions
 tercera persona del plural
+vs.
 
 # Subtitles
 sincronitzat i fixats
