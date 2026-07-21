@@ -34,7 +34,6 @@ Steve
 Fred
 Mike
 Tony
-Jack
 Sam
 Ted
 Joe
@@ -79,7 +78,6 @@ Xavi
 Carles
 Toni
 Antoni
-Miquel
 Ramon
 Ferran
 Gerard
@@ -112,7 +110,6 @@ Judit
 Judith
 Sílvia
 Silvia
-Cristina
 Sandra
 Mireia
 Berta
@@ -126,10 +123,8 @@ Angels
 Susanna
 Alba
 Emma
-Sara
 Julia
 Júlia
-Paula
 Lucia
 Lúcia
 Ricard
@@ -197,7 +192,6 @@ Vives
 Fontanet
 
 # International first names commonly used in example sentences / dictionaries
-Peter
 Paul
 Michael
 James
@@ -241,7 +235,6 @@ Jordi Savall
 Montserrat Caballé
 Josep Carreras
 Joan Manuel Serrat
-Serrat
 Lluís Llach
 Raimon
 Jacint Verdaguer
@@ -276,7 +269,6 @@ Companys
 Francesc Macià
 Macià
 Jordi Pujol
-Pujol
 Josep Tarradellas
 Pasqual Maragall
 Artur Mas

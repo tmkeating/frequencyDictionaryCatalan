@@ -35,6 +35,8 @@ capullo
 Déu
 jesús
 bíblia
+baptismal
+baptism
 cel
 l'infern
 israel
@@ -42,8 +44,10 @@ nazi
 wehrmacht
 EEUU
 americà
+anglès
 nord-americana
 esperanto
+interlingue
 podcast
 milles
 IA
@@ -52,6 +56,7 @@ conjuga
 turc
 turca
 pdf
+.gencat
 
 # Popular company / brand names
 Apple
@@ -220,6 +225,7 @@ estats units
 les pàgines grogues 
 intel·ligència artificial
 se'm posa dura
+vaig calent
 
 # Biography / sports profile terms
 biografia
@@ -229,6 +235,8 @@ va nàixer
 # Descriptions
 tercera persona del plural
 vs.
+prenom femení
+prenom masculí
 
 # Subtitles
 sincronitzat i fixats

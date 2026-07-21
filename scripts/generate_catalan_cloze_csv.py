@@ -1164,10 +1164,15 @@ def select_tatoeba_sentence(
             max_words=max_words,
             min_chars=min_chars,
         ):
-            # If no preferred candidate exists, allow any sentence up to absolute max.
+            # If no preferred candidate exists, allow a longer-than-preferred
+            # sentence (up to absolute_max_words) as a fallback, but never one
+            # that is shorter than min_words — a sentence with fewer words than
+            # the configured minimum is too thin a flashcard regardless of length
+            # in characters (e.g. a single-word exclamation like "Magnífic!").
             if len(sentence.strip()) < min_chars:
                 continue
-            if count_sentence_words(sentence) > absolute_max_words:
+            word_count = count_sentence_words(sentence)
+            if word_count < min_words or word_count > absolute_max_words:
                 continue
             if fallback_sentence is None or len(sentence) > len(fallback_sentence):
                 fallback_sentence = sentence
