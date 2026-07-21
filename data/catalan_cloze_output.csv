@@ -222,7 +222,7 @@ Les vacances d'estiu arribaran {{c1::força}} avait.,força,{{c1::força}},221,I
 Estem molt interessats en la {{c1::història}}.,història,{{c1::història}},222,We are very interested in the story.
 Ningú diria: no confio en {{c1::Déu}}.,déu,{{c1::Déu}},223,"No one would say, I don't trust God."
 Mai s'hauria de desaprofitar una crisi {{c1::greu}}.,greu,{{c1::greu}},224,You never want a serious crisis to go to waste.
-"Usat especialment en l’expressió 'ai {{c1::las!}}', amb què hom lamenta alguna cosa.",las,{{c1::las!}},225,"Used especially in the expression 'ai las!', with which one regrets something."
+"Ai {{c1::las}}, quina desgràcia més gran!",las,{{c1::las}},225,"Alas, what a terrible misfortune!"
 No sabia que tenia un {{c1::fill}}.,fill,{{c1::fill}},226,I did not know that she has a child.
 "Si no us importa, m'agradaria anar amb {{c1::vosaltres}}.",vosaltres,{{c1::vosaltres}},227,I'd like to go with you if you don't mind.
 Sents {{c1::algun}} so?,algun,{{c1::algun}},228,Do you hear any sound?
@@ -850,7 +850,7 @@ Una quantitat considerable d'alumnes vol anar a la {{c1::universitat}}.,universi
 "Élla té els llavis molt bonics, sobretot a l'hivern, quan el {{c1::vermell}} ressalta sobre el blanc de la neu.",vermell,{{c1::vermell}},850,"She has very beautiful lips, especially in winter, when the red stands out against the white of the snow."
 Ell va {{c1::ficar}} una palla al formiguer.,ficar,{{c1::ficar}},851,He stuck a straw into an anthill.
 On és el {{c1::Palau}} de les Belles Arts?,palau,{{c1::Palau}},852,Where is the Palace of Fine Arts?
-I'm in What'{{c1::re}} fem?,re,{{c1::re}},853,I'm in. What're we doing?
+"No passa {{c1::re}}, ja ho arreglarem.",re,{{c1::re}},853,"Nothing's wrong, we'll fix it."
 Aquest tipus s'ha convertit en objecte d'estudi sobre la inversió de la {{c1::direcció}} evolutiva de l'espècie humana. Un cas sorprenent.,direcció,{{c1::direcció}},854,This individual has become the subject of study on the reversal of the evolutionary direction of the human species. An impressive case.
 La {{c1::caixa}} va rompre's degut el pes de la càrrega.,caixa,{{c1::caixa}},855,The box fell apart due to the weight of the load.
 Crec que aquí tothom està participant en una estranya 'conspiració del {{c1::silenci}}'.,silenci,{{c1::silenci}},856,I believe that everyone here is participating in a strange 'conspiracy of silence'.
@@ -858,7 +858,7 @@ Crec que aquí tothom està participant en una estranya 'conspiració del {{c1::
 L'unicorn és un {{c1::monstre}} fabulós.,monstre,{{c1::monstre}},858,The unicorn is a fabulous monster.
 Ell va anar al carrer {{c1::antic}}.,antic,{{c1::antic}},859,He went to the old street.
 A la {{c1::velocitat}} de la llum!,velocitat,{{c1::velocitat}},860,Lightning-fast!
-,,,861,
+El {{c1::sector}} terciari inclou l'oferiment de serveis ja sigui a altres negocis i indústries o als consumidors finals.,sector,{{c1::sector}},861,The tertiary sector includes the provision of services either to other businesses and industries or to end consumers.
 "No patisques, que {{c1::ta}} mare tornarà molt prompte.",ta,{{c1::ta}},862,"Don't worry, your mother is coming very soon."
 Un nen té la {{c1::temperatura}} més alta que un adult.,temperatura,{{c1::temperatura}},863,A child has a higher temperature than an adult does.
 "Tot {{c1::plegat}} va tenir el suport dels avenços tècnics que afectaven tant els instruments com els sistemes d'amplificació, cada cop més potents.",plegat,{{c1::plegat}},864,All this was supported by technical advances that affected both the instruments and the increasingly powerful amplification systems.
@@ -873,7 +873,7 @@ Vull aprendre {{c1::anglès}} standard.,anglès,{{c1::anglès}},872,I want to le
 La {{c1::unió}} dels dos partits va crear una força política més gran.,unió,{{c1::unió}},873,The union of the two parties created a bigger political force.
 Un ocell pot {{c1::volar}}.,volar,{{c1::volar}},874,A bird can fly.
 "Vas agafar els ocells, però algú altre va estendre la {{c1::xarxa}}.",xarxa,{{c1::xarxa}},875,"You caught the birds, but someone else spread the net."
-,,,876,
+El nen {{c1::puja}} les escales de dos en dos.,puja,{{c1::puja}},876,The boy climbs the stairs two at a time.
 He agafat el teu paraigües per {{c1::error}}.,error,{{c1::error}},877,I took your umbrella by mistake.
 "Aparentment tenen el mateix {{c1::accent}} que els tuaregs, amb les mateixes entonacions emfàtiques (veus càlides).",accent,{{c1::accent}},878,"They seem to have the same accent as the Tuaregs, with the same emphatic intonations (warm voices)."
 L'{{c1::activitat}} del comerç exterior ha davallat darrerament.,activitat,{{c1::activitat}},879,Foreign trade activity has recently declined.
@@ -980,7 +980,7 @@ L'amor supera qualsevol {{c1::distància}}.,distància,{{c1::distància}},979,Lo
 Encara ets massa jove per a {{c1::beure}}.,beure,{{c1::beure}},980,You're still too young to drink.
 Com podem conciliar vida {{c1::professional}} i vida privada?,professional,{{c1::professional}},981,How can we reconcile professional and private life?
 El secretari general ha afirmat aquest dimarts que és {{c1::absolutament}} insuficient.,absolutament,{{c1::absolutament}},982,The secretary-general said on Tuesday that it is absolutely insufficient.
-,,,983,
+El {{c1::combat}} pot ser armat o desarmat.,combat,{{c1::combat}},983,Combat can be armed or unarmed.
 La meva àvia materna sempre porta aquesta roba passada de {{c1::moda}}.,moda,{{c1::moda}},984,My maternal grandmother persists in wearing that old-fashioned dress.
 Estava a l'{{c1::estació}}.,estació,{{c1::estació}},985,I was at the station.
 Tothom coneix el seu nom a aquesta {{c1::regió}}.,regió,{{c1::regió}},986,His name is known to everybody in this area.
@@ -1015,7 +1015,7 @@ Vas {{c1::participar}} ahir a les discussions?,participar,{{c1::participar}},101
 "Quan Tom va escriure eixe text, mai va {{c1::imaginar}} que tindria tanta repercussió en les xarxes socials.",imaginar,{{c1::imaginar}},1015,"When Tom wrote this text, he never imagined that it would have so much impact on the social networks."
 Quin és el problema que la vostra empresa intenta {{c1::resoldre}}?,resoldre,{{c1::resoldre}},1016,What is the problem your company is trying to solve?
 "Aquell mateix any, anà també a la ciutat comtal a fer el pregó de les Festes de la {{c1::Mercè}}.",mercè,{{c1::Mercè}},1017,"That same year, he also went to the city to make the prayer of the Fiestas de la Mercè."
-,,,1018,
+"El 1996, l'{{c1::Amo}} fou interpretat per Gordon Tipple (breument) i Eric Roberts a la pel·lícula de televisió.",amo,{{c1::Amo}},1018,"In 1996, the Master was portrayed by Gordon Tipple (briefly) and Eric Roberts in the TV movie."
 La carn de {{c1::porc}} està prohibida a l'islam.,porc,{{c1::porc}},1019,Pork is forbidden in Islam.
 M'he cremat a la {{c1::punta}} del dit.,punta,{{c1::punta}},1020,I got burnt at the tip of my finger.
 França és un país d'Europa de l'{{c1::Oest}}.,oest,{{c1::Oest}},1021,France is a country in west Europe.
@@ -1058,3 +1058,30 @@ Has parlat amb el teu {{c1::advocat}} sobre aquest problema?,advocat,{{c1::advoc
 Com et pots menjar una entxilada sense {{c1::salsa}}?,salsa,{{c1::salsa}},1058,How can you eat an enchilada without salsa?
 ,,,1059,
 "Aquest cop d'estat va fracassar per la pura incompetència dels colpistes, i no per manca de {{c1::voluntat}} o intenció.",voluntat,{{c1::voluntat}},1060,"This coup d'état failed due to the sheer incompetence of the coup plotters, and not due to a lack of will or intention."
+Conjuga el verb 'ser' en {{c1::present}} d'indicatiu.,present,{{c1::present}},1061,Conjugate the verb 'to be' in the present indicative.
+"{{c1::Víctor}} I (Àfrica, ?",víctor,{{c1::Víctor}},1062,"Victor I (Africa, ?"
+Walt Whitman és el meu poeta {{c1::americà}} preferit.,americà,{{c1::americà}},1063,Walt Whitman is my favorite American poet.
+Si no hagués mirat dins el pot no me'n hauria adonat que la melmelada tenia fongs a la {{c1::superfície}}.,superfície,{{c1::superfície}},1064,"If I hadn't looked inside the jar, I wouldn't have noticed that the jam had mushrooms on the surface."
+Potser algun dia també podrem recordar aquests moments amb {{c1::plaer}}.,plaer,{{c1::plaer}},1065,Perhaps one day we will also be able to remember these moments with pleasure.
+El 1912 Alfons XIII li atorga el títol de {{c1::Reial}}.,reial,{{c1::Reial}},1066,In 1912 Alfonso XIII granted him the title of Royal.
+A mi m'agrada més mirar les pel·lícules en versió {{c1::original}}.,original,{{c1::original}},1067,I prefer to watch films in the original.
+"Si un lleó caça dos conills, el conill més ràpid pot {{c1::escapar}}.",escapar,{{c1::escapar}},1068,"If two rabbits are being hunted by a lion, the faster rabbit may escape."
+La {{c1::proposta}} amb el número 264405 no existeix.,proposta,{{c1::proposta}},1069,Proposal number 264405 does not exist.
+És un dels candidats que es presenta per {{c1::alcalde}}.,alcalde,{{c1::alcalde}},1070,He is one of the candidates running for mayor.
+{{c1::Alerta}}!,alerta,{{c1::Alerta}},1071,Careful!
+Ell va tenir un accident i es va fracturar un {{c1::os}}.,os,{{c1::os}},1072,He had an accident and fractured a bone.
+,,,1073,
+Ets molt {{c1::valent}}.,valent,{{c1::valent}},1074,You are very courageous.
+Quan la {{c1::roca}} calcària conté una proporció entre el 35-65% d'argila s'anomena marga.,roca,{{c1::roca}},1075,When the limestone rock contains a proportion between 35-65% of clay it is called marl.
+El progrés que ja ha fet l'IA en l'aprenentatge d'idiomes és simplement {{c1::espectacular}}.,espectacular,{{c1::espectacular}},1076,The progress AI has already made in language learning is simply spectacular.
+La creativitat és un {{c1::aspecte}} important per al desenvolupament de l'ésser humà.,aspecte,{{c1::aspecte}},1077,Creativity is an important aspect of human development.
+Aquesta illa té un clima {{c1::ideal}}.,ideal,{{c1::ideal}},1078,This island has an ideal climate.
+L'ésser {{c1::humà}} és una papallona somiadora.,humà,{{c1::humà}},1079,The human being is a dreamy butterfly.
+Ha {{c1::enviat}} una postal a Mary.,enviat,{{c1::enviat}},1080,He sent a card to Mary.
+He {{c1::trencat}} les meves ulleres.,trencat,{{c1::trencat}},1081,I've broken my glasses.
+Aquest és el gos que perseguia el gat que encalçava el ratolí que vivia a la casa que en {{c1::Jack}} va construir.,jack,{{c1::Jack}},1082,This is the dog that chased the cat that stalked the mouse that lived in the house that Jack built.
+Va nevar des del {{c1::dilluns}} fins el divendres.,dilluns,{{c1::dilluns}},1083,It snowed from Monday to Friday.
+"Si suspens aquest examen, hauràs de repetir {{c1::curs}}.",curs,{{c1::curs}},1084,"If you flunk this exam, you'll have to repeat the course."
+No sé si compraré la samarreta vermella de tela o aquestes gorra {{c1::negra}} de seda.,negra,{{c1::negra}},1085,I don't know if I'll buy the red fabric t-shirt or these black silk cap.
+"Les lleis no són fórmules matemàtiques. Interpretar-les és la {{c1::funció}} d'una ciència important, l'hermenèutica jurídica.",funció,{{c1::funció}},1086,"Laws are not mathematical formulas. Interpreting them is the function of an important science, legal hermeneutics."
+No vaig tenir cap altra {{c1::opció}} que quedar-me.,opció,{{c1::opció}},1087,I had no choice but to stay.

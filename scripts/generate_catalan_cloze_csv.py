@@ -94,25 +94,25 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--sleep-seconds",
         type=float,
-        default=1.2,
+        default=3.5,
         help="Delay between API calls to be polite to public APIs.",
     )
     parser.add_argument(
         "--retry-sleep-seconds",
         type=float,
-        default=10,
+        default=15,
         help="Delay between retry attempts for the same word.",
     )
     parser.add_argument(
         "--wikipedia-sleep-seconds",
         type=float,
-        default=1,
+        default=1.5,
         help="Delay between successful Wikipedia API requests.",
     )
     parser.add_argument(
         "--wiktionary-sleep-seconds",
         type=float,
-        default=1,
+        default=1.5,
         help="Delay between successful Viccionari (Wiktionary) API requests.",
     )
     parser.add_argument(
@@ -151,7 +151,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--absolute-max-words",
         type=int,
-        default=50,
+        default=33,
         help="Hard maximum number of words accepted when preferred bounds have no match.",
     )
     parser.add_argument(
@@ -168,11 +168,13 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--backup-sentence-api",
-        default="wikipedia,wiktionary,opensubtitles",
+        default="wikipedia,wiktionary",
         help=(
             "Comma-separated, ordered chain of backup sentence sources to try when "
             "Tatoeba returns no results. Choices: none, wikipedia, wiktionary, "
-            "opensubtitles. Use 'none' alone to disable all backups."
+            "opensubtitles. Use 'none' alone to disable all backups. OpenSubtitles is "
+            "not enabled by default (low-quality subtitle lines cause more problems "
+            "than they solve) — add it explicitly if desired."
         ),
     )
     parser.add_argument(
@@ -435,6 +437,19 @@ _FULL_DATE_RE = re.compile(
 # to read a figure rather than using the target word in a natural sentence.
 _CAPTION_LEAD_RE = re.compile(r"^\s*es\s+llegeix\s*:", re.IGNORECASE)
 
+# Sentences that are actually in English, not Catalan — e.g. malformed Tatoeba entries
+# where the "Catalan" side is really an English quote/fragment with the target word
+# embedded, such as "I'm in What're we doing?" (target word "re" matched inside "What're").
+# English contracted negation ("don't", "isn't", "wasn't"...) never occurs in Catalan, and
+# apostrophe-contractions attached to English pronouns ("I'm", "we're", "what's"...) are
+# likewise not a Catalan pattern (Catalan clitics like "escolta'm" attach to verbs, not
+# pronouns/question words).
+_ENGLISH_NEGATION_CONTRACTION_RE = re.compile(r"\b\w*n't\b", re.IGNORECASE)
+_ENGLISH_PRONOUN_CONTRACTION_RE = re.compile(
+    r"\b(?:i|you|we|they|he|she|it|what|who|that|there|here)'(?:m|re|s|ll|ve|d)\b",
+    re.IGNORECASE,
+)
+
 
 def _skip_parenthetical_and_alt(rest: str) -> str:
     """Skip an optional parenthetical and/or 'o AlternateForm' in a lowercased string."""
@@ -531,6 +546,10 @@ def blocked_content_reason(
     # Sentences that are diagram/formula-image captions, e.g. "es llegeix: ..."
     if _CAPTION_LEAD_RE.search(sentence):
         return "caption_sentence"
+
+    # Sentences that are actually in English, not Catalan (malformed source data)
+    if _ENGLISH_NEGATION_CONTRACTION_RE.search(sentence) or _ENGLISH_PRONOUN_CONTRACTION_RE.search(sentence):
+        return "english_sentence"
 
     # Sentence opens with the target word as grammatical subject + copula
     if target_word and _is_definition_lead(sentence, target_word):
