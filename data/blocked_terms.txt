@@ -55,6 +55,7 @@ l'ia
 conjuga
 turc
 turca
+turcs
 pdf
 .gencat
 

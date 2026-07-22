@@ -7046,10 +7046,10 @@
   },
   "verd": {
     "status": "ok",
-    "sentence": "\"De quin color és el teu bolígraf?\" \"Verd.\"",
-    "english": "\"What color is your pen?\" \"Green.\"",
+    "sentence": "Encara està verd en els negocis.",
+    "english": "He is still green in business.",
     "source": "tatoeba_linked_translation",
-    "updated_at": 1784584137
+    "updated_at": 1784712442
   },
   "pont": {
     "status": "ok",
@@ -7350,10 +7350,10 @@
   },
   "soler": {
     "status": "ok",
-    "sentence": "Gràcies a l'èxit de les seves obres, Soler va acabar sent empresari i director artístic d'aquest teatre.",
-    "english": "Thanks to the success of his works, Soler ended up being an entrepreneur and artistic director of this theatre.",
-    "source": "wikipedia_search+mymemory",
-    "updated_at": 1784588948
+    "sentence": "Durant aquest període, l'obra de Soler fa un gir cap al conservadorisme.",
+    "english": "During this period, Soler's work takes a turn towards conservatism.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784672291
   },
   "correu": {
     "status": "ok",
@@ -7433,11 +7433,9 @@
     "updated_at": 1784593239
   },
   "reial": {
-    "status": "ok",
-    "sentence": "El 1912 Alfons XIII li atorga el títol de Reial.",
-    "english": "In 1912 Alfonso XIII granted him the title of Royal.",
-    "source": "wikipedia_search+mymemory",
-    "updated_at": 1784593305
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784672482
   },
   "original": {
     "status": "ok",
@@ -7469,10 +7467,10 @@
   },
   "alerta": {
     "status": "ok",
-    "sentence": "Alerta!",
-    "english": "Careful!",
-    "source": "tatoeba_linked_translation",
-    "updated_at": 1784593363
+    "sentence": "En aquests moments l'organisme, gràcies a l'adrenalina, passa a un estat d′\"alerta vermella\".",
+    "english": "At these moments, thanks to the adrenaline, the body goes into a state of \"red alert\".",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784672596
   },
   "os": {
     "status": "ok",
@@ -7865,11 +7863,9 @@
     "updated_at": 1784596586
   },
   "cristina": {
-    "status": "ok",
-    "sentence": "Prenom femení, equivalent al català Cristina.",
-    "english": "Female name, equivalent to the Catalan Cristina.",
-    "source": "wiktionary_search+mymemory",
-    "updated_at": 1784596695
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784672783
   },
   "conjunt": {
     "status": "ok",
@@ -8567,10 +8563,10 @@
   },
   "peter": {
     "status": "ok",
-    "sentence": "Peter estimava a Jane.",
-    "english": "Peter loved Jane.",
-    "source": "tatoeba_linked_translation",
-    "updated_at": 1784600469
+    "sentence": "Peter els jutja i són assassinats individualment per la infracció.",
+    "english": "Peter puts them on trial and they are individually killed for the infraction.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784672984
   },
   "acostar": {
     "status": "ok",
@@ -8742,10 +8738,10 @@
   },
   "quiet": {
     "status": "ok",
-    "sentence": "Els fets més importants de la campanya de Quiet són esmentats en el Talmud i altres fonts rabíniques.",
-    "english": "The most important facts of the campaign of Still are mentioned at the *Talmud and other rabbinic fonts.",
-    "source": "wikipedia_search+apertium",
-    "updated_at": 1784601332
+    "sentence": "Forma plural de quiet.",
+    "english": "Plural form of quiet.",
+    "source": "wiktionary_search+lingva",
+    "updated_at": 1784673171
   },
   "marcar": {
     "status": "ok",
@@ -9341,9 +9337,9 @@
   "salvador": {
     "status": "ok",
     "sentence": "No obstant això, el costum de fer contracció de la primera paraula va provocar que fos escrit com a \"República del Salvador\".",
-    "english": "Nevertheless, the habit to make contraction of the first word provoked that it was written as a \"Salvador's Republic\".",
-    "source": "wikipedia_search+apertium",
-    "updated_at": 1784604931
+    "english": "However, the custom of contracting the first word caused it to be written as \"República del Salvador\".",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784673273
   },
   "assegurar": {
     "status": "ok",
@@ -9711,10 +9707,10 @@
   },
   "pal": {
     "status": "ok",
-    "sentence": "Va matar Pal·lant i Encèlad.",
-    "english": "It killed *Pal·lant and *Encèlad.",
-    "source": "wikipedia_search+apertium",
-    "updated_at": 1784607270
+    "sentence": "Tanmateix, no fou a partir d'aquest aliatge que s'extragué per primera vegada el pal·ladi, sinó del platí.",
+    "english": "However, it was not from this alloy that palladium was extracted for the first time, but from platinum.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784673375
   },
   "semblant": {
     "status": "ok",
@@ -9739,10 +9735,10 @@
   },
   "fase": {
     "status": "ok",
-    "sentence": "Per a les fases de la lluna vegeu Fase lunar.",
-    "english": "For the phases of the moon view lunar Phase.",
-    "source": "wikipedia_summary+apertium",
-    "updated_at": 1784607427
+    "sentence": "S'anomena fase a cadascun dels estats de la matèria.",
+    "english": "Each of the states of matter is called a phase.",
+    "source": "wikipedia_summary+lingva",
+    "updated_at": 1784673466
   },
   "sac": {
     "status": "error",
@@ -9772,10 +9768,10 @@
   },
   "república": {
     "status": "ok",
-    "sentence": "La reforma constitucional de febrer del 2003 precisa que l'organització de la República és descentralitzada.",
-    "english": "The constitutional reform of February of the 2003 requires that the organisation of the Republic is decentralised.",
-    "source": "wikipedia_search+apertium",
-    "updated_at": 1784607672
+    "sentence": "La república va guanyar amb un marge del 9 per cent.",
+    "english": "The republic won by a margin of 9 percent.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784673568
   },
   "tallat": {
     "status": "ok",
@@ -9814,10 +9810,10 @@
   },
   "pica": {
     "status": "ok",
-    "sentence": "Pica baptismal, recipients els quals es conté l'aigua per a impartir el sagrament del baptisme.",
-    "english": "Baptismal basin, containers which contains  the water to impart the sacrament of the baptism.",
-    "source": "wikipedia_summary+apertium",
-    "updated_at": 1784607931
+    "sentence": "Aleshores es van construir els baptisteris, de fàbrica, sempre amb una pica de submersió, de diferents formes: rectangulars, poligonals i cilíndriques.",
+    "english": "Then the baptisteries were built, factory-made, always with an immersion sink, in different shapes: rectangular, polygonal and cylindrical.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784673665
   },
   "autor": {
     "status": "ok",
@@ -10351,10 +10347,10 @@
   },
   "calent": {
     "status": "ok",
-    "sentence": "Vaig calent.",
-    "english": "I’m horny.",
+    "sentence": "El tè és calent.",
+    "english": "The tea is hot.",
     "source": "tatoeba_linked_translation",
-    "updated_at": 1784611175
+    "updated_at": 1784673686
   },
   "inventar": {
     "status": "ok",
@@ -10659,10 +10655,10 @@
   },
   "episodi": {
     "status": "ok",
-    "sentence": "En la publicitat, la pel·lícula simplement era nomenada com L'Imperi contraataca, però les lletres d'obertura comencen amb Episodi V.",
-    "english": "At the advert, the film simply was named like The Empire counters, but the lyrics of opening commence with Episode *V.",
-    "source": "wikipedia_search+apertium",
-    "updated_at": 1784613268
+    "sentence": "Forma plural de episodi.",
+    "english": "Plural form of episode.",
+    "source": "wiktionary_search+lingva",
+    "updated_at": 1784673866
   },
   "passejar": {
     "status": "ok",
@@ -11126,10 +11122,10 @@
   },
   "plató": {
     "status": "ok",
-    "sentence": "Per Hèrcules, prefereixo equivocar-me amb Plató que conèixer la veritat amb aquesta gent.",
-    "english": "For Hercules, prefer *equivocar-me with Plato that meet the truth with these persons.",
-    "source": "tatoeba_sentence_only+apertium",
-    "updated_at": 1784616203
+    "sentence": "Plató torna a ser privat de llibertat.",
+    "english": "Plato is again deprived of freedom.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784673968
   },
   "euro": {
     "status": "ok",
@@ -11301,10 +11297,10 @@
   },
   "pujol": {
     "status": "ok",
-    "sentence": "En abril de 2026 l'Audiència Nacional va excloure el president Pujol del judici i arxivà la causa contra ell.",
-    "english": "At April of 2026 the National Audience excluded the president Pujol of the trial and archived the cause against him.",
-    "source": "wikipedia_search+apertium",
-    "updated_at": 1784617302
+    "sentence": "Pujol havia après perfectament l'alemany, el francès i el castellà.",
+    "english": "Pujol had learned German, French and Spanish perfectly.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784674055
   },
   "brasil": {
     "status": "ok",
@@ -11475,11 +11471,9 @@
     "updated_at": 1784618414
   },
   "magnífic": {
-    "status": "ok",
-    "sentence": "Magnífic!",
-    "english": "Wonderful!",
-    "source": "tatoeba_linked_translation",
-    "updated_at": 1784618433
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784674257
   },
   "octubre": {
     "status": "ok",
@@ -11700,10 +11694,10 @@
   },
   "patrimoni": {
     "status": "ok",
-    "sentence": "Les 7 meravelles del patrimoni català, a Patrimoni.gencat.",
-    "english": "The 7 wonders of Catalan heritage, at Patrimoni.gencat.",
+    "sentence": "Està formada per presidents i responsables de diverses associacions europees de promoció del patrimoni cultural.",
+    "english": "It is made up of presidents and managers of various European associations for the promotion of cultural heritage.",
     "source": "wikipedia_search+lingva",
-    "updated_at": 1784636477
+    "updated_at": 1784674307
   },
   "candidat": {
     "status": "ok",
@@ -12120,10 +12114,10 @@
   },
   "occidental": {
     "status": "ok",
-    "sentence": "La llengua internacional Interlingue ha estat publicada en 1922 amb el nom Occidental.",
-    "english": "The international language Interlingue was published in 1922 under the name Occidental.",
-    "source": "tatoeba_linked_translation",
-    "updated_at": 1784622258
+    "sentence": "El món occidental també canvia al llarg del temps i també rep influències d'altres cultures no occidentals.",
+    "english": "The Western world also changes over time and also receives influences from other non-Western cultures.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784674427
   },
   "porter": {
     "status": "ok",
@@ -12462,11 +12456,9 @@
     "updated_at": 1784624801
   },
   "sara": {
-    "status": "ok",
-    "sentence": "Per què hauria de visitar Baghdad la Sara?",
-    "english": "Why should Sara visit Baghdad?",
-    "source": "tatoeba_linked_translation",
-    "updated_at": 1784624821
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784674611
   },
   "estrena": {
     "status": "ok",
@@ -12547,10 +12539,10 @@
   },
   "homenatge": {
     "status": "ok",
-    "sentence": "El pacte de vassallatge constava de dues parts:Homenatge: part en què els nobles es convertien en vassalls del rei.",
-    "english": "The vassalage pact consisted of two parts:Homage: part in which the nobles became vassals of the king.",
-    "source": "wikipedia_summary+mymemory",
-    "updated_at": 1784625305
+    "sentence": "D'aquí se'n deriven els actes d'homenatge actuals com un acte de respecte, de veneració, envers una persona.",
+    "english": "Hence the current acts of homage as an act of respect, of veneration, towards a person.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784674702
   },
   "pagès": {
     "status": "ok",
@@ -13662,10 +13654,10 @@
   },
   "colònia": {
     "status": "ok",
-    "sentence": "A l'aglomeració urbana de Colònia hi viuen més d'un milió d'habitants.",
-    "english": "More than one million inhabitants live in the urban agglomeration of Cologne.",
+    "sentence": "Tàcit diu que els ubis també eren anomenat agripesos, pel nom de la colònia.",
+    "english": "Tacitus says that the ubis were also called agripesos, after the name of the colony.",
     "source": "wikipedia_search+lingva",
-    "updated_at": 1784656930
+    "updated_at": 1784674789
   },
   "groc": {
     "status": "ok",
@@ -13682,11 +13674,9 @@
     "updated_at": 1784656975
   },
   "dar": {
-    "status": "ok",
-    "sentence": "Dar es Salaam, ocupada pels britànics el 1916, va continuar com a centre administratiu i comercial del territori.",
-    "english": "Dar es Salaam, occupied by the British in 1916, continued as the administrative and commercial center of the territory.",
-    "source": "wikipedia_search+lingva",
-    "updated_at": 1784657049
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784674931
   },
   "riquesa": {
     "status": "ok",
@@ -13831,7 +13821,7 @@
   "paula": {
     "status": "error",
     "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
-    "updated_at": 1784664230
+    "updated_at": 1784675051
   },
   "denunciar": {
     "status": "ok",
@@ -13954,10 +13944,10 @@
   },
   "arquitectura": {
     "status": "ok",
-    "sentence": "Arquitectura vernacla vs.",
-    "english": "Vernacular architecture vs.",
+    "sentence": "arquitectura popular.",
+    "english": "popular architecture",
     "source": "wikipedia_search+lingva",
-    "updated_at": 1784659019
+    "updated_at": 1784675071
   },
   "medicina": {
     "status": "ok",
@@ -13968,10 +13958,10 @@
   },
   "falla": {
     "status": "ok",
-    "sentence": "Serà la seva germana, també soltera com el compositor, la fidel companya de Falla en els seus últims anys de vida.",
-    "english": "It will be his sister, also unmarried like the composer, Falla's faithful companion in his last years of life.",
+    "sentence": "Falla neix a Cadis, l'últim racó de l'Europa occidental, davant de les costes africanes.",
+    "english": "Falla is born in Cadiz, the last corner of Western Europe, in front of the African coast.",
     "source": "wikipedia_search+lingva",
-    "updated_at": 1784659127
+    "updated_at": 1784675157
   },
   "poesia": {
     "status": "ok",
@@ -14003,10 +13993,10 @@
   },
   "bocamoll": {
     "status": "ok",
-    "sentence": "També ha presentat el concurs Bocamoll i els programes OIK mentns?",
-    "english": "He has also presented the Bocamoll contest and the OIK mentns?",
-    "source": "wikipedia_search+lingva",
-    "updated_at": 1784659359
+    "sentence": "Forma plural de bocamoll.",
+    "english": "Plural form of bocamoll.",
+    "source": "wiktionary_search+lingva",
+    "updated_at": 1784675273
   },
   "goril·la": {
     "status": "ok",
@@ -14150,10 +14140,10 @@
   },
   "salva": {
     "status": "ok",
-    "sentence": "Salva't.",
-    "english": "Save yourself.",
+    "sentence": "Salva't!",
+    "english": "Run for it!",
     "source": "tatoeba_linked_translation",
-    "updated_at": 1784660502
+    "updated_at": 1784675279
   },
   "deixant": {
     "status": "ok",
@@ -14240,11 +14230,9 @@
     "updated_at": 1784661275
   },
   "duran": {
-    "status": "ok",
-    "sentence": "S'acabà així la carrera de més de 30 anys de Duran i Lleida al Congrés.",
-    "english": "Thus ended Duran i Lleida's career of more than 30 years in Congress.",
-    "source": "wikipedia_search+lingva",
-    "updated_at": 1784661504
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784675576
   },
   "pensament": {
     "status": "ok",
@@ -14344,10 +14332,10 @@
   },
   "menú": {
     "status": "ok",
-    "sentence": "L'estat de les descàrregues es pot comprovar al menú HOME en el \"Download Manager\".",
-    "english": "The status of the downloads can be checked in the HOME menu in the \"Download Manager\".",
+    "sentence": "El \"Kervansaray\" de Viena, un dels 10 millors restaurants turcs fora de Turquia, té en el seu menú el kuzu kapama també.",
+    "english": "Vienna's \"Kervansaray\", one of the top 10 Turkish restaurants outside Turkey, has kuzu kapama on its menu as well.",
     "source": "wikipedia_search+lingva",
-    "updated_at": 1784662309
+    "updated_at": 1784675669
   },
   "cavaller": {
     "status": "ok",

@@ -777,6 +777,15 @@ def strip_cloze_markup(text: str) -> str:
 def sentence_key(sentence: str) -> str:
     restored = strip_cloze_markup(sentence)
     normalized = normalize_sentence_whitespace(restored)
+    # Normalize quote style too (straight/curly double quotes all collapse to a
+    # single quote, matching what final output rows go through via
+    # normalize_nested_quotes()). Without this, a freshly fetched candidate using
+    # its source's native quote characters (e.g. Tatoeba's "...") would compute a
+    # different key than the existing CSV row (already normalized to '...' on a
+    # prior write), so excluding "the current sentence" to force a different pick
+    # on --refresh-words would silently fail to match and the row would appear
+    # unchanged after refresh.
+    normalized = normalize_nested_quotes(normalized)
     return normalized.casefold()
 
 
