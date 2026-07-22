@@ -14366,5 +14366,2983 @@
     "english": "Then the second cyclist, and the third after him, complete the second lap.",
     "source": "wikipedia_search+lingva",
     "updated_at": 1784663921
+  },
+  "mona": {
+    "status": "ok",
+    "sentence": "Gastronomia: mona de Pasqua, pastís típic de Pasqua.",
+    "english": "Gastronomy: Easter cake, typical Easter cake.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784722220
+  },
+  "oliva": {
+    "status": "ok",
+    "sentence": "Afegir una cullerada d'oli d'oliva.",
+    "english": "Add a tablespoon of olive oil.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784722241
+  },
+  "molestar": {
+    "status": "ok",
+    "sentence": "Incomodar o molestar amb alguna pretensió o sol·licitud.",
+    "english": "Discomfort or annoy with any pretension or request.",
+    "source": "wiktionary_search+mymemory",
+    "updated_at": 1784722464
+  },
+  "intervenció": {
+    "status": "ok",
+    "sentence": "Cal destacar que a més de la seva intervenció en judici, una funció bàsica i principal de l'advocat és la preventiva.",
+    "english": "It should be noted that in addition to his intervention in court, a basic and main function of the lawyer is preventive.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784722589
+  },
+  "augmentar": {
+    "status": "ok",
+    "sentence": "Vaig encertar que el govern anava a augmentar excessivament els impostos.",
+    "english": "I predicted that the government was going to excessively raise taxes.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784722594
+  },
+  "pintor": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784722800
+  },
+  "autoritat": {
+    "status": "ok",
+    "sentence": "Cada registre VIAF té un únic codi estàndard que fa referència als registres originals de cada autoritat.",
+    "english": "Each VIAF record has a unique standard code that references the original records of each authority.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784722879
+  },
+  "cuiner": {
+    "status": "ok",
+    "sentence": "Si ets cuiner deus saber fer bons àpats.",
+    "english": "If you are a cook, you must know how to make good meals.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784722901
+  },
+  "document": {
+    "status": "ok",
+    "sentence": "En Tom ha copiat el document.",
+    "english": "Tom xeroxed the document.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784722921
+  },
+  "estirar": {
+    "status": "ok",
+    "sentence": "El joc d'estirar la corda és un esport que posa dos equips un contra l'altre en una prova de força.",
+    "english": "The game of rope pulling is a sport that pits two teams against each other in a test of strength.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784723125
+  },
+  "emperador": {
+    "status": "ok",
+    "sentence": "El títol d'emperador és, sovint, superior al títol de rei en honor i rang.",
+    "english": "The title of emperor is often superior to the title of king in honor and rank.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784723198
+  },
+  "rata": {
+    "status": "ok",
+    "sentence": "La rata té la necessitat imperiosa d'aigua, ni que sigui pestilent o salobre.",
+    "english": "The rat has an urgent need for water, whether it is pestilential or brackish.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784723281
+  },
+  "tractat": {
+    "status": "ok",
+    "sentence": "El jove es va ressentir per ser tractat com un covard.",
+    "english": "The youngster resented being treated as a coward.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784723302
+  },
+  "botó": {
+    "status": "ok",
+    "sentence": "Deixin-me prémer el botó.",
+    "english": "Let me push the button.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784723323
+  },
+  "fauna": {
+    "status": "ok",
+    "sentence": "Tant la fauna marina com la continental eren en essència modernes.",
+    "english": "Both marine and continental fauna were essentially modern.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784723360
+  },
+  "vital": {
+    "status": "ok",
+    "sentence": "- Indica la forma vital de totes les espècies autòctones.",
+    "english": "- Indicates the life form of all native species.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784723412
+  },
+  "temporal": {
+    "status": "ok",
+    "sentence": "Tots els vols s'han cancel·lat pel temporal.",
+    "english": "All flights have been cancelled due to the storm.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784723418
+  },
+  "nyam": {
+    "status": "ok",
+    "sentence": "Hi ha molta diversitat morfològica entre les diverses varietats o espècies de nyam.",
+    "english": "There is a lot of morphological diversity among the various varieties or species of nyam.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784723455
+  },
+  "cercle": {
+    "status": "ok",
+    "sentence": "Va intentar ampliar el seu cercle d'influència.",
+    "english": "He tried to widen his circle of influence.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784723461
+  },
+  "sabor": {
+    "status": "ok",
+    "sentence": "Aquest vi negre té el millor sabor.",
+    "english": "This red wine has the best taste.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784723544
+  },
+  "constantment": {
+    "status": "ok",
+    "sentence": "Ell em demanava constantment diners prestats.",
+    "english": "He was constantly borrowing money from me.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784723564
+  },
+  "derrota": {
+    "status": "ok",
+    "sentence": "La derrota no va ser cap sorpresa. L'oponent era molt fort.",
+    "english": "The defeat was no surprise. The opponent was very strong.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784723585
+  },
+  "religió": {
+    "status": "ok",
+    "sentence": "La política i la religió no són una bona mescla.",
+    "english": "Politics and religion don't mix well.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784723605
+  },
+  "roser": {
+    "status": "ok",
+    "sentence": "Aquesta advocació dona nom a totes aquelles persones que es diuen Maria del Roser o Roser.",
+    "english": "This advocacy gives name to all those people who call themselves Maria del Roser or Roser.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784723727
+  },
+  "suportar": {
+    "status": "ok",
+    "sentence": "No puc suportar el soroll per més temps.",
+    "english": "I can't put up with the noise any longer.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784723732
+  },
+  "trenca": {
+    "status": "ok",
+    "sentence": "I si alguna cosa es trenca?",
+    "english": "What if something gets broken?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784723753
+  },
+  "considerar": {
+    "status": "ok",
+    "sentence": "Això és una cosa que val la pena considerar.",
+    "english": "That is worth considering.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784723773
+  },
+  "estalviar": {
+    "status": "ok",
+    "sentence": "En Tom fa tot el que pot per estalviar.",
+    "english": "Tom does everything he can to save money.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784723794
+  },
+  "divertir": {
+    "status": "ok",
+    "sentence": "T'hi vas divertir?",
+    "english": "Was it fun?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784723815
+  },
+  "negociar": {
+    "status": "ok",
+    "sentence": "És difícil negociar amb algú que vol lluitar.",
+    "english": "It's difficult to negotiate with those who want to fight.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784723835
+  },
+  "ra": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784723979
+  },
+  "àmbit": {
+    "status": "ok",
+    "sentence": "Un bon instrument i un instrumentista hàbil, en general, poden produir notes més extremes i, per tant, obtenir un àmbit més gran.",
+    "english": "A good instrument and a skilled instrumentalist, in general, can produce more extreme notes and, therefore, obtain a larger scope.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784724127
+  },
+  "equivocar": {
+    "status": "ok",
+    "sentence": "Tothom es pot equivocar.",
+    "english": "Everyone can be wrong.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784724133
+  },
+  "rescatar": {
+    "status": "ok",
+    "sentence": "Va rescatar tots els esclaus donant-los la llibertat.",
+    "english": "He rescued all the slaves by giving them freedom.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784724279
+  },
+  "probable": {
+    "status": "ok",
+    "sentence": "Si passes massa temps al sol sense posar-te crema solar, és probable que et cremis.",
+    "english": "If you spend too much time in the sun without putting on sunscreen, you are likely to get a sunburn.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784724284
+  },
+  "judicial": {
+    "status": "ok",
+    "sentence": "Actualment la durada del curs i formació inicial a l'Escola judicial té una durada de dos anys.",
+    "english": "Currently, the duration of the course and initial training at the Judicial School is two years.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784724388
+  },
+  "henry": {
+    "status": "ok",
+    "sentence": "Henry va dir que no podia esperar més.",
+    "english": "Henry said that he couldn't wait any longer.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784724394
+  },
+  "publicar": {
+    "status": "ok",
+    "sentence": "Aquest llibre es va publicar l'any 1689.",
+    "english": "This book was published in 1689.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784724414
+  },
+  "fila": {
+    "status": "ok",
+    "sentence": "Normalment, l'aire s'aconsegueix tot movent un peó dels de davant del rei a la segona fila.",
+    "english": "Normally, air is achieved by moving a pawn from in front of the king to the second row.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784724592
+  },
+  "novetat": {
+    "status": "ok",
+    "sentence": "Ei, com l'assumpt? Encara no hi ha ninguna novetat?",
+    "english": "Hey, how's business? No news yet?",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784724598
+  },
+  "preocupar": {
+    "status": "ok",
+    "sentence": "No hi ha cap motiu per preocupar-se.",
+    "english": "There's no reason to worry.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784724618
+  },
+  "full": {
+    "status": "ok",
+    "sentence": "Copia aquest full a la teva llibreta.",
+    "english": "Copy this page in your notebook.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784724639
+  },
+  "escollir": {
+    "status": "ok",
+    "sentence": "Tom va escollir un llibre interessant per a que Maria el llegira.",
+    "english": "Tom picked out an interesting book for Mary to read.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784724659
+  },
+  "fonda": {
+    "status": "ok",
+    "sentence": "Fonda també té ascendència anglesa, francesa i escocesa.",
+    "english": "Fonda also has English, French, and Scottish ancestry.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784724700
+  },
+  "mortal": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784724993
+  },
+  "arc": {
+    "status": "ok",
+    "sentence": "És l'arc més utilitzat en l'arquitectura romana i l'art romànic.",
+    "english": "It is the arch most used in Roman architecture and Romanesque art.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784725071
+  },
+  "efa": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784725204
+  },
+  "campament": {
+    "status": "ok",
+    "sentence": "A més, té un campament no reconegut.",
+    "english": "In addition, it has an unrecognized camp.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784725314
+  },
+  "proper": {
+    "status": "ok",
+    "sentence": "Quan surt el proper tren?",
+    "english": "When does the next train leave?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784725319
+  },
+  "coral": {
+    "status": "ok",
+    "sentence": "L'agrupació coral més habitual, és la formada per quatre veus mixtes: sopranos, contralts, tenors i baixos.",
+    "english": "The most common choral grouping is made up of four mixed voices: sopranos, alto, tenors and basses.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784725517
+  },
+  "droga": {
+    "status": "ok",
+    "sentence": "En la cultura occidental dels segles XX i XXI la droga és considerada un tema tabú.",
+    "english": "In the Western culture of the twentieth and twenty-first centuries, drugs are considered a taboo subject.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784725600
+  },
+  "sospitós": {
+    "status": "ok",
+    "sentence": "Jo era sospitós de ser un criminal.",
+    "english": "I was suspected to be the criminal.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784725605
+  },
+  "identificar": {
+    "status": "ok",
+    "sentence": "El teixit es pot identificar per la mostra.",
+    "english": "The fabric can be identified by the sample.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784725626
+  },
+  "lleig": {
+    "status": "ok",
+    "sentence": "Quan era jove, la gent sempre em deia que era lleig.",
+    "english": "When I was young, people always told me I was ugly.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784725646
+  },
+  "bull": {
+    "status": "ok",
+    "sentence": "L'aigua bull a cent graus.",
+    "english": "Water boils at one hundred degrees.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784725667
+  },
+  "fumar": {
+    "status": "ok",
+    "sentence": "Ella ha deixat de fumar.",
+    "english": "She gave up smoking.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784725688
+  },
+  "finançament": {
+    "status": "ok",
+    "sentence": "CrowdCube - plataforma estatunidenca pel finançament de noves empreses.",
+    "english": "CrowdCube - US platform for financing new companies.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784725746
+  },
+  "traslladar": {
+    "status": "ok",
+    "sentence": "Ella es va traslladar a Alemanya.",
+    "english": "She moved to Germany.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784725752
+  },
+  "cocció": {
+    "status": "ok",
+    "sentence": "Moltes vegades s'hi sol incloure una picada quan està a punt de finalitzar la cocció.",
+    "english": "Many times a bite is usually included when it is about to finish cooking.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784725850
+  },
+  "concretament": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784726005
+  },
+  "cosí": {
+    "status": "ok",
+    "sentence": "És un cosí meu.",
+    "english": "This is my cousin.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784726006
+  },
+  "instrument": {
+    "status": "ok",
+    "sentence": "L'àbac és un instrument de càlcul.",
+    "english": "The abacus is a calculating instrument.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784726027
+  },
+  "eina": {
+    "status": "ok",
+    "sentence": "La garlopa és una eina similar, però de dimensions més grans.",
+    "english": "The garlopa is a similar tool, but with larger dimensions.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784726125
+  },
+  "mina": {
+    "status": "ok",
+    "sentence": "Una mina o una explotació minera és el conjunt d'instal·lacions necessàries per explotar un jaciment de minerals o altres materials.",
+    "english": "A mine or mining operation is the set of facilities necessary to exploit a deposit of minerals or other materials.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784726240
+  },
+  "modern": {
+    "status": "ok",
+    "sentence": "Des de la creació del modern regne de Grècia el govern adoptà el katharévussa com a llengua oficial.",
+    "english": "Since the creation of the modern kingdom of Greece, the government has adopted Katharévussa as its official language.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784726324
+  },
+  "entrepà": {
+    "status": "ok",
+    "sentence": "Ara, el terme entrepà podria venir també tot simplement d'una reducció de l'expressió valenciana mescla entre pa.",
+    "english": "Now, the term sandwich could also come all simply from a reduction of the Valencian expression mix between bread.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784726345
+  },
+  "pizza": {
+    "status": "ok",
+    "sentence": "Anirem al centre a menjar una pizza.",
+    "english": "We are going downtown to eat pizza.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784726351
+  },
+  "proposar": {
+    "status": "ok",
+    "sentence": "A la reunió, vam proposar un munt d'idees noves.",
+    "english": "At the meeting, we came up with a lot of new ideas.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784726418
+  },
+  "bill": {
+    "status": "ok",
+    "sentence": "Bill va aconseguir aprovar l'exàmen.",
+    "english": "Bill was able to pass the exam.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784726438
+  },
+  "tapa": {
+    "status": "ok",
+    "sentence": "Tapa't les orelles.",
+    "english": "Plug your ears.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784726459
+  },
+  "llança": {
+    "status": "ok",
+    "sentence": "Els exèrcits d'Argentina, Xile i altres usaren models de llança oficials amb asta de coligüe.",
+    "english": "The armies of Argentina, Chile, and others used official spear models with string rods.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784726559
+  },
+  "mètode": {
+    "status": "ok",
+    "sentence": "Aquest mètode d'aprenentatge és adequat per a persones que no disposen de molt de temps lliure.",
+    "english": "This learning method is fit for people without a lot of free time.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784726564
+  },
+  "hisenda": {
+    "status": "ok",
+    "sentence": "Doblet de hisenda i de fatxenda via el castellà.",
+    "english": "Double sale and double sale via Castilian.",
+    "source": "wiktionary_search+mymemory",
+    "updated_at": 1784726673
+  },
+  "tip": {
+    "status": "ok",
+    "sentence": "Estic tip que em sermonegi constantment.",
+    "english": "I'm fed up with him always preaching to me.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784726679
+  },
+  "japonès": {
+    "status": "ok",
+    "sentence": "La Maria pot parlar japonès.",
+    "english": "Mary can speak Japanese.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784726699
+  },
+  "impressió": {
+    "status": "ok",
+    "sentence": "Les tècniques d'impressió van evolucionar amb rapidesa, i aparegueren nous procediments que satisfeien noves necessitats o responien a noves possibilitats tècniques.",
+    "english": "Printing techniques evolved rapidly, and new procedures appeared that met new needs or responded to new technical possibilities.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784726798
+  },
+  "afició": {
+    "status": "ok",
+    "sentence": "La meva afició és col·leccionar joguines antigues.",
+    "english": "My hobby is collecting old toys.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784726803
+  },
+  "comandament": {
+    "status": "ok",
+    "sentence": "L'oficial rep una formació orientada al comandament; per això té una posició superior en l'escalafó de comandament.",
+    "english": "The officer receives command-oriented training; this is why he has a higher position in the command echelon.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784726908
+  },
+  "urgent": {
+    "status": "ok",
+    "sentence": "Una acció, ésser urgent.",
+    "english": "An action, to be urgent.",
+    "source": "wiktionary_search+mymemory",
+    "updated_at": 1784727030
+  },
+  "caminant": {
+    "status": "ok",
+    "sentence": "Es pot anar caminant?",
+    "english": "Is it possible to go there walking?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784727035
+  },
+  "àrab": {
+    "status": "ok",
+    "sentence": "Hi ha una noia àrab a la nostra classe.",
+    "english": "There is an Arab girl in our class.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784727057
+  },
+  "estable": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784727201
+  },
+  "granota": {
+    "status": "ok",
+    "sentence": "La granota rauca.",
+    "english": "The frog croaks.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784727201
+  },
+  "penya": {
+    "status": "ok",
+    "sentence": "El topònim deriva de la paraula àrab al sajra, que significa la penya.",
+    "english": "The name derives from the Arabic word sajra, which means the rock.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784727342
+  },
+  "coca": {
+    "status": "ok",
+    "sentence": "La coca sense cap afegit, com són les coques de dacsa rep el nom de coca nua.",
+    "english": "Coca without any added ingredients, such as dacsa cokes, is called coca nua.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784727426
+  },
+  "comentar": {
+    "status": "ok",
+    "sentence": "Quan els vaig veure els ho vaig dir, i a ell també l'hi vaig comentar.",
+    "english": "When I saw them I told them, and I told him too.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784727432
+  },
+  "perdonar": {
+    "status": "ok",
+    "sentence": "No és costum perdonar els que repeteixen l'ofensa.",
+    "english": "It is not customary to forgive those who repeat the offense.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784727452
+  },
+  "perfil": {
+    "status": "ok",
+    "sentence": "El meu perfil gairebé s'està convertint en un blog, tot i que d'interès limitat.",
+    "english": "My profile is almost becoming a blog, although of limited interest.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784727473
+  },
+  "destrucció": {
+    "status": "ok",
+    "sentence": "Generalment això resulta en l'alteració o destrucció de la biodiversitat.",
+    "english": "Generally this results in the alteration or destruction of biodiversity.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784727572
+  },
+  "goma": {
+    "status": "ok",
+    "sentence": "Em deixes la goma d'esborrar?",
+    "english": "May I borrow your eraser?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784727577
+  },
+  "acer": {
+    "status": "ok",
+    "sentence": "Aquestes caixes van ser produïdes amb plaques d'acer soldades entre si.",
+    "english": "These boxes were made with steel plates welded together.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784727629
+  },
+  "còmode": {
+    "status": "ok",
+    "sentence": "Alguns conductors hi posen fundes per fer-lo més còmode o per decoració.",
+    "english": "Some drivers put covers on it to make it more comfortable or for decoration.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784727765
+  },
+  "ferit": {
+    "status": "ok",
+    "sentence": "Algun ferit?",
+    "english": "Did anybody get hurt?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784727771
+  },
+  "raig": {
+    "status": "ok",
+    "sentence": "Vas ser un raig de sol –llum i calidesa–, una primavera fugaç a la meva vida, una emoció platònica, bellesa i color, una etapa estimada d'aquest viatge.",
+    "english": "You were a ray of sunshine—light and warmth—a fleeting spring in my life, platonic emotion, beauty and color, a very dear stage of this journey.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784727791
+  },
+  "socialista": {
+    "status": "ok",
+    "sentence": "Que forma part d'un partit o organització socialista.",
+    "english": "That it is part of a socialist party or organization.",
+    "source": "wiktionary_page+mymemory",
+    "updated_at": 1784728032
+  },
+  "cat": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784728165
+  },
+  "enigma": {
+    "status": "ok",
+    "sentence": "D'abast més ampli que només la història d'Enigma.",
+    "english": "Wider in scope than just Enigma's story.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784728244
+  },
+  "conserva": {
+    "status": "ok",
+    "sentence": "A l'avançada edat de 93 anys, encara conserva unes facultats físiques i mentals envejables.",
+    "english": "At 93 years old, he still retains enviable physical and mental abilities.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784728249
+  },
+  "tria": {
+    "status": "ok",
+    "sentence": "Els humans adoren les eleccions. Alfa no tria. Executa la inevitabilitat.",
+    "english": "Humans worship choices. Alpha doesn't choose. It executes inevitability.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784728270
+  },
+  "definició": {
+    "status": "ok",
+    "sentence": "Aquesta definició seria l'estàndard durant els següents noranta anys.",
+    "english": "This definition would be the standard for the next ninety years.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784728384
+  },
+  "divisió": {
+    "status": "ok",
+    "sentence": "El quocient de la divisió de 21 entre 7 és 3.",
+    "english": "The quotient of 21 divided by 7 is 3.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784728390
+  },
+  "naixement": {
+    "status": "ok",
+    "sentence": "La naixença, també anomenada naixement o naiximent, és el moment d'inici de l'existència autònoma d'un ésser viu.",
+    "english": "Birth, also called birth or naiximent, is the moment of beginning of the autonomous existence of a living being.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784728494
+  },
+  "detectiu": {
+    "status": "ok",
+    "sentence": "L'amor a la veritat de la cambrera va sorprendre el detectiu.",
+    "english": "The veracity of the waitress surprised the detective.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784728499
+  },
+  "practicar": {
+    "status": "ok",
+    "sentence": "Altres cultures van crear les necròpolis en resposta a la prohibició de practicar soterraments dins els límits urbans.",
+    "english": "Other cultures created necropolises in response to the ban on burial within urban boundaries.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784728628
+  },
+  "tribu": {
+    "status": "ok",
+    "sentence": "De vegades sorgeix una confusió quan el grup ètnic en si mateix es denomina \"tribu\", no sense una connotació pejorativa.",
+    "english": "Confusion sometimes arises when the ethnic group itself calls itself a “tribe,” not without a pejorative connotation.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784728672
+  },
+  "gastar": {
+    "status": "ok",
+    "sentence": "Vaig gastar no més de tres dòlars.",
+    "english": "I spent no more than three dollars.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784728677
+  },
+  "entitat": {
+    "status": "ok",
+    "sentence": "Si aquest nucli forma part de l'estadística poblacional, es tracta d'un nucli d'entitat singular de població.",
+    "english": "If this nucleus is part of the population statistics, it is a nucleus of a singular population entity.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784728854
+  },
+  "notar": {
+    "status": "ok",
+    "sentence": "Tan punt vam entrar a la casa vaig notar que alguna cosa no rutllava.",
+    "english": "As soon as we entered the house I noticed that something was not rattling.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784728876
+  },
+  "berenar": {
+    "status": "ok",
+    "sentence": "Ens hem divertit força al berenar.",
+    "english": "We had lots of fun at the picnic.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784728897
+  },
+  "condició": {
+    "status": "ok",
+    "sentence": "Exigir el reconeixement de la seva condició d'autor.",
+    "english": "Demand recognition of your status as an author.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784729001
+  },
+  "influència": {
+    "status": "ok",
+    "sentence": "És fàcil d'entendre que el dormir té influència en el benestar.",
+    "english": "It's easy to understand that sleep influences well-being.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784729007
+  },
+  "embolic": {
+    "status": "ok",
+    "sentence": "Ella sap que s'ha ficat en un embolic dels grossos.",
+    "english": "She knows she's in real trouble now.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784729028
+  },
+  "milà": {
+    "status": "ok",
+    "sentence": "Durant la segona guerra mundial, Milà patiria un dels bombardeigs aeris més greus de la història d''Itàlia.",
+    "english": "During the Second World War, Milan suffered one of the most serious aerial bombings in the history ofItaly.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784729192
+  },
+  "pirata": {
+    "status": "ok",
+    "sentence": "Cal, d'altra banda, esmentar que els termes pirata i flibustier són globalment equivalents fins al segle xviii.",
+    "english": "On the other hand, it should be mentioned that the terms pirate and flibustier are globally equivalent until the eighteenth century.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784729214
+  },
+  "atractiu": {
+    "status": "ok",
+    "sentence": "És anomenada també la París de l'est, pel seu gran atractiu turístic.",
+    "english": "It is also called the Paris of the East, for its great tourist attraction.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784729340
+  },
+  "blava": {
+    "status": "ok",
+    "sentence": "L'esperança és verda, la llibertat sempre és blava.",
+    "english": "Hope is green, freedom is always blue.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784729345
+  },
+  "brut": {
+    "status": "ok",
+    "sentence": "El saqueig brut no té bons resultats.",
+    "english": "Ill gotten, ill spent.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784729366
+  },
+  "maleït": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784729720
+  },
+  "menjador": {
+    "status": "ok",
+    "sentence": "De vegades, per aprofitar l'espai, la cuina i el menjador es troben en un mateix lloc.",
+    "english": "Sometimes, to take advantage of the space, the kitchen and dining room are in the same place.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784729867
+  },
+  "get": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784730019
+  },
+  "tram": {
+    "status": "ok",
+    "sentence": "Les previsions de posada en funcionament es van traslladar pel tram IV el 2008 i el 2012 la resta.",
+    "english": "The commissioning forecasts were transferred to section IV in 2008 and the rest in 2012.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784730037
+  },
+  "excepcional": {
+    "status": "ok",
+    "sentence": "A la indústria cosmètica, poden adquirir formes extraordinàries conferint una imatge excepcional al producte.",
+    "english": "In the cosmetics industry, they can take on extraordinary shapes, giving an exceptional image to the product.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784730116
+  },
+  "onada": {
+    "status": "ok",
+    "sentence": "Recull l'herència de l'onada anterior sobre qüestions relacionades amb la sexualitat i la reproducció.",
+    "english": "It collects the legacy of the previous wave on issues related to sexuality and reproduction.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784730295
+  },
+  "encarregar": {
+    "status": "ok",
+    "sentence": "Es va encarregar de la conservació del temple.",
+    "english": "He was in charge of the conservation of the temple.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784730300
+  },
+  "especialista": {
+    "status": "ok",
+    "sentence": "Un bibliotecari temàtic o especialista és aquell bibliotecari especialitzat en àrees i disciplines temàtiques específiques.",
+    "english": "A thematic librarian or specialist is a librarian who specializes in specific thematic areas and disciplines.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784730414
+  },
+  "plantejar": {
+    "status": "ok",
+    "sentence": "Es va plantejar un problema especial amb els beduïns nòmades del sud, que eren reticents a cooperar.",
+    "english": "A special problem arose with nomadic Bedouins in the south, who were reluctant to cooperate.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784730539
+  },
+  "verdura": {
+    "status": "ok",
+    "sentence": "El mot verdura varia de significat segons una cultura o altra, car és un terme més 'popular' que 'científic'.",
+    "english": "The word vegetable varies in meaning according to one culture or another, as it is a more 'popular' term than 'scientific'.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784730612
+  },
+  "fracàs": {
+    "status": "ok",
+    "sentence": "El secret de l'èxit és no pensar en el fracàs.",
+    "english": "The secret of success is not to think of failure.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784730618
+  },
+  "mental": {
+    "status": "ok",
+    "sentence": "Un trastorn mental és un dels aspectes de la salut mental.",
+    "english": "A mental disorder is one of the aspects of mental health.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784730850
+  },
+  "carro": {
+    "status": "ok",
+    "sentence": "De forma fixa o articulada segons el disseny del carro.",
+    "english": "Fixed or articulated according to the design of the trolley.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784730975
+  },
+  "plegar": {
+    "status": "ok",
+    "sentence": "El cos dels peixos cartilaginosos està recobert per una pell aspra, i tenen aletes rígides que no es poden plegar.",
+    "english": "The body of cartilaginous fish is covered with rough skin, and they have rigid fins that cannot be folded.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784731083
+  },
+  "acostumat": {
+    "status": "ok",
+    "sentence": "Estic acostumat a les baixes temperatures.",
+    "english": "I am used to low temperatures.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784731089
+  },
+  "àrbitre": {
+    "status": "ok",
+    "sentence": "En qualsevol esport, l'àrbitre és el jutge encarregat de fer que es compleixin les regles del joc.",
+    "english": "In any sport, the referee is the judge in charge of enforcing the rules of the game.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784731203
+  },
+  "maleta": {
+    "status": "ok",
+    "sentence": "Així, una fulla A4 cap en una carpeta B4 o una maleta o una bossa C4.",
+    "english": "Thus, an A4 sheet head in a B4 folder or a C4 suitcase or bag.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784731422
+  },
+  "gala": {
+    "status": "ok",
+    "sentence": "Pel que fa a la camisa i a la corbata són les mateixes de l'uniforme de gala.",
+    "english": "As for the shirt and tie, they are the same as the dress uniform.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784731510
+  },
+  "il·legal": {
+    "status": "ok",
+    "sentence": "És il·legal copiar llibres sense l'autorització de l'autor.",
+    "english": "It is illegal to copy from books without the author's permission.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784731516
+  },
+  "pou": {
+    "status": "ok",
+    "sentence": "Hi ha un pou allà.",
+    "english": "There's a well there.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784731536
+  },
+  "junta": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784731729
+  },
+  "cementiri": {
+    "status": "ok",
+    "sentence": "Qui visita un cementiri de nit, fantasmes s'hi troba.",
+    "english": "If you visit a graveyard at night, you'll meet a ghost.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784731729
+  },
+  "poeta": {
+    "status": "ok",
+    "sentence": "El poeta políglota de vegades té ganes de traduir tots els poemes que ha escrit.",
+    "english": "The polyglot poet sometimes feels like translating all the poems he has written.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784731750
+  },
+  "desenvolupar": {
+    "status": "ok",
+    "sentence": "El govern tracta de desenvolupar noves indústries.",
+    "english": "The government is trying to develop new industries.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784731770
+  },
+  "apuntar": {
+    "status": "ok",
+    "sentence": "Ella va apuntar alguna cosa a la seva llibreta.",
+    "english": "She wrote down something in her notebook.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784731791
+  },
+  "oriental": {
+    "status": "ok",
+    "sentence": "El nom comú de l'església, «Església ortodoxa oriental», és una pràctica per ajudar a evitar confusions en l'ús casual.",
+    "english": "The common name of the church, “Eastern Orthodox Church,” is a practice to help avoid confusion in casual usage.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784731914
+  },
+  "pacífic": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784732106
+  },
+  "arrencar": {
+    "status": "ok",
+    "sentence": "Vaig arrencar a córrer i vaig agafar un taxi.",
+    "english": "I ran out and caught a taxi.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784732106
+  },
+  "crac": {
+    "status": "ok",
+    "sentence": "crac: representa el soroll sec que fa una cosa que es trenca.",
+    "english": "crac: represents the dry noise that makes a thing that breaks.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784732155
+  },
+  "agenda": {
+    "status": "ok",
+    "sentence": "Escriu la teva adreça a la meva agenda.",
+    "english": "Please enter your address in my address book.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784732161
+  },
+  "mur": {
+    "status": "ok",
+    "sentence": "Es conegué aquest castell amb un nom prou simple: mur vol dir, senzillament, «paret, muralla».",
+    "english": "This castle was known by a very simple name: wall means, simply, \"wall, wall\".",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784732261
+  },
+  "obligar": {
+    "status": "ok",
+    "sentence": "Les circumstàncies ens varen obligar a pospondre la reunió.",
+    "english": "Circumstances forced us to put off the meeting.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784732267
+  },
+  "joia": {
+    "status": "ok",
+    "sentence": "Compara aquesta joia autèntica amb aquella imitació.",
+    "english": "Compare this genuine jewel with that imitation.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784732287
+  },
+  "fulla": {
+    "status": "ok",
+    "sentence": "Pecíol: peu que sosté la fulla.",
+    "english": "Petite: foot that holds the leaf.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784732386
+  },
+  "barallar": {
+    "status": "ok",
+    "sentence": "Encara no ens hem començat a barallar.",
+    "english": "We have not yet begun to fight.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784732391
+  },
+  "casc": {
+    "status": "ok",
+    "sentence": "Per què no portaves casc?",
+    "english": "Why weren't you wearing a helmet?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784732411
+  },
+  "textura": {
+    "status": "ok",
+    "sentence": "Una roca volcànica sol presentar textura afanítica amb els fenocristalls envoltats per una pasta de gra molt fi generalment microscòpic.",
+    "english": "A volcanic rock usually has an aphanitic texture with the phenocrystals surrounded by a generally microscopic very fine-grained paste.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784732454
+  },
+  "retorn": {
+    "status": "ok",
+    "sentence": "El 9 d'agost de 2006, va sortir una edició limitada d'El retorn del rei.",
+    "english": "On August 9, 2006, a limited edition of The Return of the King was released.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784732563
+  },
+  "tripulació": {
+    "status": "ok",
+    "sentence": "En aquesta època, preveu la presència permanent d'una tripulació de deu a vint astronautes.",
+    "english": "At this time, it provides for the permanent presence of a crew of ten to twenty astronauts.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784732585
+  },
+  "amant": {
+    "status": "ok",
+    "sentence": "Molta gent vol tenir un bon amant.",
+    "english": "Many people want to have a good lover.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784732606
+  },
+  "afrontar": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784732776
+  },
+  "borda": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784732963
+  },
+  "passeig": {
+    "status": "ok",
+    "sentence": "El que anava a ser un passeig entre amics va acabar transformant-se en tragèdia.",
+    "english": "What was going to be a walk among friends ended up turning into a tragedy.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784732964
+  },
+  "excursió": {
+    "status": "ok",
+    "sentence": "És un plat que es menja sovint en forma de botifarrada o en masies com a colofó d'una excursió.",
+    "english": "It is a dish that is often eaten in the form of botifarrada or in farmhouses as the culmination of an excursion.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784733074
+  },
+  "gènere": {
+    "status": "ok",
+    "sentence": "La disfòria de gènere sol començar a la infància.",
+    "english": "Gender dysphoria usually begins in childhood.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784733095
+  },
+  "dibuixar": {
+    "status": "ok",
+    "sentence": "No puc dibuixar de memòria.",
+    "english": "I can't draw from memory.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784733115
+  },
+  "titular": {
+    "status": "ok",
+    "sentence": "A Catalunya el doctorat és un requisit per ser professor titular universitari i catedràtic.",
+    "english": "In Catalonia, a doctorate is a prerequisite for being a university professor and professor.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784733174
+  },
+  "bernat": {
+    "status": "ok",
+    "sentence": "Carlemany havia permès a Bernat heretar el títol del seu pare.",
+    "english": "Charlemagne had allowed Bernat to inherit his father's title.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784733233
+  },
+  "cost": {
+    "status": "ok",
+    "sentence": "Les quantitats produïdes eren petites i el cost bastant elevat.",
+    "english": "The quantities produced were small and the cost quite high.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784733378
+  },
+  "lila": {
+    "status": "ok",
+    "sentence": "És més clar i blavós que el porpra i més fosc que el lila.",
+    "english": "It is lighter and bluer than purple and darker than lilac.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784733411
+  },
+  "càstig": {
+    "status": "ok",
+    "sentence": "El càstig d'una mare no és dolorós gaire temps.",
+    "english": "A mother's punishment isn't painful for long.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784733417
+  },
+  "costum": {
+    "status": "ok",
+    "sentence": "Els ulls comencen l'amor, el costum el perfecciona.",
+    "english": "The eyes begin love, custom perfects it.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784733438
+  },
+  "extra": {
+    "status": "ok",
+    "sentence": "En el cinema, s'utilitza més sovint el terme extra.",
+    "english": "In film, the term extra is most often used.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784733465
+  },
+  "ànim": {
+    "status": "ok",
+    "sentence": "L'estat d'ànim és un estat emocional o psíquic que roman durant un període més o menys llarg.",
+    "english": "Mood is an emotional or psychic state that remains for a more or less long period.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784733584
+  },
+  "enamorar": {
+    "status": "ok",
+    "sentence": "Per què tots els homes s'han d'enamorar de mi? Jo no ho vull.",
+    "english": "Why must all men fall in love with me? I don't want that.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784733590
+  },
+  "caos": {
+    "status": "ok",
+    "sentence": "La teoria del caos forma part del camp més genèric dels sistemes dinàmics no lineals.",
+    "english": "Chaos theory is part of the more generic field of nonlinear dynamical systems.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784733638
+  },
+  "àpat": {
+    "status": "ok",
+    "sentence": "Preneu aquest medicament abans de cada àpat.",
+    "english": "Take this medicine before each meal.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784733644
+  },
+  "competir": {
+    "status": "ok",
+    "sentence": "El nostre equip va competir amb una forta competència",
+    "english": "Our team competed with a powerful rival.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784733664
+  },
+  "humitat": {
+    "status": "ok",
+    "sentence": "Sí. Hi ha molta humitat a l'aire.",
+    "english": "Yes, it is. There's a lot of moisture in the air.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784733685
+  },
+  "organitzat": {
+    "status": "ok",
+    "sentence": "En alguns països, el vandalisme en el futbol s'ha relacionat amb el crim organitzat.",
+    "english": "In some countries, football vandalism has been linked to organised crime.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784733799
+  },
+  "bitllet": {
+    "status": "ok",
+    "sentence": "El bitllet d'avió costa 727 dòlars.",
+    "english": "The plane ticket costs 727 dollars.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784733805
+  },
+  "desconegut": {
+    "status": "ok",
+    "sentence": "Si us plau, digueu-li que ja no necessita sentir-se com un desconegut aquí.",
+    "english": "Please tell him that he no longer needs to feel like a stranger here.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784733825
+  },
+  "fallat": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784733992
+  },
+  "as": {
+    "status": "ok",
+    "sentence": "Unitats de mesura: As romà o lliura romana.",
+    "english": "Units of Measurement: Roman Ace or Roman Pound.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784734061
+  },
+  "expressar": {
+    "status": "ok",
+    "sentence": "Han tingut l'oportunitat d'expressar la seva opinió.",
+    "english": "They had the chance to express their opinion.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784734066
+  },
+  "assaig": {
+    "status": "ok",
+    "sentence": "Se sol considerar un assaig no destructiu per la petita grandària de l'empremta.",
+    "english": "It is usually considered a non-destructive test due to the small size of the footprint.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784734175
+  },
+  "manifestació": {
+    "status": "ok",
+    "sentence": "La llengua portuguesa és rica, forta i bella, un sistema hàbil de parlar i escriure. Expressiva i sonora, és cristal·lina en la manifestació del riure i el sofriment.",
+    "english": "The Portuguese language is rich, strong, and beautiful, a skillful system of speaking and writing. Expressive and sonorous, it is crystal clear in the manifestation of laughter and suffering.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784734181
+  },
+  "aturat": {
+    "status": "ok",
+    "sentence": "T'hauries d'haver aturat.",
+    "english": "You should've stopped.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784734201
+  },
+  "sandra": {
+    "status": "ok",
+    "sentence": "En aquesta immensa casa, Sandra és envaïda pels records del passat.",
+    "english": "In this immense house, Sandra is invaded by the memories of the past.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784734257
+  },
+  "nora": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784734375
+  },
+  "factura": {
+    "status": "ok",
+    "sentence": "Li vaig demanar de pagar la factura immediatament.",
+    "english": "I demanded that he pay the bill immediately.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784734376
+  },
+  "moc": {
+    "status": "ok",
+    "sentence": "El moc suporta una càrrega de compressió provocada per la martingala que és la que transmet al bauprès.",
+    "english": "The MOC supports a compression load caused by the martingale, which is what it transmits to the bowsprit.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784734474
+  },
+  "campana": {
+    "status": "ok",
+    "sentence": "Podem sentir la campana de l'església cada matí.",
+    "english": "We can hear the church bell every morning.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784734480
+  },
+  "combinació": {
+    "status": "ok",
+    "sentence": "La música se pot definir com l'art de commoure mitjançant la combinació de sons.",
+    "english": "Music can be defined as the art of producing emotion by the combination of sounds.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784734501
+  },
+  "uniforme": {
+    "status": "ok",
+    "sentence": "Aquest és el teu uniforme de cambrera.",
+    "english": "This is your waitress uniform.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784734521
+  },
+  "gall": {
+    "status": "ok",
+    "sentence": "Cal que les gallines no cantin més fort que el gall.",
+    "english": "Hens must not crow louder than the cock.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784734542
+  },
+  "xef": {
+    "status": "ok",
+    "sentence": "Als clients se'ls pot servir un menú degustació temàtic preparat i servit pel xef principal.",
+    "english": "Guests can be served a themed tasting menu prepared and served by the head chef.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784734601
+  },
+  "marí": {
+    "status": "error",
+    "error": "tatoeba_no_quality_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784734883
+  },
+  "recurs": {
+    "status": "ok",
+    "sentence": "L'al·legoria és un recurs literari consistent en una metàfora continuada.",
+    "english": "Allegory is a literary device consisting of a continuous metaphor.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784734931
+  },
+  "sorprendre": {
+    "status": "ok",
+    "sentence": "Sospitava que m'estava dient una mentida, però això no em va sorprendre.",
+    "english": "I suspected that he was telling a lie, but that didn't surprise me.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784734937
+  },
+  "celebració": {
+    "status": "ok",
+    "sentence": "Llavors, el prevere pronuncia la pregària anomenada \"Col·lecta\" per la que s'expressa el caràcter de la celebració.",
+    "english": "Then, the priest pronounces the prayer called \"Collect\" by which the character of the celebration is expressed.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784735035
+  },
+  "grec": {
+    "status": "ok",
+    "sentence": "Aquesta frase fins i tot s'havia traduït al llatí i al grec.",
+    "english": "That sentence had been translated even into Latin and Greek.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784735041
+  },
+  "hàbitat": {
+    "status": "ok",
+    "sentence": "M'agradaria veure una girafa en el seu hàbitat.",
+    "english": "I would like to see a giraffe in its habitat.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784735077
+  },
+  "fixar": {
+    "status": "ok",
+    "sentence": "Compra el que vol sense fixar-se en el que val.",
+    "english": "She buys what she wants regardless of the cost.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784735097
+  },
+  "pujant": {
+    "status": "ok",
+    "sentence": "Tucídides diu que tenia un port, o al menys un lloc on les naus podien arribar pujant pel riu.",
+    "english": "Thucydides says it had a port, or at least a place where ships could go up the river.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784735245
+  },
+  "cava": {
+    "status": "ok",
+    "sentence": "Confuci va dir: Abans de sortir a buscar venjança, cava dues tombes.",
+    "english": "Confucius said: Before you go out to seek revenge, dig two graves.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784735266
+  },
+  "roja": {
+    "status": "ok",
+    "sentence": "La llum roja té una longitud d'ona d'entre entre 619 i 780 nm.",
+    "english": "Red light has a wavelength between 619 and 780 nm.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784735394
+  },
+  "pernil": {
+    "status": "ok",
+    "sentence": "S'elabora en dues varietats principals: el pernil cuit i el pernil salat.",
+    "english": "It is made in two main varieties: cooked ham and salted ham.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784735406
+  },
+  "concursant": {
+    "status": "ok",
+    "sentence": "El concursant va deixar anar la resposta correcta just abans de que el temps s'esgotés.",
+    "english": "The contestant blurted out the right answer just before the time ran out.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784735412
+  },
+  "drama": {
+    "status": "ok",
+    "sentence": "La paraula prové del drama satíric de l'antiga Grècia, estretament associat a la tragèdia.",
+    "english": "The word comes from the satirical drama of ancient Greece, closely associated with tragedy.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784735510
+  },
+  "dificultat": {
+    "status": "ok",
+    "sentence": "La meua major dificultat en llatí són les oracions infinitives.",
+    "english": "My greatest difficulty in Latin is the infinitive sentences.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784735516
+  },
+  "acusat": {
+    "status": "ok",
+    "sentence": "Ha fugit un bou en pantalons curts acusat de furt.",
+    "english": "A bull with short trousers has escaped accused of stealing.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784735537
+  },
+  "poema": {
+    "status": "ok",
+    "sentence": "Vostès van fingir entendre el poema de la Mary.",
+    "english": "You pretended to understand Mary's poem.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784735557
+  },
+  "enveja": {
+    "status": "ok",
+    "sentence": "Vaig tenir enveja del meu germà.",
+    "english": "I was jealous of my brother.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784735578
+  },
+  "jim": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784735788
+  },
+  "torneig": {
+    "status": "ok",
+    "sentence": "Va acabar onzè en el torneig.",
+    "english": "He finished eleventh in the tournament.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784735788
+  },
+  "banyar": {
+    "status": "ok",
+    "sentence": "Sovint vaig a banyar-me al riu.",
+    "english": "I often go swimming in the river.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784735808
+  },
+  "bolet": {
+    "status": "ok",
+    "sentence": "Aquest joc ha fet que el bolet aparegui en molts logotips de marques pensades per als joves.",
+    "english": "This game has made the mushroom appear in many logos of brands designed for young people.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784735907
+  },
+  "aprovar": {
+    "status": "ok",
+    "sentence": "Va aprovar l'examen malgrat haver de renunciar a la seva vida social.",
+    "english": "She passed the test at the expense of her social life.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784735912
+  },
+  "denúncia": {
+    "status": "ok",
+    "sentence": "El circ va ser tancat per una denúncia de maltractament d'animals.",
+    "english": "The circus was closed by a report of animal abuse.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784735933
+  },
+  "estira": {
+    "status": "error",
+    "error": "tatoeba_no_quality_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784736219
+  },
+  "pum": {
+    "status": "ok",
+    "sentence": "Pim, pam, pum...",
+    "english": "Pim, pam, pum...",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784736302
+  },
+  "nucli": {
+    "status": "ok",
+    "sentence": "La familia és el nucli de la societat.",
+    "english": "The family is the core of society.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784736308
+  },
+  "carnet": {
+    "status": "ok",
+    "sentence": "Necessito una foto de carnet.",
+    "english": "I need a passport photo.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784736329
+  },
+  "llama": {
+    "status": "ok",
+    "sentence": "El nom «llama» va ser adoptat pels colons europeus dels nadius peruans.",
+    "english": "The name “llama” was adopted by European settlers from the native Peruvians.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784736357
+  },
+  "ton": {
+    "status": "ok",
+    "sentence": "Ton pare és alt.",
+    "english": "Your father is tall.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784736363
+  },
+  "monestir": {
+    "status": "ok",
+    "sentence": "Originàriament un monestir era la cel·la d'un sol monjo o monja, anomenats en aquest cas ermitans o anacoretes.",
+    "english": "Originally a monastery was the cell of a single monk or nun, called in this case hermits or anchorites.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784736390
+  },
+  "expedició": {
+    "status": "ok",
+    "sentence": "El 1969, una expedició japonesa descobria nou meteorits.",
+    "english": "In 1969, a Japanese expedition discovered nine meteorites.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784736442
+  },
+  "neta": {
+    "status": "ok",
+    "sentence": "Hem d'invertir en energia neta i renovable.",
+    "english": "We need to invest in clean, renewable energy.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784736448
+  },
+  "bec": {
+    "status": "ok",
+    "sentence": "M'agraden les dones, m'agrada el vi. I si haig d'oblidar-les bec i oblido.",
+    "english": "I like women, I like wine. And if I have to forget them beak and forget.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784736469
+  },
+  "escombraries": {
+    "status": "ok",
+    "sentence": "Jo sóc qui treu les escombraries.",
+    "english": "I'm the one who takes out the garbage.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784736490
+  },
+  "assegut": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784736719
+  },
+  "comporta": {
+    "status": "ok",
+    "sentence": "L'orientació al nord comporta més ombra i es conserva millor la humitat, tot i que també és més freda.",
+    "english": "The north orientation provides more shade and better preservation of humidity, although it is also colder.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784736825
+  },
+  "vela": {
+    "status": "ok",
+    "sentence": "Les competicions de vela reben el nom de regates.",
+    "english": "Sailing competitions are called regattas.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784736909
+  },
+  "garantir": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784737065
+  },
+  "merder": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784737246
+  },
+  "cangur": {
+    "status": "ok",
+    "sentence": "Tenim una cangur per aquesta nit?",
+    "english": "Do we have a babysitter for tonight?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784737246
+  },
+  "estel": {
+    "status": "ok",
+    "sentence": "Aquell petit estel és el més brillant.",
+    "english": "That little star is the brightest.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784737268
+  },
+  "joventut": {
+    "status": "ok",
+    "sentence": "S'han de llegir molts llibres a la joventut.",
+    "english": "You have to read a lot of books in your youth.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784737289
+  },
+  "califòrnia": {
+    "status": "ok",
+    "sentence": "Califòrnia conté 8 de les 50 primeres ciutats dels EUA pel que fa a població.",
+    "english": "California contains 8 of the top 50 cities in the U.S. in terms of population.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784737387
+  },
+  "menor": {
+    "status": "ok",
+    "sentence": "Tot i això, la mínima diferència entre els eixos semieix major i semieix menor mostra que són pràcticament circulars en aparença.",
+    "english": "However, the minimal difference between the semi-major and semi-minor axes shows that they are practically circular in appearance.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784737502
+  },
+  "pujada": {
+    "status": "ok",
+    "sentence": "Acelera una mica, si no el cotxe es quedarà parat en aquesta pujada.",
+    "english": "Accelerate a bit, otherwise the car will stop on this hill.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784737507
+  },
+  "conductor": {
+    "status": "ok",
+    "sentence": "No puc contractar un conductor. No tinc diners per a fer-ho.",
+    "english": "I cannot hire a driver. I don't have money for that.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784737528
+  },
+  "escòcia": {
+    "status": "ok",
+    "sentence": "Encara ets a Escòcia?",
+    "english": "Are you still in Scotland?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784737549
+  },
+  "inicial": {
+    "status": "ok",
+    "sentence": "A mesura que el lector va llegint, verifica o refuta la hipòtesi inicial i alhora elabora noves hipòtesis per poder seguir llegint.",
+    "english": "As the reader reads, he or she checks or refutes the initial hypothesis and at the same time develops new hypotheses to be able to continue reading.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784737673
+  },
+  "suficient": {
+    "status": "ok",
+    "sentence": "Sols respon a la pregunta. No hi ha temps suficient.",
+    "english": "Sols answers the question. Not enough time.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784737679
+  },
+  "franc": {
+    "status": "ok",
+    "sentence": "Sigues sempre franc.",
+    "english": "Always be frank.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784737700
+  },
+  "vapor": {
+    "status": "ok",
+    "sentence": "Ara mateix no tenim monyos coguts al vapor.",
+    "english": "Right now we don't have monkeys steamed.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784737721
+  },
+  "aclarir": {
+    "status": "ok",
+    "sentence": "No n'hi va haver prou amb les investigacions per aclarir moltes coses.",
+    "english": "Investigations were not enough to clarify many things.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784737742
+  },
+  "fiscalia": {
+    "status": "ok",
+    "sentence": "A aqueix plantejament s'hi van oposar tant la fiscalia com l'advocacia de l'estat com l'acusació particular.",
+    "english": "This approach was opposed by both the prosecution and the state attorney as well as the private prosecution.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784737800
+  },
+  "respectar": {
+    "status": "ok",
+    "sentence": "Hem de respectar la seva decisió.",
+    "english": "We must respect his decision.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784737805
+  },
+  "explorar": {
+    "status": "ok",
+    "sentence": "Va explorar la selva amazònica.",
+    "english": "He explored the Amazon jungle.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784737826
+  },
+  "màscara": {
+    "status": "ok",
+    "sentence": "Li ha caigut la màscara. Ara ja sabem qui és realment.",
+    "english": "His mask has fallen. Now we really know who he is.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784737846
+  },
+  "ramat": {
+    "status": "ok",
+    "sentence": "Una ovella amb sarna infecta tot el ramat.",
+    "english": "One sheep with mange infects the entire flock.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784737867
+  },
+  "adequat": {
+    "status": "ok",
+    "sentence": "És un error conceptual dir que les abelles formen colònies. El terme més adequat és \"societat\", perquè aquests animals no mantenen vincles físics entre ells.",
+    "english": "It is a conceptual error to say that bees form colonies. The most appropriate term is “society” because these animals do not maintain physical bonds with each other.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784737887
+  },
+  "onze": {
+    "status": "ok",
+    "sentence": "Són tres quarts i cinc d'onze.",
+    "english": "It's ten to eleven.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784737908
+  },
+  "ànec": {
+    "status": "ok",
+    "sentence": "La femella de l'ànec o ànet rep el nom d'ànega o àneda.",
+    "english": "The female duck or duck is called a duck or duck.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784738006
+  },
+  "assumir": {
+    "status": "ok",
+    "sentence": "Al final en Tom va haver de resignar-se a assumir la responsabilitat dels seus actes.",
+    "english": "In the end, Tom had to bite the bullet and take responsibility for his actions.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784738012
+  },
+  "començant": {
+    "status": "ok",
+    "sentence": "Va aprendre interlingua fa molts anys, però va deixar d'utilitzar-la i se'n va oblidar. Ara, l'està començant a estudiar de nou.",
+    "english": "He learned Interlingua many years ago, but stopped using it and forgot about it. Now, he's starting to study it again.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784738141
+  },
+  "xoc": {
+    "status": "ok",
+    "sentence": "Els materials fràgils es trenquen sense deformació quan són sotmesos a un xoc i no absorbeixen energia cinètica.",
+    "english": "Fragile materials break without deformation when subjected to shock and do not absorb kinetic energy.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784738240
+  },
+  "comitè": {
+    "status": "ok",
+    "sentence": "Ell treballa com a representant sindical en aquell comitè.",
+    "english": "He works as a union representative on that committee.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784738246
+  },
+  "repartir": {
+    "status": "ok",
+    "sentence": "La mare va repartir els diners entre els seus fills.",
+    "english": "The mother distributed the money among her children.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784738267
+  },
+  "còmic": {
+    "status": "ok",
+    "sentence": "Alguns dibuixants de còmic el consideren el \"novè art\".",
+    "english": "Some comic book artists consider it the \"ninth art\".",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784738295
+  },
+  "pesar": {
+    "status": "ok",
+    "sentence": "Pot pesar aquest paquet?",
+    "english": "Can you weigh this package?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784738301
+  },
+  "fetge": {
+    "status": "ok",
+    "sentence": "El fetge també té un paper important en la síntesi de les proteïnes del plasma i en la desintoxicació de l'organisme.",
+    "english": "The liver also plays an important role in the synthesis of plasma proteins and in the detoxification of the body.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784738328
+  },
+  "norma": {
+    "status": "ok",
+    "sentence": "Norma editorial.",
+    "english": "Editorial standard.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784738412
+  },
+  "gimnàs": {
+    "status": "ok",
+    "sentence": "Vàrem jugar a bàsquet al gimnàs.",
+    "english": "We played basketball in the gym.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784738417
+  },
+  "conseqüència": {
+    "status": "ok",
+    "sentence": "La teva tos és conseqüència de fumar.",
+    "english": "Your cough is the consequence of smoking.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784738438
+  },
+  "ehem": {
+    "status": "ok",
+    "sentence": "Stade: Landschaftsverband der ehem.",
+    "english": "Stade: Landschaftsverband der ehem.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784738502
+  },
+  "generar": {
+    "status": "ok",
+    "sentence": "Com pot aquesta formiga generar tanta energia corporal?",
+    "english": "How can this tiny ant generate so much body energy?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784738507
+  },
+  "global": {
+    "status": "ok",
+    "sentence": "Va ser una dècada marcada per grans canvis polítics, econòmics, socials i culturals a nivell global.",
+    "english": "It was a decade marked by major political, economic, social and cultural changes on a global level.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784738631
+  },
+  "pastor": {
+    "status": "ok",
+    "sentence": "El pastor es pot ajudar d'animals guia, com el gos d'atura, per mantenir unit el ramat.",
+    "english": "The shepherd can be helped by guide animals, such as the stop dog, to keep the herd together.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784738769
+  },
+  "contractar": {
+    "status": "ok",
+    "sentence": "El va contractar com a programador.",
+    "english": "She engaged him as a programmer.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784738774
+  },
+  "analitzar": {
+    "status": "ok",
+    "sentence": "Tot allò que no es registri en el moment de l'excavació no prodà ser tornat a analitzar en un futur.",
+    "english": "Anything that was not recorded at the time of the excavation could not be re-analyzed in the future.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784738853
+  },
+  "bateria": {
+    "status": "ok",
+    "sentence": "Adora la música i toca la bateria.",
+    "english": "He loves music and plays the drums.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784738858
+  },
+  "criar": {
+    "status": "ok",
+    "sentence": "Va quedar-se orfe als tres anys, i el va criar un parent llunyà.",
+    "english": "An orphan at three, he was brought up by a distant relative.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784738879
+  },
+  "ras": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784739027
+  },
+  "balla": {
+    "status": "ok",
+    "sentence": "Marie balla bé.",
+    "english": "Marie dances well.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784739027
+  },
+  "navegar": {
+    "status": "ok",
+    "sentence": "El piragüisme és l'activitat esportiva de navegar amb una piragua, per aigües planes o per aigües braves.",
+    "english": "Canoeing is the sporting activity of sailing with a canoe, for flat water or white water.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784739090
+  },
+  "orient": {
+    "status": "ok",
+    "sentence": "Aleshores, va esdevenir rellevant diferenciar l'«Orient» de la «qüestió oriental».",
+    "english": "At that time, it became relevant to differentiate the“Orient” from the “Oriental question”.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784739210
+  },
+  "informar": {
+    "status": "ok",
+    "sentence": "Em sap greu haver d'informar-te de la mala notícia.",
+    "english": "I regret that I have to inform you of the bad news.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784739215
+  },
+  "filosofia": {
+    "status": "ok",
+    "sentence": "A en Tom li agrada parlar de política i filosofia.",
+    "english": "Tom likes talking about politics and philosophy.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784739236
+  },
+  "truita": {
+    "status": "ok",
+    "sentence": "La truita cultivada i la char són també venudes comercialment com a marisc.",
+    "english": "Cultivated trout and char are also sold commercially as seafood.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784739335
+  },
+  "casino": {
+    "status": "ok",
+    "sentence": "És el primer casino mediterrani que utilitza aquesta tecnologia.",
+    "english": "It is the first Mediterranean casino to use this technology.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784739366
+  },
+  "vinagre": {
+    "status": "ok",
+    "sentence": "Aquest vi és tan àcid com el vinagre.",
+    "english": "This wine is as acidic as vinegar.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784739371
+  },
+  "pallasso": {
+    "status": "ok",
+    "sentence": "En Daniel va venir a la seva festa d'aniversari vestit de pallasso.",
+    "english": "Daniel came to his birthday party dressed as a clown.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784739392
+  },
+  "agricultura": {
+    "status": "ok",
+    "sentence": "L'agricultura va ser desenvolupada fa més de 10000 anys.",
+    "english": "Agriculture was developed more than 10,000 years ago.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784739412
+  },
+  "gota": {
+    "status": "ok",
+    "sentence": "Gota de la meva sang.",
+    "english": "Drop of my blood.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784739434
+  },
+  "horrorós": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784739603
+  },
+  "parir": {
+    "status": "ok",
+    "sentence": "Solen parir una única cria i el temps que passen amb ella és més llarg que el dels estrepsirrins.",
+    "english": "They usually give birth to a single calf and the time they spend with it is longer than that of strepsirrhines.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784739798
+  },
+  "ala": {
+    "status": "ok",
+    "sentence": "El pardal tenia una ala trencada.",
+    "english": "The bird's wing was broken.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784739803
+  },
+  "suma": {
+    "status": "ok",
+    "sentence": "El quadrat de la hipotenusa és igual a la suma dels quadrats dels altres dos costats.",
+    "english": "The square of the hypotenuse is equal to the sum of the squares of the other two sides.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784739824
+  },
+  "substituir": {
+    "status": "ok",
+    "sentence": "El vicepresident del país és el designat a substituir el president en cas d'absència, temporal o definitiva.",
+    "english": "The vice president of the country is the one appointed to replace the president in case of temporary or permanent absence.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784739897
+  },
+  "gola": {
+    "status": "ok",
+    "sentence": "L'os hioide i la clavícula són els únics ossos situats a la gola de mamífers.",
+    "english": "The hyoid bone and collarbone are the only bones located in the throat of mammals.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784739981
+  },
+  "intensitat": {
+    "status": "ok",
+    "sentence": "La intensitat lluminosa forma part de les magnituds fonamentals de la física.",
+    "english": "Luminous intensity is part of the fundamental magnitudes of physics.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784740081
+  },
+  "contingut": {
+    "status": "ok",
+    "sentence": "Penja contingut en català a les xarxes.",
+    "english": "Upload content in Catalan to social networks.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784740087
+  },
+  "brou": {
+    "status": "ok",
+    "sentence": "però aquests depenen del tipus de brou i de la cultura gastronòmica particular de cadascú.",
+    "english": "but these depend on the type of broth and the particular gastronomic culture of each one.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784740114
+  },
+  "encertat": {
+    "status": "ok",
+    "sentence": "Però el resultat no va ser gaire encertat.",
+    "english": "But the result was not very accurate.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784740246
+  },
+  "dutxa": {
+    "status": "ok",
+    "sentence": "Ella es dutxa.",
+    "english": "She showers.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784740252
+  },
+  "estàtua": {
+    "status": "ok",
+    "sentence": "Una estàtua cúbica destaca majestuosa en l'horitzó.",
+    "english": "A cubical statue stands out majestically on the horizon.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784740272
+  },
+  "resistir": {
+    "status": "ok",
+    "sentence": "Jerusalem, una ciutat emmurallada, va resistir el setge, amb tot el que això significa, durant 6 mesos.",
+    "english": "Jerusalem, a walled city, withstood the siege, with all that that means, for 6 months.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784740396
+  },
+  "dominar": {
+    "status": "ok",
+    "sentence": "Has d'aprendre a dominar el teu caràcter.",
+    "english": "You must learn to master your character.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784740402
+  },
+  "lleva": {
+    "status": "ok",
+    "sentence": "Lleva't els calcetins, per favor.",
+    "english": "Take off your socks, please.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784740423
+  },
+  "mont": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784740618
+  },
+  "vestir": {
+    "status": "ok",
+    "sentence": "Fes el favor de vestir-te, que farem tard!",
+    "english": "Do me a favour and get dressed, we're going to be late!",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784740619
+  },
+  "bloc": {
+    "status": "ok",
+    "sentence": "En Tom va treure un bolígraf i un bloc de notes.",
+    "english": "Tom took out a pen and a notepad.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784740639
+  },
+  "introduir": {
+    "status": "ok",
+    "sentence": "L'entrevistat va introduir un argument només una vegada.",
+    "english": "Only on one occasion the interviewee introduces a topic.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784740660
+  },
+  "saludar": {
+    "status": "ok",
+    "sentence": "En tots els casos resulta incert que tals gestos existissin com una forma habitual de saludar.",
+    "english": "In all cases, it is uncertain whether such gestures existed as a usual way of greeting.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784740758
+  },
+  "barrera": {
+    "status": "ok",
+    "sentence": "No hi ha cap barrera entre nosaltres dos.",
+    "english": "There is no barrier between both of us.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784740779
+  },
+  "destrossar": {
+    "status": "ok",
+    "sentence": "Va agafar un bastó i va destrossar totes les imatges excepte una, a qui va col·locar el pal en una mà.",
+    "english": "He grabbed a stick and tore apart all but one of the images, placing the stick in one hand.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784740863
+  },
+  "escalfar": {
+    "status": "ok",
+    "sentence": "El petroli a escalfar circula dins de tubs disposats a serpentins al llarg de les parets del forn de combustió.",
+    "english": "The oil to be heated circulates inside pipes arranged in coils along the walls of the combustion furnace.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784740977
+  },
+  "piqué": {
+    "status": "ok",
+    "sentence": "El 18 de gener del 2018, Piqué va tornar a ampliar el seu contracte, aquesta vegada fins al 2022.",
+    "english": "On January 18, 2018, Piqué extended his contract again, this time until 2022.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784741060
+  },
+  "adult": {
+    "status": "ok",
+    "sentence": "Ja ets suficientment adult com per saber el que fas.",
+    "english": "You're old enough to know better.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784741066
+  },
+  "clavar": {
+    "status": "ok",
+    "sentence": "Té un mànec de vegades amb forma anatòmica o amb un sortint en forma de creu perquè no rellisqui en clavar-lo.",
+    "english": "It has a handle that is sometimes anatomically shaped or with a cross-shaped protrusion so that it does not slip when nailed.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784741195
+  },
+  "buida": {
+    "status": "ok",
+    "sentence": "Va aparcar el cotxe en una plaça buida.",
+    "english": "She parked her car in a vacant lot.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784741200
+  },
+  "cicle": {
+    "status": "ok",
+    "sentence": "Les versions beta estan en un pas intermedi en el cicle de desenvolupament.",
+    "english": "Beta versions are at an intermediate stage in the development cycle.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784741263
+  },
+  "millora": {
+    "status": "ok",
+    "sentence": "Fer trencaclosques millora la concentració.",
+    "english": "Puzzling improves concentration.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784741269
+  },
+  "nadó": {
+    "status": "ok",
+    "sentence": "Cal que el nadó prengui prou llet.",
+    "english": "It is necessary, that the baby receive enough milk.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784741290
+  },
+  "espiritual": {
+    "status": "ok",
+    "sentence": "El materialisme filosòfic, en canvi, nega la part espiritual de l'ésser humà.",
+    "english": "Philosophical materialism, on the other hand, denies the spiritual part of the human being.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784741379
+  },
+  "perspectiva": {
+    "status": "ok",
+    "sentence": "Perspectiva militar, és un cas particular de la perspectiva cavallera.",
+    "english": "Military perspective, is a particular case of the knightly perspective.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784741402
+  },
+  "península": {
+    "status": "ok",
+    "sentence": "I els de la península europea, són tots europeus.",
+    "english": "And those of the European peninsula are all Europeans.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784741424
+  },
+  "simpàtic": {
+    "status": "ok",
+    "sentence": "Mai no he conegut un home tant simpàtic",
+    "english": "I've never met such a kind man.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784741429
+  },
+  "palla": {
+    "status": "ok",
+    "sentence": "La palla s'obté després de l'operació del batre o trillar, que separa el gra de la palla.",
+    "english": "The ball is obtained after the beating or threshing operation, which separates the grain from the ball.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784741533
+  },
+  "acomiadar": {
+    "status": "ok",
+    "sentence": "Ella va sortir de l'habitació sense acomiadar-se.",
+    "english": "She left the room without saying goodbye.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784741539
+  },
+  "romàntic": {
+    "status": "ok",
+    "sentence": "El teatre romàntic espanyol coincideix en les seves directrius generals amb el que es produeix en aquest moment a Alemanya i França.",
+    "english": "Spanish romantic theatre coincides in its general guidelines with what is happening at the moment in Germany and France.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784741576
+  },
+  "agulla": {
+    "status": "ok",
+    "sentence": "L'agulla imantada indica la direcció del camp magnètic terrestre, apuntant cap als pols nord i sud.",
+    "english": "The magnetized needle indicates the direction of Earth's magnetic field, pointing towards the north and south poles.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784741661
+  },
+  "explotar": {
+    "status": "ok",
+    "sentence": "Entre les seves funcions es troben recuperar pilotes, propiciar la creació de jugades i explotar el joc ofensiu.",
+    "english": "Among its functions are recovering balls, encouraging the creation of plays and exploiting offensive play.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784741769
+  },
+  "moll": {
+    "status": "ok",
+    "sentence": "Estàs moll.",
+    "english": "You're wet.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784741774
+  },
+  "rai": {
+    "status": "ok",
+    "sentence": "Encara rai!",
+    "english": "Thank God.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784741795
+  },
+  "beguda": {
+    "status": "ok",
+    "sentence": "Per beguda s'entén qualsevol líquid habitualment destinat per beure.",
+    "english": "Beverage is any liquid usually intended for drinking.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784741883
+  },
+  "lesió": {
+    "status": "ok",
+    "sentence": "Aquesta lesió és molt comú.",
+    "english": "This is a very common injury.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784741997
+  },
+  "afectat": {
+    "status": "ok",
+    "sentence": "El Japó es veu afectat sovint per terratrèmols.",
+    "english": "Earthquakes frequently hit Japan.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784742018
+  },
+  "arquitecte": {
+    "status": "ok",
+    "sentence": "A Catalunya aquesta tasca pot ser confiat a un arquitecte tècni, també anomenat aparellador o enginyer de l'edificació.",
+    "english": "In Catalonia, this task can be entrusted to a technical architect, also called a surveyor or building engineer.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784742055
+  },
+  "obligació": {
+    "status": "ok",
+    "sentence": "Obligació o deure moral o legal respecte a fer o no fer una cosa, el terme correcte serien obligacions morals",
+    "english": "Moral or legal obligation or duty with respect to doing or not doing something, the correct term would be moral obligations",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784742131
+  },
+  "xivarri": {
+    "status": "ok",
+    "sentence": "El mot francès 'bataclan' vol dir 'gatzara, xivarri alegre'.",
+    "english": "The French word 'bataclan' means' gatzara, cheerful chivarri '.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784742184
+  },
+  "aprovat": {
+    "status": "ok",
+    "sentence": "Tot i els seus esforços, no ha aprovat.",
+    "english": "With all his efforts, he failed the test.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784742189
+  },
+  "espacial": {
+    "status": "ok",
+    "sentence": "Bush va anunciar la retirada dels transbordadors tan bon punt l'estació espacial internacional es considerés acabada.",
+    "english": "Bush announced the retirement of the shuttles as soon as the international space station was considered finished.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784742288
+  },
+  "anunciar": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784742503
+  },
+  "bla": {
+    "status": "ok",
+    "sentence": "És un metall de color blanc d'argent i tan bla que es pot tallar amb un ganivet sense dificultat.",
+    "english": "It is a silver-white metal and so blue that it can be cut with a knife without difficulty.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784742568
+  },
+  "clavat": {
+    "status": "ok",
+    "sentence": "Doblegar la punta d'un clau clavat de forma que no sobresurti.",
+    "english": "Bend the tip of a nailed wrench so that it does not protrude.",
+    "source": "wiktionary_search+mymemory",
+    "updated_at": 1784742738
+  },
+  "detectar": {
+    "status": "ok",
+    "sentence": "De vegades parts de la línia lateral es modifiquen com a electroreceptors, òrgans per detectar impulsos elèctrics.",
+    "english": "Sometimes parts of the sideline are modified as electroreceptors, organs to detect electrical impulses.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784742846
+  },
+  "escàndol": {
+    "status": "ok",
+    "sentence": "En termes catòlics, el pecat d'escàndol és aquella conducta immoral que es duu a terme enfront dels altres de manera intencionada.",
+    "english": "In Catholic terms, the sin of scandal is that immoral conduct that is intentionally carried out in front of others.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784742857
+  },
+  "puny": {
+    "status": "ok",
+    "sentence": "Fes servir el teu puny.",
+    "english": "Use your fist.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784742863
+  },
+  "concentrar": {
+    "status": "ok",
+    "sentence": "No puc concentrar-me, no puc, no puc... Vosaltres què feu per a concentrar-vos??",
+    "english": "I can't focus, I can't, I just can't... What do you guys do to concentrate better?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784742883
+  },
+  "dipòsit": {
+    "status": "ok",
+    "sentence": "També és el dipòsit legal d'Austràlia.",
+    "english": "It is also Australia's legal deposit.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784742921
+  },
+  "existència": {
+    "status": "ok",
+    "sentence": "La religió és la creença en l'existència de valors.",
+    "english": "Religion is the belief in the existence of values.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784742942
+  },
+  "immens": {
+    "status": "ok",
+    "sentence": "La balena és un immens mamífer marí, amb un cos hidrodinàmic i sense pèl, una aleta horitzontal a la cua i un forat a la part superior del cap per respirar.",
+    "english": "The whale is an immense marine mammal, with a hydrodynamic, hairless body, a horizontal fin on its tail and a hole on the top of its head for breathing.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784742963
+  },
+  "narcís": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784743169
+  },
+  "anomenada": {
+    "status": "ok",
+    "sentence": "1845-49 - La desastrosa gran fam irlandesa o també anomenada fam de la patata irlandesa té lloc durant aquests anys.",
+    "english": "1845-49 - The disastrous Great Irish Famine or also called the Irish Potato Famine takes place during these years.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784743300
+  },
+  "endins": {
+    "status": "ok",
+    "sentence": "Anar ben endins.",
+    "english": "Way in there.",
+    "source": "wiktionary_search+mymemory",
+    "updated_at": 1784743475
+  },
+  "cremat": {
+    "status": "ok",
+    "sentence": "S'ha cremat la torrada.",
+    "english": "The toast has burned.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784743481
+  },
+  "trajectòria": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784743628
+  },
+  "cagat": {
+    "status": "ok",
+    "sentence": "No he cagat en tota una setmana.",
+    "english": "I haven't shit in a whole week.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784743629
+  },
+  "cable": {
+    "status": "ok",
+    "sentence": "Els proveïdors de cable poden requerir l'ús d'una caixa de conversors per rebre HBO.",
+    "english": "Cable providers may require the use of a converter box to receive HBO.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784743772
+  },
+  "recompensa": {
+    "status": "ok",
+    "sentence": "La recompensa consisteix en una senzilla medalla de bronze sense dotació econòmica.",
+    "english": "The reward consists of a simple bronze medal with no financial endowment.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784743799
+  },
+  "planxa": {
+    "status": "ok",
+    "sentence": "No puc planxar la meva roba. No tinc planxa.",
+    "english": "I cannot iron my clothes. I have no iron.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784743805
+  },
+  "picant": {
+    "status": "ok",
+    "sentence": "És massa picant.",
+    "english": "It's too spicy.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784743825
+  },
+  "avís": {
+    "status": "ok",
+    "sentence": "La dinastia d'Avís es va extingir amb la mort del rei Enric I de Portugal el 1580.",
+    "english": "The Warning dynasty died out with the death of King Henry I of Portugal in 1580.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784744017
+  },
+  "comissari": {
+    "status": "ok",
+    "sentence": "Va romandre com comissari fins al 1862, quan la seva feble salut el va obligar a tornar a Anglaterra.",
+    "english": "He remained commissioner until 1862, when his poor health forced him to return to England.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784744044
+  },
+  "ascensor": {
+    "status": "ok",
+    "sentence": "L'ascensor no funciona avui.",
+    "english": "The elevator is out of order today.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784744049
+  },
+  "iniciar": {
+    "status": "ok",
+    "sentence": "La setena i darrera etapa de la publicació es va iniciar en setembre de 2002 amb el número 36.",
+    "english": "The seventh and final stage of publication began in September 2002 with issue 36.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784744195
+  },
+  "trompa": {
+    "status": "ok",
+    "sentence": "L'instrument es desenvolupà inicialment a França a mitjan segle xvii, a partir del cor de chasse o trompa de caça.",
+    "english": "The instrument was initially developed in France in the mid-17th century, from the chasse or hunting horn choir.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784744217
+  },
+  "barba": {
+    "status": "ok",
+    "sentence": "Mamà, per què no tinc cap oncle que tingui barba?",
+    "english": "Mommy, why don't I have an uncle with a beard?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784744223
+  },
+  "cartera": {
+    "status": "ok",
+    "sentence": "He perdut la cartera.",
+    "english": "I lost my wallet.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784744244
+  },
+  "funcionament": {
+    "status": "ok",
+    "sentence": "Aquests elements determinen el funcionament ecològic de l'hàbitat.",
+    "english": "These elements determine the ecological functioning of the habitat.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784744415
+  },
+  "muntatge": {
+    "status": "ok",
+    "sentence": "El muntatge pot ser definit com l'ordenació narrativa i rítmica dels plans en un producte audiovisual.",
+    "english": "Editing can be defined as the narrative and rhythmic arrangement of the plans in an audiovisual product.",
+    "source": "wikipedia_summary+mymemory",
+    "updated_at": 1784744489
+  },
+  "representant": {
+    "status": "ok",
+    "sentence": "En l'alta edat mitjana, el comte era el representant civil del rei.",
+    "english": "In the High Middle Ages, the earl was the civil representative of the king.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784744597
+  },
+  "gàbia": {
+    "status": "ok",
+    "sentence": "Tinc un lloro en una gàbia.",
+    "english": "I have a parrot in a cage.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784744602
+  },
+  "manetes": {
+    "status": "ok",
+    "sentence": "Quan s'incorporen diverses manetes a un eix, aquest s'anomena cigonyal.",
+    "english": "When several handles are incorporated into a shaft, it is called a crankshaft.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784744665
+  },
+  "estany": {
+    "status": "ok",
+    "sentence": "Pots trobar la diferència entre la plata i l'estany?",
+    "english": "Can you tell silver and tin apart?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784744671
+  },
+  "pega": {
+    "status": "ok",
+    "sentence": "Predicar l'amor mentre es pega als nens és una paradoxa.",
+    "english": "Preaching love while beating children is a paradox.",
+    "source": "tatoeba_sentence_only+mymemory",
+    "updated_at": 1784744692
+  },
+  "agafant": {
+    "status": "ok",
+    "sentence": "Agafant rellevància en un principi a l'escola de pensament moïsta, el concepte es va desenvolupar principalment al legalisme.",
+    "english": "Gaining relevance at first in the school of Moitic thought, the concept developed mainly into legalism.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784744890
+  },
+  "vegetació": {
+    "status": "ok",
+    "sentence": "Amaga la flota a la cala boscosa, al costat d'una cova, sota les llargues i denses ombres d'una vegetació exuberant.",
+    "english": "He hides the fleet in a wooded cove, next to a cave, under the long, dense shadows of lush vegetation.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784744895
+  },
+  "bum": {
+    "status": "ok",
+    "sentence": "La mainadera màgica i el gran bum!",
+    "english": "The magic babysitter and the big boom!",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784744964
+  },
+  "anàlisi": {
+    "status": "ok",
+    "sentence": "L'INSEE també assegura la difusió i anàlisi d'informació estadística.",
+    "english": "INSEE also ensures the dissemination and analysis of statistical information.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784745000
+  },
+  "coberta": {
+    "status": "ok",
+    "sentence": "Hom distingeix entre coberta anterior i coberta posterior.",
+    "english": "A distinction is made between the front cover and the back cover.",
+    "source": "wikipedia_summary+lingva",
+    "updated_at": 1784745077
+  },
+  "furgoneta": {
+    "status": "ok",
+    "sentence": "S'han adoptat principalment per a aplicacions de repartiment i autocaravanes lleugeres amb cabina de furgoneta de classe C.",
+    "english": "They have been mainly adopted for delivery applications and light motorhomes with a Class C van cab.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784745103
+  },
+  "coc": {
+    "status": "ok",
+    "sentence": "Coc de nous.",
+    "english": "Cook walnuts.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784745190
+  },
+  "nació": {
+    "status": "ok",
+    "sentence": "Si una nació espera ser ignorant i lliure, espera el que mai va ser i mai ho serà.",
+    "english": "If a nation expects to be ignorant and free, it expects what never was and never will be.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784745196
+  },
+  "graciós": {
+    "status": "ok",
+    "sentence": "Mr. Bean és tan graciós!",
+    "english": "Mr. Bean is so funny!",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784745248
+  },
+  "robatori": {
+    "status": "ok",
+    "sentence": "Per exemple, és possible definir com a robatori aquell que es produeix mitjançant l'ús d'una clau falsa.",
+    "english": "For example, it is possible to define as theft that which occurs through the use of a false key.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784745381
+  },
+  "cinquena": {
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784745535
+  },
+  "alça": {
+    "status": "ok",
+    "sentence": "Per favor, alça la mà abans de parlar.",
+    "english": "Please raise your hand before you speak.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784745536
+  },
+  "creixen": {
+    "status": "ok",
+    "sentence": "Als nens s'han de posar limitacions, sinó, creixen i es pensen que les lleis no van amb ells.",
+    "english": "Kids need boundaries. Otherwise, they'll grow up thinking rules don't apply to them.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784745556
+  },
+  "film": {
+    "status": "ok",
+    "sentence": "T'agradaria veure el film amb mi?",
+    "english": "Would you like to watch the film with me?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784745577
+  },
+  "cocodril": {
+    "status": "ok",
+    "sentence": "El cocodril marí no és l'únic a endinsar-se en el mar, però sí el que ho fa més freqüentment.",
+    "english": "The marine crocodile is not the only one to enter the sea, but it is the one that does it most frequently.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784745623
+  },
+  "sabent": {
+    "status": "ok",
+    "sentence": "Vaig acabar sabent la veritat.",
+    "english": "I ended up knowing the truth.",
+    "source": "tatoeba_sentence_only+lingva",
+    "updated_at": 1784745648
+  },
+  "seriós": {
+    "status": "ok",
+    "sentence": "Açò és seriós.",
+    "english": "This is serious.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784745654
+  },
+  "enlaire": {
+    "status": "ok",
+    "sentence": "Generalment, hi juguen amb dos ossets llançant-los enlaire simultàniament.",
+    "english": "Generally, they play it with two teddy bears by throwing them into the air simultaneously.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784745803
+  },
+  "rodatge": {
+    "status": "ok",
+    "sentence": "Quin rodatge té aquest cotxe?",
+    "english": "What mileage do you get with this car?",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784745809
+  },
+  "botzina": {
+    "status": "ok",
+    "sentence": "Botzina: suport de l'eix porta hèlix.",
+    "english": "Horn: Propeller shaft support.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784745849
+  },
+  "whisky": {
+    "status": "ok",
+    "sentence": "El primer escrit sobre el whisky data de 1405 a Irlanda, on era destil·lat pels monjos.",
+    "english": "The first writing about whiskey dates from 1405 in Ireland, where it was distilled by monks.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784745875
+  },
+  "surf": {
+    "status": "ok",
+    "sentence": "El surf inclou totes les formes de surfejar onades utilitzant una planxa, independentment de la posició.",
+    "english": "Surfing includes all forms of surfing waves using a board, regardless of position.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784745962
+  },
+  "tut": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "Fecht va traduir el verb 'tut com a \"Ser perfecte/complet\".",
+    "updated_at": 1784746027
+  },
+  "transició": {
+    "status": "ok",
+    "sentence": "El caràcter convuls d'aquells anys desmenteix el relat d'una plàcida i pacífica transició a la democràcia.",
+    "english": "The turbulent nature of those years belies the story of a placid and peaceful transition to democracy.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784746114
+  },
+  "trigar": {
+    "status": "ok",
+    "sentence": "Varen trigar dos anys a construir la casa.",
+    "english": "It took them two years to build the house.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784746119
+  },
+  "cometre": {
+    "status": "ok",
+    "sentence": "No puc cometre un error així. El rus és la meva llengua materna.",
+    "english": "I cannot make such a mistake. Russian is my native tongue.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784746140
+  },
+  "pinya": {
+    "status": "ok",
+    "sentence": "No m'agrada la pinya. Té un gust molt àcid.",
+    "english": "I don't like the pineapple. It has a very sour taste.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784746160
+  },
+  "dècada": {
+    "status": "ok",
+    "sentence": "Una dècada o un decenni és un període o espai de temps de deu anys.",
+    "english": "A decade or a decade is a period or time space of ten years.",
+    "source": "wikipedia_summary+lingva",
+    "updated_at": 1784746268
+  },
+  "medalla": {
+    "status": "ok",
+    "sentence": "La medalla és circular, amb la creu en relleu.",
+    "english": "The medal is circular, with the cross in relief.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784746381
+  },
+  "col·laborar": {
+    "status": "ok",
+    "sentence": "La seva missió és col·laborar amb el presbiteri diocesà.",
+    "english": "Its mission is to collaborate with the diocesan presbytery.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784746493
+  },
+  "calendari": {
+    "status": "ok",
+    "sentence": "L'agost és el vuitè mes del calendari gregorià.",
+    "english": "August is the eighth month of the Gregorian calendar.",
+    "source": "tatoeba_sentence_only+lingva",
+    "updated_at": 1784746502
+  },
+  "domini": {
+    "status": "ok",
+    "sentence": "Els béns a Espanya poden ser de domini públic o de propietat privada.",
+    "english": "Property in Spain can be publicly owned or privately owned.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784746589
+  },
+  "engegar": {
+    "status": "ok",
+    "sentence": "El gener de 1999 es va engegar la seva edició digital.",
+    "english": "In January 1999, its digital edition was launched.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784746675
+  },
+  "misteriós": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784746892
+  },
+  "terror": {
+    "status": "ok",
+    "sentence": "El cinema de terror és un gènere fílmic que busca causar por i angoixa en l'espectador.",
+    "english": "Horror cinema is a film genre that seeks to cause fear and anxiety in the viewer.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784747037
+  },
+  "cantó": {
+    "status": "ok",
+    "sentence": "El gos del cantó és perillós.",
+    "english": "The dog next door is dangerous.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784747058
+  },
+  "passadís": {
+    "status": "ok",
+    "sentence": "En els edificis, es diu passadís a un espai de pas llarg i estret que serveix per comunicar diferents habitacions o estances.",
+    "english": "In buildings, a long and narrow space used to communicate between different rooms or rooms is called a corridor.",
+    "source": "wikipedia_summary+lingva",
+    "updated_at": 1784747212
+  },
+  "poderós": {
+    "status": "ok",
+    "sentence": "Agahnim es convertí és un poderós mag i trencà el setge dels sages.",
+    "english": "Agahnim became a powerful magician and broke the siege of the sages.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784747316
+  },
+  "músic": {
+    "status": "ok",
+    "sentence": "Està orgullós de ser músic.",
+    "english": "He is proud of being a musician.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784747321
+  },
+  "assemblea": {
+    "status": "ok",
+    "sentence": "La durada normal del mandat de l'Assemblea i els seus diputats és de cinc anys.",
+    "english": "The normal duration of the mandate of the Assembly and its deputies is five years.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784747362
+  },
+  "interpretar": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "Escriu una partitura emprant la notació musical perquè ell/a mateix/a o bé d'altres puguin interpretar l'obra.",
+    "updated_at": 1784747468
+  },
+  "bonics": {
+    "status": "ok",
+    "sentence": "Tots els pobles eren bonics.",
+    "english": "All the villages were beautiful.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784747474
+  },
+  "col·lectiu": {
+    "status": "ok",
+    "sentence": "Els drets del col·lectiu LGBT al món varien en funció de la legislació de cada país.",
+    "english": "The rights of the LGBT group in the world vary depending on the legislation of each country.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784747537
+  },
+  "còpia": {
+    "status": "ok",
+    "sentence": "Estipula que qualsevol còpia del material, fins i tot de ser modificat, ha de portar la mateixa llicència.",
+    "english": "It stipulates that any copy of the material, even if modified, must carry the same license.",
+    "source": "wikipedia_search+lingva",
+    "updated_at": 1784747744
+  },
+  "volcà": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "No existeix un consens real entre els vulcanòlegs per definir quan un volcà està actiu.",
+    "updated_at": 1784747769
+  },
+  "acadèmia": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "Els membres d'aquesta acadèmia són líders en les seves disciplines acadèmiques, de les arts, els negocis i els assumptes públics.",
+    "updated_at": 1784747859
+  },
+  "glaç": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "El glaç també és considerat un mineral.",
+    "updated_at": 1784747873
+  },
+  "retrat": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "El dibuix, la pintura o la fotografia són els mitjans més emprats per a la consecució d'un retrat.",
+    "updated_at": 1784747951
+  },
+  "vet": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "Vet aquí una carta de la nostra corresponent a Pequín.",
+    "updated_at": 1784747960
+  },
+  "pescador": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "El ratpenat pescador gros té una envergadura d'ales d'un metre.",
+    "updated_at": 1784748080
+  },
+  "alimentació": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "L'alimentació consisteix en l'obtenció, preparació i ingestió dels aliments.",
+    "updated_at": 1784748156
+  },
+  "prima": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784748441
+  },
+  "context": {
+    "status": "ok",
+    "sentence": "Això depèn del context.",
+    "english": "It depends on the context.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784748442
+  },
+  "transmetre": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "L'estació 2MT va començar a transmetre entreteniment regular en 1922.",
+    "updated_at": 1784748512
+  },
+  "assumpte": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "Aquesta metgessa no sap res del teu assumpte.",
+    "updated_at": 1784748520
+  },
+  "cabró": {
+    "status": "ok",
+    "sentence": "En Tom és un cabró integral.",
+    "english": "Tom's an entitled asshole.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784748526
+  },
+  "pet": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784748842
+  },
+  "invisible": {
+    "status": "ok",
+    "sentence": "Heus aquí el meu secret. És molt senzill: només hi veiem bé amb el cor. Tot el que és essencial és invisible als ulls.",
+    "english": "And now here is my secret, a very simple secret: It is only with the heart that one can see rightly; what is essential is invisible to the eye.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784748843
+  },
+  "llegar": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "Puc anar a jugar quah hagi acabat de llegar el llibre?",
+    "updated_at": 1784748976
+  },
+  "duc": {
+    "status": "ok",
+    "sentence": "Duc mitjons llargs.",
+    "english": "I put on thick socks.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784748981
+  },
+  "aprenent": {
+    "status": "ok",
+    "sentence": "Està aprenent a conduir un cotxe.",
+    "english": "She is learning how to drive a car.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784749017
+  },
+  "francament": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "Ambientada en els baixos fons, va ser considerada per la crítica com una comèdia «francament dolenta».",
+    "updated_at": 1784749237
+  },
+  "llançament": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "La tècnica del llançament consta d'una carrera prèvia com a desplaçament i el llançament final.",
+    "updated_at": 1784749324
+  },
+  "renunciar": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "Quan una persona dimiteix està concretant un acte unilateral: qui ostenta el càrrec, decideix renunciar a ell.",
+    "updated_at": 1784749441
+  },
+  "toro": {
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784749651
+  },
+  "catedral": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "Una catedral o una seu episcopal és una església cristiana que fa la funció de ser l'església principal d'una diòcesi.",
+    "updated_at": 1784759818
+  },
+  "llauna": {
+    "status": "ok",
+    "sentence": "Una llauna de cervesa fa més bon gust després d'un dia de treballar de valent.",
+    "english": "A can of beer tastes better after a hard day's work.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784759823
+  },
+  "professió": {
+    "status": "ok",
+    "sentence": "La seva professió és dentista.",
+    "english": "He is a dentist by profession.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784759844
+  },
+  "cobrir": {
+    "status": "error",
+    "error": "no_translation:mymemory:request_error;libretranslate:request_error;lingva:request_error",
+    "sentence": "La volta és una estructura arquitectònica pròpia per a cobrir espais o recintes.",
+    "updated_at": 1784760085
   }
 }
