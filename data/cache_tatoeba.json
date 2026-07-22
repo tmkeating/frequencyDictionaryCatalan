@@ -7433,7 +7433,7 @@
   "reial": {
     "status": "error",
     "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
-    "updated_at": 1784672482
+    "updated_at": 1784714933
   },
   "original": {
     "status": "ok",
@@ -8561,10 +8561,10 @@
   },
   "peter": {
     "status": "ok",
-    "sentence": "Peter els jutja i són assassinats individualment per la infracció.",
-    "english": "Peter puts them on trial and they are individually killed for the infraction.",
-    "source": "wikipedia_search+lingva",
-    "updated_at": 1784672984
+    "sentence": "Peter estimava a Jane.",
+    "english": "Peter loved Jane.",
+    "source": "tatoeba_linked_translation",
+    "updated_at": 1784714933
   },
   "acostar": {
     "status": "ok",
@@ -8735,11 +8735,9 @@
     "updated_at": 1784601243
   },
   "quiet": {
-    "status": "ok",
-    "sentence": "Forma plural de quiet.",
-    "english": "Plural form of quiet.",
-    "source": "wiktionary_search+lingva",
-    "updated_at": 1784673171
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784715134
   },
   "marcar": {
     "status": "ok",
@@ -9333,11 +9331,9 @@
     "updated_at": 1784604829
   },
   "salvador": {
-    "status": "ok",
-    "sentence": "No obstant això, el costum de fer contracció de la primera paraula va provocar que fos escrit com a \"República del Salvador\".",
-    "english": "However, the custom of contracting the first word caused it to be written as \"República del Salvador\".",
-    "source": "wikipedia_search+lingva",
-    "updated_at": 1784673273
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784715334
   },
   "assegurar": {
     "status": "ok",
@@ -10651,10 +10647,10 @@
   },
   "episodi": {
     "status": "ok",
-    "sentence": "Forma plural de episodi.",
-    "english": "Plural form of episode.",
-    "source": "wiktionary_search+lingva",
-    "updated_at": 1784673866
+    "sentence": "Episodi d'una sèrie televisiva.",
+    "english": "Episode of a television series.",
+    "source": "wiktionary_search+mymemory",
+    "updated_at": 1784715502
   },
   "passejar": {
     "status": "ok",
@@ -11469,7 +11465,7 @@
   "magnífic": {
     "status": "error",
     "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
-    "updated_at": 1784674257
+    "updated_at": 1784715714
   },
   "octubre": {
     "status": "ok",
@@ -13672,7 +13668,7 @@
   "dar": {
     "status": "error",
     "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
-    "updated_at": 1784674931
+    "updated_at": 1784715859
   },
   "riquesa": {
     "status": "ok",
@@ -13940,10 +13936,10 @@
   },
   "arquitectura": {
     "status": "ok",
-    "sentence": "arquitectura popular.",
-    "english": "popular architecture",
-    "source": "wikipedia_search+lingva",
-    "updated_at": 1784675071
+    "sentence": "Més enllà de la descripció formal, el llibre profunditza en els aspectes funcionals i simbòlics d'aquesta arquitectura.",
+    "english": "Beyond the formal description, the book delves into the functional and symbolic aspects of this architecture.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784715876
   },
   "medicina": {
     "status": "ok",
@@ -13954,10 +13950,10 @@
   },
   "falla": {
     "status": "ok",
-    "sentence": "Falla neix a Cadis, l'últim racó de l'Europa occidental, davant de les costes africanes.",
-    "english": "Falla is born in Cadiz, the last corner of Western Europe, in front of the African coast.",
-    "source": "wikipedia_search+lingva",
-    "updated_at": 1784675157
+    "sentence": "Una traça de falla o línia de falla és un lloc on la falla es pot veure o mapar a la superfície.",
+    "english": "A fault trace or fault line is a place where the fault can be seen or mapped on the surface.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784715965
   },
   "poesia": {
     "status": "ok",
@@ -13988,11 +13984,9 @@
     "updated_at": 1784659322
   },
   "bocamoll": {
-    "status": "ok",
-    "sentence": "Forma plural de bocamoll.",
-    "english": "Plural form of bocamoll.",
-    "source": "wiktionary_search+lingva",
-    "updated_at": 1784675273
+    "status": "error",
+    "error": "tatoeba_no_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
+    "updated_at": 1784716077
   },
   "goril·la": {
     "status": "ok",
@@ -14065,11 +14059,9 @@
     "updated_at": 1784659833
   },
   "terrassa": {
-    "status": "ok",
-    "sentence": "L'endemà, 4 de setembre, la soldadesca va tornar a cremar Terrassa i només la pluja va evitar danys majors.",
-    "english": "The next day, September 4, the firestorm burned Terrassa again and only the rain prevented major damage.",
-    "source": "wikipedia_search+lingva",
-    "updated_at": 1784659983
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784717738
   },
   "desfer": {
     "status": "ok",
@@ -14228,7 +14220,7 @@
   "duran": {
     "status": "error",
     "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_result",
-    "updated_at": 1784675576
+    "updated_at": 1784716367
   },
   "pensament": {
     "status": "ok",
@@ -14328,10 +14320,10 @@
   },
   "menú": {
     "status": "ok",
-    "sentence": "El \"Kervansaray\" de Viena, un dels 10 millors restaurants turcs fora de Turquia, té en el seu menú el kuzu kapama també.",
-    "english": "Vienna's \"Kervansaray\", one of the top 10 Turkish restaurants outside Turkey, has kuzu kapama on its menu as well.",
-    "source": "wikipedia_search+lingva",
-    "updated_at": 1784675669
+    "sentence": "La majoria dels jocs d'eines de dispositius proporcionen alguna forma de menú desplegable o menú emergent.",
+    "english": "Most device toolkits provide some form of drop-down or pop-up menu.",
+    "source": "wikipedia_search+mymemory",
+    "updated_at": 1784721631
   },
   "cavaller": {
     "status": "ok",
