@@ -889,7 +889,11 @@ def passes_sentence_quality(
 
 
 def sentence_contains_word(sentence: str, word: str) -> bool:
-    pattern = rf"(?<!\w){re.escape(word)}(?!\w)"
+    # Treat the interpunct (·) as part of a word for boundary purposes (like
+    # compile_keyword_pattern), so a short target word doesn't false-match as a
+    # standalone word inside an unrelated l·l digraph word, e.g. "pal" inside
+    # "pal·ladi" (palladium) or "cel" inside "cel·la" (cell).
+    pattern = rf"(?<![\w·]){re.escape(word)}(?![\w·])"
     for match in re.finditer(pattern, sentence, flags=re.IGNORECASE):
         start, end = match.span()
         prev_char = sentence[start - 1] if start > 0 else ""
@@ -1033,11 +1037,17 @@ def contains_unrelated_name_mention(sentence: str) -> bool:
             idx += 1
             continue
 
-        # Capitals introduced by a quotation, aside, or question/exclamation mark
-        # usually start a new clause rather than a proper noun, e.g. 'Va dir: "Vine."'
-        # or a dialogue exchange like "'Gràcies.' 'De res.'".
+        # Capitals introduced by a quotation, aside, question/exclamation mark, or
+        # the end of a previous sentence usually start a new clause/sentence rather
+        # than a proper noun, e.g. 'Va dir: "Vine."' or a dialogue exchange like
+        # "'Gràcies.' 'De res.'". This also covers multi-sentence Tatoeba entries
+        # joined into a single field (e.g. "És clar que me'n recordo! Com ho podria
+        # oblidar?"), where "Com" is just the ordinary word "com" capitalized
+        # because it starts the second sentence, not a name — the same reasoning
+        # that exempts the very first token of the whole string (idx==0) applies to
+        # the first word of every sentence within it.
         preceding = sentence[: token_match.start()].rstrip()
-        if preceding and preceding[-1] in ':"\'\u2018\u2019\u201c\u00ab\u00bf\u00a1(':
+        if preceding and preceding[-1] in ':"\'\u2018\u2019\u201c\u00ab\u00bf\u00a1(.!?':
             idx += 1
             continue
 
@@ -1990,7 +2000,10 @@ def translate_with_lingva(text: str, endpoint: str) -> tuple[str | None, str]:
 
 
 def make_cloze(sentence: str, word: str) -> tuple[str, str] | None:
-    pattern = rf"(?<!\w)({re.escape(word)})(?!\w)"
+    # See sentence_contains_word(): the interpunct (·) counts as a word character
+    # for boundary purposes so we never cloze a false substring match like "pal"
+    # inside "pal·ladi".
+    pattern = rf"(?<![\w·])({re.escape(word)})(?![\w·])"
     matches = list(re.finditer(pattern, sentence, flags=re.IGNORECASE))
     if not matches:
         return None

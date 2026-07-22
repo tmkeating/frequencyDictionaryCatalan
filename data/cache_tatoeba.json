@@ -7349,11 +7349,9 @@
     "updated_at": 1784585299
   },
   "soler": {
-    "status": "ok",
-    "sentence": "Durant aquest període, l'obra de Soler fa un gir cap al conservadorisme.",
-    "english": "During this period, Soler's work takes a turn towards conservatism.",
-    "source": "wikipedia_search+lingva",
-    "updated_at": 1784672291
+    "status": "error",
+    "error": "tatoeba_no_quality_result;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784713765
   },
   "correu": {
     "status": "ok",
@@ -9706,11 +9704,9 @@
     "updated_at": 1784607182
   },
   "pal": {
-    "status": "ok",
-    "sentence": "Tanmateix, no fou a partir d'aquest aliatge que s'extragué per primera vegada el pal·ladi, sinó del platí.",
-    "english": "However, it was not from this alloy that palladium was extracted for the first time, but from platinum.",
-    "source": "wikipedia_search+lingva",
-    "updated_at": 1784673375
+    "status": "error",
+    "error": "tatoeba_request_error:http_404;backup_wikipedia_no_quality_result;backup_wiktionary_no_quality_result",
+    "updated_at": 1784713410
   },
   "semblant": {
     "status": "ok",

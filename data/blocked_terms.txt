@@ -58,6 +58,7 @@ turca
 turcs
 pdf
 .gencat
+tatoeba
 
 # Popular company / brand names
 Apple
@@ -209,7 +210,6 @@ Acer
 Asus
 Qualcomm
 AMD
-SAP
 tiktok
 facebook
 instagram
@@ -238,6 +238,11 @@ tercera persona del plural
 vs.
 prenom femení
 prenom masculí
+nom:
+Nom:
+nom: del català
+forma plural
+forma plural de
 
 # Subtitles
 sincronitzat i fixats
